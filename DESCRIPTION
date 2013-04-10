@@ -1,0 +1,11 @@
+Package: funqtl
+Type: Package
+Title: QTL mapping for function valued trait
+Version: 0.1-2
+Date: 2012-10-22
+Author: IL-YOUP KWAK with contributions from Karl W Broman. 
+Maintainer: IL-YOUP KWAK <ikwak2@stat.wisc.edu>
+Description: This is an add-on functions of "qtl" package to deal with function valued trait on QTL mapping. We can do QTL analysis with function valued trait with this add-on on "qtl" package(made by Karl W Broman). 
+Depends: qtl, fields
+License: GPL-2
+Packaged: 2012-10-22 18:56:05 UTC; kbroman
