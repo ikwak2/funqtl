@@ -13,7 +13,7 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
     stop("pheno.cols should be in a range of 1 to ", nphe(cross))
     
     
-    pheno <- cross$pheno
+    pheno <- cross$pheno[,pheno.cols]
     
     if (!("cross" %in% class(cross)))
     stop("Input should have class \"cross\".")
