@@ -16,7 +16,7 @@ function(cross, pheno.cols, n.perm, ...) {
 
         cross <- calc.genoprob(cross, step=0)
         temp <- cross
-        pheno <- cross$pheno
+        pheno <- cross$pheno[,pheno.cols]
 
         Slods <- NULL;
         Mlods <- NULL;
