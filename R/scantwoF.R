@@ -17,8 +17,6 @@ scantwoF <- function(cross, pheno.cols, usec=c("slod","mlod"), n.perm, ...) {
         temp <- cross
         pheno <- cross$pheno[, pheno.cols]
         
-        Slods <- NULL;
-        Mlods <- NULL;
         Slod <- NULL;
         Mlod <- NULL;
         SlodsH <- NULL;
@@ -43,8 +41,6 @@ scantwoF <- function(cross, pheno.cols, usec=c("slod","mlod"), n.perm, ...) {
             SLOD <- rowMeans(out1[,-(1:2)])
             MLOD <- apply(out1[,-(1:2)], 1, max)
             
-#            Slod <- c(Slod, max(summary(out3)$one))
-#            Mlod <- c(Mlod, max(summary(out4)$one))
             Slods <- c(Slods, max(SLOD) )
             Mlods <- c(Mlods, max(MLOD) )
             SlodsH <- c(SlodsH, max(summary(out3)$lod.int) )
