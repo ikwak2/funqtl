@@ -43,8 +43,8 @@ scantwoF <- function(cross, pheno.cols, usec=c("slod","mlod"), n.perm, ...) {
             SLOD <- rowMeans(out1[,-(1:2)])
             MLOD <- apply(out1[,-(1:2)], 1, max)
             
-            Slod <- c(Slod, max(summary(out3)$one))
-            Mlod <- c(Mlod, max(summary(out4)$one))
+#            Slod <- c(Slod, max(summary(out3)$one))
+#            Mlod <- c(Mlod, max(summary(out4)$one))
             Slods <- c(Slods, max(SLOD) )
             Mlods <- c(Mlods, max(MLOD) )
             SlodsH <- c(SlodsH, max(summary(out3)$lod.int) )
@@ -53,7 +53,7 @@ scantwoF <- function(cross, pheno.cols, usec=c("slod","mlod"), n.perm, ...) {
             MlodsL <- c(MlodsL, max(summary(out4)$lod.fv1) )
         }
         
-        return( cbind(Slod,Mlod,Slods,Mlods,SlodsH, SlodsL, MlodsH, MlodsL) )
+        return( cbind(Slods,Mlods,SlodsH, SlodsL, MlodsH, MlodsL) )
         
     } else {
         out <- scantwo(cross, pheno.col = pheno.cols, ...)
