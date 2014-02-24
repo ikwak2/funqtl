@@ -1,7 +1,7 @@
 addqtlF <-
 function(cross, pheno.cols, ...) {
 
-    if (!missing(pheno.cols))
+    if (missing(pheno.cols))
         pheno.cols = 1:nphe(cross)
 
     if (!all(pheno.cols %in% 1:nphe(cross)))

@@ -3,7 +3,7 @@ function(cross, pheno.cols, n.perm, ...) {
 
     n = nind(cross)
 
-    if (!missing(pheno.cols))
+    if (missing(pheno.cols))
         pheno.cols = 1:nphe(cross)
 
     if (!all(pheno.cols %in% 1:nphe(cross)))

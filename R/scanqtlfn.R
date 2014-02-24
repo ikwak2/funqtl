@@ -26,7 +26,7 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
 #        pheno.col <- num
 #    }
 
-    if (!missing(pheno.cols))
+    if (missing(pheno.cols))
         pheno.cols = 1:nphe(cross)
 
     #

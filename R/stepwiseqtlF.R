@@ -5,7 +5,7 @@ additive.only = FALSE, penalties,
 keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
 {
     
-    if (!missing(pheno.cols))
+    if (missing(pheno.cols))
     pheno.cols = 1:nphe(cross)
     
     #

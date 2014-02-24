@@ -3,7 +3,7 @@ scantwoF <- function(cross, pheno.cols, usec=c("slod","mlod"), n.perm, ...) {
     n = nind(cross)
     usec <- match.arg(usec)
     
-    if (!missing(pheno.cols))
+    if (missing(pheno.cols))
     pheno.cols = 1:nphe(cross)
     
     if (!all(pheno.cols %in% 1:nphe(cross)))
