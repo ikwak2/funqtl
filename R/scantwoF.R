@@ -13,7 +13,6 @@ scantwoF <- function(cross, pheno.cols, usec=c("slod","mlod"), n.perm, ...) {
     n.perm <- 0
     
     if (n.perm > 0 ) {
-        cross <- calc.genoprob(cross, step=0)
         temp <- cross
         pheno <- cross$pheno[, pheno.cols]
         
@@ -26,6 +25,7 @@ scantwoF <- function(cross, pheno.cols, usec=c("slod","mlod"), n.perm, ...) {
         
         for(rep in 1:n.perm)   {
             temp$pheno <- pheno[sample(n),]
+            temp <- calc.genoprob(temp, step=0)
             
             out2 <- scantwo(temp, pheno.col = pheno.cols,  ...)
             out1 <- scanone(temp, pheno.col = pheno.cols,  ...)

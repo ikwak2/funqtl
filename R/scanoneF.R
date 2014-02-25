@@ -14,7 +14,6 @@ function(cross, pheno.cols, n.perm, ...) {
 
     if (n.perm > 0 ) {
 
-        cross <- calc.genoprob(cross, step=0)
         temp <- cross
         pheno <- cross$pheno[,pheno.cols]
 
@@ -22,6 +21,7 @@ function(cross, pheno.cols, n.perm, ...) {
         Mlods <- NULL;
         for(rep in 1:n.perm)   {
             temp$pheno <- pheno[sample(n),]
+            temp <- calc.genoprob(temp, step=0)
 
             out <- scanone(temp, pheno.col = pheno.cols, ...)
             SLOD <- rowMeans(out[,-(1:2)])
