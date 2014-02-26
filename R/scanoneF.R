@@ -44,5 +44,7 @@ function(cross, pheno.cols, n.perm, ...) {
         names(out)[3:4] <- c("slod","mlod")
 
         out[,1:4]
+        permout <- t(out)
+        class(permout) <- c("scanoneperm","matrkx")        
     }
 }
