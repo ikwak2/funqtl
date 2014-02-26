@@ -31,7 +31,13 @@ function(cross, pheno.cols, n.perm, ...) {
             Mlods <- c(Mlods, max(MLOD) )
 
         }
-        return( rbind(Slods,Mlods) )
+
+        permout <- cbind(Slods,Mlods)
+        colnames(permout) <- c("slod","mlod")
+        class(permout) <- c("scanoneperm","matrkx")        
+
+        
+        return( permout )
 
     } else {
 
@@ -42,9 +48,6 @@ function(cross, pheno.cols, n.perm, ...) {
         out[,3] <- SLOD
         out[,4] <- MLOD
         names(out)[3:4] <- c("slod","mlod")
-
         out[,1:4]
-        permout <- t(out)
-        class(permout) <- c("scanoneperm","matrkx")        
     }
 }
