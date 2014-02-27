@@ -15,4 +15,8 @@ exportPattern("^[[:alpha:]]+")
 
 # Hidden functions
 #   scanqtlfn
-#   
+#   addintM
+#   scanqtlM
+#   addqtlF
+#   addqtlM
+#   fitqtlM
