@@ -1,14 +1,13 @@
 addqtlM <- function (cross, Y, chr, qtl, formula,
-    incl.markers = TRUE, verbose = FALSE, tol = 1e-04, maxit = 1000, method = c("hk","f", pheno.cols)
-{
-
+                     incl.markers = TRUE, verbose = FALSE, tol = 1e-04,
+                     maxit = 1000, method = c("hk","f"), pheno.cols) {
 
     if (missing(pheno.cols)) {
         pheno.cols = 1:nphe(cross)
     }
-
+    
     method <- match.arg(method)
-
+    
     if(missing(Y)) {
         p <- nphe(cross)
         Y <- as.matrix(cross$pheno)
