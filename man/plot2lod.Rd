@@ -56,7 +56,7 @@ plot2lod(cross, out1, ylab = "QTL position", xlab = "Time", mval = 0, ...)
 
 # call dataset
 data(simspal)
-simspal <- calc.genoprob(simspal, step=0)
+simspal <- calc.genoprob(simspal, step=1)
 out1 <- scanone(simspal, pheno.col=1:241 , method="hk")
 
 plot2lod(simspal,out1, col=heat.colors(100)[100:1],
