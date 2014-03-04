@@ -21,7 +21,6 @@ function(cross, pheno.cols, n.perm, ...) {
         Mlods <- NULL;
         for(rep in 1:n.perm)   {
             temp$pheno <- pheno[sample(n),]
-            temp <- calc.genoprob(temp, step=0)
 
             out <- scanone(temp, pheno.col = pheno.cols, ...)
             SLOD <- rowMeans(out[,-(1:2)])
@@ -34,9 +33,9 @@ function(cross, pheno.cols, n.perm, ...) {
 
         permout <- cbind(Slods,Mlods)
         colnames(permout) <- c("slod","mlod")
-        class(permout) <- c("scanoneperm","matrkx")        
+        class(permout) <- c("scanoneperm","matrkx")
 
-        
+
         return( permout )
 
     } else {
