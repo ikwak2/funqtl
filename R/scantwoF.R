@@ -22,6 +22,8 @@ scantwoF <- function(cross, pheno.cols, usec=c("slod","mlod"), n.perm, ...) {
         SlodsL <- NULL;
         MlodsH <- NULL;
         MlodsL <- NULL;
+        Slods <- NULL;
+        Mlods <- NULL;
 
         for(rep in 1:n.perm)   {
             temp$pheno <- pheno[sample(n),]
