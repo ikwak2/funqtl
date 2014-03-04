@@ -1,17 +1,3 @@
-geteffects <- function(cross,pheno.cols) {
-    if(missing(pheno.cols))
-        pheno.cols=1:nphe(cross)
-
-    out <- scanone(cross, pheno.col = pheno.cols, method="hk")
-    phe <- as.matrix(cross$pheno)
-    eff <- NULL
-    for(i in 1:nchr(cross)) {
-        pr <- cross$geno[[i]]$prob[,,2]
-        eff <- rbind(eff, t(apply(pr, 2, function(a,b) lm(b~a)$coef[2,], phe)))
-    }
-    list(out,eff)
-}
-
 plotlod <- function(output, effects, y, gap=25, off.end=0.5, ncol=251, ...)
 {
 
@@ -80,10 +66,10 @@ plotlod <- function(output, effects, y, gap=25, off.end=0.5, ncol=251, ...)
         col=col, zlim=zlim)
 
   axis(side=4, at=pretty(lodscale), lab=abs(pretty(lodscale)))
-  u <- par("usr")
-  rect(u[1], u[3], u[2], u[4], xpd=TRUE)
-  text(u[2]+diff(u[1:2])*4, maxlod/2, srt=90, "Cvi > Ler", xpd=TRUE)
-  text(u[2]+diff(u[1:2])*4, -maxlod/2, srt=90, "Ler > Cvi", xpd=TRUE)
-  text(u[2]+diff(u[1:2])*1.7, u[4]+diff(u[3:4])*0.05, "LOD", xpd=TRUE)
+#  u <- par("usr")
+#  rect(u[1], u[3], u[2], u[4], xpd=TRUE)
+#  text(u[2]+diff(u[1:2])*4, maxlod/2, srt=90, "Cvi > Ler", xpd=TRUE)
+#  text(u[2]+diff(u[1:2])*4, -maxlod/2, srt=90, "Ler > Cvi", xpd=TRUE)
+#  text(u[2]+diff(u[1:2])*1.7, u[4]+diff(u[3:4])*0.05, "LOD", xpd=TRUE)
 
 }
