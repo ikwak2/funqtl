@@ -1,0 +1,66 @@
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Users Guide for R/funqtl}
+-->
+
+# QTL mapping on Simulated data sets
+
+This is a simple analysis on simulated data set, simspal, using R/funqtl package.
+  There are 162 RIL individuals typed at a total of 234 markers on five
+  chromosomes.
+
+```{r knitr_options, include=FALSE}
+opts_chunk$set(dev.args=list(pointsize=20), fig.width=13)
+
+```
+
+```{r loading}
+library(qtl)
+library(funqtl)
+data(simspal)
+simspal
+```
+
+
+```{r plots}
+pheno1 <- simspal$pheno
+map10 <- pull.map(simspal)
+par(mfrow=c(1,2))
+plot(map10, main="")
+plot(1:241, pheno1[160,], type="l", xlab="Time", ylim=c(-120,0), ylab="Root Tip Angle (degrees)", main="" )
+for(i in c(19, 20, 132, 72))
+  lines(1:241, pheno1[i,])
+```
+The estimated genetic
+map and the trait values for five randomly selected RIL are displayed.
+
+
+
+Now let's make an LOD image of all time points.
+```{r scanone}
+simspal <- calc.genoprob(simspal, step=1)
+out <- scanone(simspal, pheno.col = 1:241, method="hk")
+```
+We first applied interval mapping by Haley-Knott regression (Haley
+and Knott 1992), considering each time point individually.
+The results are displayed below, with the y-axis representing genomic position
+and the x-axis representing time, and so each vertical slice is a genome scan
+for one time point.
+```{r plot2lod, fig.height=30}
+
+plot2lod(simspal, out, col=heat.colors(100)[100:1], main="The LOD
+image of the simspal data set")
+```
+Figure shows LOD image of the data set. It looks like we have some QTL on chromosome 1, 3 and 4.
+
+We can also produce a signed lod image.
+```{r signed lod}
+simspal <- calc.genoprob(simspal, step=1)
+out <- scanone(simspal, pheno.col=1:241 , method="hk")
+eff <- geteffects(simspal, pheno.cols=1:241)
+```
+
+```{r plotload, fig.height=30}
+plotlod(out, eff, gap=15, main="The LOD image of the simspal data set")
+```
+
