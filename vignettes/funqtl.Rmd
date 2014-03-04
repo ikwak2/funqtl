@@ -22,6 +22,8 @@ simspal
 ```
 
 
+## Data
+
 ```{r plots}
 pheno1 <- simspal$pheno
 map10 <- pull.map(simspal)
@@ -35,6 +37,7 @@ The estimated genetic
 map and the trait values for five randomly selected RIL are displayed.
 
 
+## LOD images
 
 Now let's make an LOD image of all time points.
 ```{r scanone}
@@ -46,12 +49,12 @@ and Knott 1992), considering each time point individually.
 The results are displayed below, with the y-axis representing genomic position
 and the x-axis representing time, and so each vertical slice is a genome scan
 for one time point.
-```{r plot2lod, fig.height=30}
+```{r plot2lod, fig.height=10}
 
 plot2lod(simspal, out, col=heat.colors(100)[100:1], main="The LOD
 image of the simspal data set")
 ```
-Figure shows LOD image of the data set. It looks like we have some QTL on chromosome 1, 3 and 4.
+Figure shows LOD image of the data set. It looks like we have some QTL on chromosome 1 and 4. And maybe on 3.
 
 We can also produce a signed lod image.
 ```{r signed lod}
@@ -60,7 +63,45 @@ out <- scanone(simspal, pheno.col=1:241 , method="hk")
 eff <- geteffects(simspal, pheno.cols=1:241)
 ```
 
-```{r plotload, fig.height=30}
+```{r plotload, fig.height=10}
 plotlod(out, eff, gap=15, main="The LOD image of the simspal data set")
 ```
+The results are displayed in the Figure above,
+with the x-axis representing genomic position and the y-axis representing time, and so each horizontal slice is a genome scan for one time point. We plot a signed LOD score, with the sign representing the estimated direction of the QTL effect. The most prominant QTL are on chromosomes 1 and 4.
+
+The chromosome 1 QTL affects later times, and the chromosome 4
+allele affects earlier times. There is an additional QTL of interest on distal chromosome 3
+
+## SLOD and MLOD scores
+
+```{r slodmlod}
+out1 <- scanoneF(simspal, pheno.cols = 1:241, method="hk")
+
+```
+The SLOD and MLOD statistics combine the results across time points, by taking the average
+or the maximum LOD, respectively, at each genomic location.
+
+
+```{r slodmlodcurve, fig.height=10}
+par(mfrow=c(2,1))
+plot(out1, ylim=c(0,3.5), main="The SLOD curve for IBMset1", bandcol="gray90")
+abline(h=2.02, col="red", lty=3)
+plot(out1[,c(1,2,4)], ylim=c(0,7), main="The MLOD curve for IBMset1", bandcol="gray90")
+abline(h=3.46, col="red", lty=3)
+
+# permutation threshold can be calculated from here.
+# permout <- scanoneF(simspal, pheno.cols=1:241, method = "hk", n.perm=1000)
+# summary(permout) # display 5, 10 % threshold of permutation result
+```
+
+The results are in Figure above. Horizontal lines indicate the 5% genome-wide significance thresholds, derived by a permutation test.
+
+## Getting multiple QTL
+
+```{r stepwiseqtlscan}
+
+#fqtl <- stepwiseqtlF(simspal
+
+```
+
 
