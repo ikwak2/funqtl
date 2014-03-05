@@ -11,17 +11,12 @@ with function valued trait on QTL mapping.
 
 #### Installation
 
-You first need to install [R/qtl](http://www.rqtl.org) 
-
-    if(!require(qtl)) install.packages("qtl")
-
-You also need the `install_github` function in
-[Hadley Wickham](http://had.co.nz/)'s [devtools]() package. So install
+You need the `install_github` function in [devtools]() package. So install
 and load devtools:
 
     if(!require(devtools)) install.packages("devtools")
 	    library(devtools)
 
-Finally, use `install_github` function to install R/funqtl:
+And then, use `install_github` function to install R/funqtl:
 
     install_github("ikwak2/funqtl")
