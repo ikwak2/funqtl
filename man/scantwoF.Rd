@@ -64,11 +64,21 @@ scantwoF(cross, pheno.cols, usec=c("slod","mlod"), n.perm, ...)
   'scantwo', 'summary.scantwo', 'calc.genoprob', 'scanoneF'
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-1+1
-## The function is currently defined as
+
+data(exd)
+exd <- calc.genoprob(exd, step = 0)
+
+out <-scantwoF(exd, method = "hk", usec="slod")
+plot(out)
+
+# permutations
+
+## Not run: perm.exd <- scantwoF(exd, usec="slod", n.perm = 1000)
+# summary(permo.exd, alpha=0.05)
+
+
+
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
