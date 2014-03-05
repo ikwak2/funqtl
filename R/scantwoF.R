@@ -50,7 +50,11 @@ scantwoF <- function(cross, pheno.cols, usec=c("slod","mlod"), n.perm, ...) {
             MlodsL <- c(MlodsL, max(summary(out4)$lod.fv1) )
         }
 
-        return( cbind(Slods,Mlods,SlodsH, SlodsL, MlodsH, MlodsL) )
+
+#        out <- list(one_slod = as.matrix(Slods), one_mlod = Mlods, fullvadd_slod = SlodsH, fullvadd_mlod = MlodsH, fv1_slod = SlodsL, fv1_mlod = MlodsL)
+        out <- list(one = cbind(Slods, Mlods), fullvadd = cbind(SlodsH, MlodsH), fv1 = cbind(SlodsL, MlodsL) )
+        class(out) <- c("scantwoperm", "list")
+        out
 
     } else {
         out <- scantwo(cross, pheno.col = pheno.cols, ...)
