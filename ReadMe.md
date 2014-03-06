@@ -11,7 +11,7 @@ with function valued trait on QTL mapping.
 
 #### Installation
 
-You need the `install_github` function in [devtools]() package. So install
+You need the `install_github` function in [devtools](http://cran.r-project.org/web/packages/devtools/index.html) package. So install
 and load devtools:
 
     if(!require(devtools)) install.packages("devtools")
