@@ -9,3 +9,4 @@ Description: This is an add-on functions of "qtl" package to deal with function 
 Depends: qtl, fields
 License: GPL-2
 Packaged: 2012-10-22 18:56:05 UTC; kbroman
+VignetteBuilder: knitr

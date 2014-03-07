@@ -100,7 +100,9 @@ The results are in Figure above. Horizontal lines indicate the 5% genome-wide si
 
 ```{r stepwiseqtlscan}
 
-#fqtl <- stepwiseqtlF(simspal
+#qtlslod <- stepwiseqtlF(simspal, pheno.cols = 1:241, max.qtl = 6, usec = "slod", method = "hk", penalties = c(2.02, 2.62, 1.74) )
+#qtlmlod <- stepwiseqtlF(simspal, pheno.cols = 1:241, max.qtl = 6, usec = "mlod", method = "hk", penalties = c(3.57, 3.09, 1.06) )
+
 
 ```
 
