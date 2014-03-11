@@ -140,13 +140,14 @@ refineqtlF(cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL, formula, me
      'replaceqtl', 'plotLodProfile'
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-1+1
-## The function is currently defined as
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
+
+data(exd)
+
+qtl1.c <- makeqtl(exd, chr = c(2), pos = c(30), what = "prob")
+thisqtl1.c <- refineqtlF(exd, pheno.cols = 1:10,  qtl = qtl1.c,
+                      formula = y~Q1, method = "hk")
+
+
 }
 \keyword{ ~kwd1 }
 \keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
