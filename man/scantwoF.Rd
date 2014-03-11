@@ -73,8 +73,11 @@ plot(out)
 
 # permutations
 
-## Not run: perm.exd <- scantwoF(exd, usec="slod", n.perm = 1000)
-# summary(permo.exd, alpha=0.05)
+# Permutation tests
+\dontrun{permo <- scantowF(exd, method="hk", n.perm=1000)}
+\dontshow{permo <- scanone(exd, method="hk", n.perm=5)}
+
+summary(permo, alpha=0.05)
 
 
 

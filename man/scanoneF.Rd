@@ -53,26 +53,26 @@ scanoneF(cross, pheno.cols, n.perm, ...)
 \examples{
 
      data(exd)
-     
+
      exd <- calc.genoprob(exd, step=2)
      out <- scanoneF(exd)
-     
+
      # Summarize results
      summary(out)
-     
+
      # Plot the results : red for slod, blue for mlod
      plot(out, out[,c(1,2,4)], col = c("red","blue"), ylab = "lod")
-     
+
 
      # Permutation tests
-     perm1 <- scanone(exd, method="hk", n.perm=100)
-     # Threshold from the permutation test
+\dontrun{perm1 <- scanoneF(exd, method="hk", n.perm=1000)}
+\dontshow{perm1 <- scanoneF(exd, method="hk", n.perm=5)}
      summary(perm1, alpha=c(0.05, 0.10))
-     
+
      # Results above the 0.05 threshold
      summary(out, perms=perm1, alpha=0.05)
-     
-     
+
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
