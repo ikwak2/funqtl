@@ -159,11 +159,14 @@ c("normal", "binary"), incl.markers = TRUE, refine.locations = TRUE,
   'refineqtlF', 'addqtlF'
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
 
-## The function is currently defined as
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
+data(exd)
+exd <- calc.genoprob(exd, step = 0)
+
+qtlslod <- stepwiseqtlF(exd, pheno.cols = 1:10, max.qtl = 4, usec = "slod", method = "hk", penalties = c(1.3, 2.62, 1.74) )
+
+qtlmlod <- stepwiseqtlF(exd, pheno.cols = 1:10, max.qtl = 4, usec = "mlod", method = "hk", penalties = c(2.8, 3.62, 3.74) )
+
+
+
 }
