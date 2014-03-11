@@ -59,7 +59,7 @@ out <- scanone(simspal, pheno.col=1:241 , method="hk")
 eff <- geteffects(simspal, pheno.cols=1:241)
 ```
 
-```{r plotload, fig.height=14, fig.width = 12}
+```{r plotload, fig.height=10, fig.width = 12}
 plotlod(out, eff, gap=15, main="The LOD image of the simspal data set")
 ```
 The results are displayed in the Figure above,
