@@ -46,7 +46,8 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
             out <- NULL;
             for(i in 1:n.chr) {
                 LOD = NULL;
-                for(j in 1:ncol(cross$geno[[i]]$prob)) {
+                map <- attr(cross$geno[[i]]$prob, "map")
+                for(j in 1:length(map)) {
                     X <- cbind(rep(1,n.ind), cross$geno[[i]]$prob[,j,1])
                     E <- lm.fit(X, Y, tol=tol)$residuals
                     Sigma <- crossprod(E)
@@ -57,10 +58,9 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
                         L1 <- sum(diag(Sigma))
                     }
                     
-                                        #                LOD <- c(LOD, n.ind/2*log(L0/L1,10 ) )
                     LOD <- c(LOD, n.ind/2*log10(exp(1))*(L0 - L1) )
                 }
-                out <- rbind(out, cbind(rep(i,n.mar[i]), cross$geno[[i]]$map, LOD) )
+                out <- rbind(out, cbind(rep(chrnames(cross)[i],length(map)), map, LOD) )
             }
             
             outt <- data.frame( chr = out[,1], pos = out[,2], lod = out[,3])
@@ -101,7 +101,8 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
                 out <- NULL;
                 for(i in 1:n.chr) {
                     LOD = NULL;
-                    for(j in 1:ncol(cross$geno[[i]]$prob)) {
+                    map <- attr(cross$geno[[i]]$prob, "map")
+                    for(j in 1:length(map)) {
                         X <- cbind(rep(1,n.ind), cross$geno[[i]]$prob[,j,1])
                         E <- lm.fit(X, nY, tol=tol)$residuals
                         Sigma <- crossprod(E)
@@ -115,7 +116,7 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
                         LOD <- c(LOD, n.ind/2*log10(exp(1))*(L0 - L1) )
                         
                     }
-                    out <- rbind(out, cbind(rep(i,n.mar[i]), cross$geno[[i]]$map, LOD) )
+                    out <- rbind(out, cbind(rep(chrnames(cross)[i],length(map)), map, LOD) )
                 }
                 
                 lods <- c(lods, max(out[,3]) )
