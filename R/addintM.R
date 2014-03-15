@@ -35,11 +35,6 @@ addintM <- function (cross, Y, qtl, formula, qtl.only = FALSE, verbose = TRUE,
         if (n.qtl > 1)
             for (i in 2:n.qtl) formula <- paste(formula, tmp.Q[i],
                 sep = "+")
-        if (n.covar) {
-            tmp.C <- colnames(covar)
-            for (i in 1:n.covar) formula <- paste(formula, tmp.C[i],
-                sep = "+")
-        }
         formula <- as.formula(formula)
     }
     formula <- qtl::checkformula(formula, qtl$altname, NULL)

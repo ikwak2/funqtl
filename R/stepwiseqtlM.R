@@ -33,15 +33,12 @@ stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
             else stop("Chromosome ", wh, " (in QTL object) not in cross object.")
         }
         if (missing(formula)) {
-            if (!is.null(covar))
-                formula <- paste("y ~ ", paste(names(covar),
-                  collapse = "+"), "+")
-            else formula <- "y ~ "
+            formula <- "y ~ "
             formula <- paste(formula, paste(paste("Q", 1:length(qtl$chr),
                 sep = ""), collapse = "+"))
         }
         else {
-            temp <- qtl::checkStepwiseqtlStart(qtl, formula, covar)
+            temp <- qtl::checkStepwiseqtlStart(qtl, formula)
             qtl <- temp$qtl
             formula <- temp$formula
         }
