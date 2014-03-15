@@ -1,6 +1,6 @@
 \name{refineqtlF}
 \alias{refineqtlF}
-%- Also NEED an '\alias' for EACH other topic documented here.
+
 \title{
   Refine the positions of QTL for function valued trait
 }
@@ -15,7 +15,6 @@
 \usage{
 refineqtlF(cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL, formula, method = c("imp", "hk"), model = c("normal", "binary"), verbose = TRUE, maxit = 10, incl.markers = TRUE, keeplodprofile = TRUE, tol = 1e-04, maxit.fitqtl = 1000)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{cross}{
     An object of class 'cross'. See 'read.cross' for details.
@@ -92,29 +91,15 @@ refineqtlF(cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL, formula, me
 
 }
 \value{
-  %%  ~Describe the value returned
-  %%  If it is a LIST, use
-  %%  \item{comp1 }{Description of 'comp1'}
-  %%  \item{comp2 }{Description of 'comp2'}
-  %% ...
-
-
-
   An object of class 'qtl', with QTL placed in their new positions.
 
 
-  %%               %%  need to check this !!!  %%
   If 'keeplodprofile=TRUE', LOD profiles from the last pass through
   the refinement algorithm are retained as an attribute,
   '"lodprofile"', to the object.  These may be plotted with
   'plotLodProfile'.
- %%
-
 }
 \references{
-  %% ~put references to the literature/web site here ~
-
-
      Zeng, Z.-B., Kao, C.-H., and Basten, C. J. (1999) Estimating the
      genetic architecture of quantitative traits.  _Genet. Res._ *74*,
      279-289.
@@ -132,10 +117,8 @@ refineqtlF(cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL, formula, me
   Il-Youp Kwak, <email: ikwak2@stat.wisc.edu>
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
      'fitqtl', 'makeqtl', 'scanqtl', 'scanqtlF', 'addtoqtl', 'dropfromqtl',
      'replaceqtl', 'plotLodProfile'
 }
@@ -149,5 +132,4 @@ thisqtl1.c <- refineqtlF(exd, pheno.cols = 1:10,  qtl = qtl1.c,
 
 
 }
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ models }

@@ -12,7 +12,6 @@ trait data.
 \usage{
 scantwoF(cross, pheno.cols, usec=c("slod","mlod"), n.perm, ...)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{cross}{
     An object of class 'cross'. See 'read.cross' for details.
@@ -58,8 +57,6 @@ scantwoF(cross, pheno.cols, usec=c("slod","mlod"), n.perm, ...)
   Il-Youp Kwak, <email: ikwak2@stat.wisc.edu>
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
 \seealso{
   'scantwo', 'summary.scantwo', 'calc.genoprob', 'scanoneF'
 }
@@ -83,7 +80,4 @@ summary(permo, alpha=0.05)
 
 
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ models }

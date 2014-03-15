@@ -16,11 +16,12 @@ penalized LOD score, with separate penalties on main effects and interactions.
 
 }
 \usage{
-stepwiseqtlF(cross, chr, pheno.cols, qtl, usec=c("slod","mlod"),
-formula, max.qtl = 10, covar = NULL, method = c("imp", "hk"), model =
-c("normal", "binary"), incl.markers = TRUE, refine.locations = TRUE,
-    additive.only = FALSE, penalties,
-    keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
+stepwiseqtlM(cross, chr, Y,  qtl, 
+formula, max.qtl = 10, incl.markers=TRUE, refine.locations = TRUE,
+    penalties, additive.only = FALSE,
+    keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000,
+ method=c("hk", "f"),
+ pheno.cols)
 
 }
 \arguments{
@@ -35,12 +36,9 @@ c("normal", "binary"), incl.markers = TRUE, refine.locations = TRUE,
     '-' to have all chromosomes but those considered.  A logical
     (TRUE/FALSE) vector may also be used.
   }
+  \item{Y}{ Matrix of phenotypes }
   \item{pheno.cols}{
     Columns in the phenotype matrix to be used as the phenotype.
-  }
-  \item{usec}{
-    which criteria to use between 'slod' and 'mlod' for multiple QTL
-    selection in function valued trait.
   }
   \item{qtl}{
     Optional QTL object (of class '"qtl"', as created by
@@ -54,17 +52,12 @@ c("normal", "binary"), incl.markers = TRUE, refine.locations = TRUE,
     Maximum number of QTL to which forward selection should
     proceed.
   }
-  \item{covar}{
-    Data frame of additive covariates.
-  }
+
   \item{method}{
     Indicates whether to use multiple imputation or Haley-Knott
     regression.
   }
-  \item{model}{
-    The phenotype model: the usual model or a model for binary
-    traits
-  }
+
   \item{incl.markers}{
     If FALSE, do calculations only at points on an evenly
     spaced grid.
@@ -163,11 +156,4 @@ c("normal", "binary"), incl.markers = TRUE, refine.locations = TRUE,
   'refineqtlF', 'addqtlF'
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
 }

@@ -1,11 +1,10 @@
 \name{geteffects}
 \alias{geteffects}
-%- Also NEED an '\alias' for EACH other topic documented here.
+
 \title{
   get coefficients of qtl. (get sign information) 
 }
 \description{
-  %%  ~~ A concise (1-5 lines) description of what the function does. ~~
   required function to run plotlod which plot signed lod image. The
   plotlod function need a sign information for each LOD score. This
   geteffects function get coefficients at each gene position. So we can
@@ -15,14 +14,11 @@
 \usage{
 geteffects(cross, pheno.cols)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{cross}{
-    %%     ~~Describe \code{cross} here~~
     An object of class 'cross'. See 'read.cross' for details.
   }
   \item{pheno.cols}{
-    %%     ~~Describe \code{z2} here~~
     phenotype columns to be used
   }
   
@@ -54,7 +50,4 @@ plotlod(out, eff, gap=15)
 
 
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ models }
