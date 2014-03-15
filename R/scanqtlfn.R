@@ -10,7 +10,7 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
             covar <- as.data.frame(covar, stringsAsFactors = TRUE)
         else stop("covar should be a data.frame")
     }
-#    if (qtl:::LikePheVector(pheno.col, nind(cross), nphe(cross))) {
+#    if (qtl::LikePheVector(pheno.col, nind(cross), nphe(cross))) {
 #        cross$pheno <- cbind(pheno.col, cross$pheno)
 #        pheno.col <- 1
 #    }
@@ -106,7 +106,7 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
         formula <- as.formula(formula)
     }
     else {
-        formula.str <- qtl:::deparseQTLformula(formula)
+        formula.str <- qtl::deparseQTLformula(formula)
         for (i in 1:n.qtl) {
             qtl.term <- paste("Q", i, sep = "")
             if (length(grep(qtl.term, formula.str, ignore.case = TRUE)) ==
@@ -124,7 +124,7 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
         }
         formula <- as.formula(formula.str)
     }
-    formula <- qtl:::checkformula(formula, paste("Q", 1:length(chr),
+    formula <- qtl::checkformula(formula, paste("Q", 1:length(chr),
         sep = ""), colnames(covar))
     if (!is.null(covar)) {
         theterms <- rownames(attr(terms(formula), "factors"))
@@ -242,7 +242,7 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
         results <- NULL
         results2 <- NULL
         for (ii in 1:length(pheno.cols)) {
-            results[[ii]] <- qtl:::fitqtlengine(pheno = pheno[,pheno.cols[ii]], qtl = qtl, covar = covar,
+            results[[ii]] <- qtl::fitqtlengine(pheno = pheno[,pheno.cols[ii]], qtl = qtl, covar = covar,
             formula = formula, method = method, model = model,
             dropone = FALSE, get.ests = FALSE, run.checks = FALSE,
             cross.attr = cross.attr, sexpgm = sexpgm, tol = tol,
@@ -257,7 +257,7 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
         names(result) <- "MLOD"
         class(result) <- "scanqtlfn"
         attr(result, "method") <- method
-        attr(result, "formula") <- qtl:::deparseQTLformula(formula)
+        attr(result, "formula") <- qtl::deparseQTLformula(formula)
         return(result)
     }
     if (verbose) {
@@ -343,7 +343,7 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
         fit <- NULL;
         fitresults <- NULL;
         for(ii in 1:length(pheno.cols)) {
-            fit[[ii]] <- qtl:::fitqtlengine(pheno = pheno[,pheno.cols[ii]], qtl = qtl.obj, covar = covar,
+            fit[[ii]] <- qtl::fitqtlengine(pheno = pheno[,pheno.cols[ii]], qtl = qtl.obj, covar = covar,
                  formula = formula, method = method, model = model,
                  dropone = FALSE, get.ests = FALSE, run.checks = FALSE,
                  cross.attr = cross.attr, sexpgm = sexpgm, tol = tol,
@@ -366,6 +366,6 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
     dimnames(result) <- dnames
     class(result) <- "scanqtlfn"
     attr(result, "method") <- method
-    attr(result, "formula") <- qtl:::deparseQTLformula(formula)
+    attr(result, "formula") <- qtl::deparseQTLformula(formula)
     result
 }

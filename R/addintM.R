@@ -42,7 +42,7 @@ addintM <- function (cross, Y, qtl, formula, qtl.only = FALSE, verbose = TRUE,
         }
         formula <- as.formula(formula)
     }
-    formula <- qtl:::checkformula(formula, qtl$altname, NULL)
+    formula <- qtl::checkformula(formula, qtl$altname, NULL)
     factors <- attr(terms(formula), "factors")
     if (sum(factors[1, ]) == 0)
         factors <- factors[-1, ]
@@ -92,7 +92,7 @@ addintM <- function (cross, Y, qtl, formula, qtl.only = FALSE, verbose = TRUE,
 
 
         thefit1 <- fitqtlM(cross = cross, Y = Y, qtl = qtl,
-            formula = as.formula(paste(qtl:::deparseQTLformula(formula),
+            formula = as.formula(paste(qtl::deparseQTLformula(formula),
                 int2test[k], sep = "+")), tol = tol, method=method, pheno.cols=pheno.cols)
 
         results[k, 1] <- thefit1$result.full[1, 1] - thefit0$result.full[1,
@@ -115,7 +115,7 @@ addintM <- function (cross, Y, qtl, formula, qtl.only = FALSE, verbose = TRUE,
     class(results) <- c("addint", "data.frame")
     attr(results, "method") <- "hk"
     attr(results, "model") <- "normal"
-    attr(results, "formula") <- qtl:::deparseQTLformula(formula)
+    attr(results, "formula") <- qtl::deparseQTLformula(formula)
     if (simple)
         pvalues <- FALSE
     attr(results, "pvalues") <- pvalues

@@ -58,7 +58,7 @@ getlodM <- function(cross, Y, formula, qtl, tol=1e-7, method = c("hk","f"), phen
 
 
 
-    tempform <- strsplit(qtl:::deparseQTLformula(formula), " *~ *")[[1]][2]
+    tempform <- strsplit(qtl::deparseQTLformula(formula), " *~ *")[[1]][2]
     terms <- strsplit(tempform, " *\\+ *")[[1]]
 
     X <- NULL

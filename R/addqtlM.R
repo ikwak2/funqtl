@@ -45,7 +45,7 @@ addqtlM <- function (cross, Y, chr, qtl, formula,
 
     if (missing(chr)) {
         chr <- names(cross$geno)
-    } else chr <- qtl:::matchchr(chr, names(cross$geno))
+    } else chr <- qtl::matchchr(chr, names(cross$geno))
 
 
     n.covar <- 0
@@ -61,12 +61,12 @@ addqtlM <- function (cross, Y, chr, qtl, formula,
     }
     else {
         newqtl <- paste("Q", n.qtl + 1, sep = "")
-        formula <- qtl:::checkformula(formula, c(qtl$altname, newqtl),
+        formula <- qtl::checkformula(formula, c(qtl$altname, newqtl),
                                 NULL)
         theterms <- rownames(attr(terms(formula), "factors"))
         g <- grep(paste("^[Qq]", n.qtl + 1, "$", sep = ""), theterms)
         if (length(g) == 0) {
-            newformula <- as.formula(paste(qtl:::deparseQTLformula(formula),
+            newformula <- as.formula(paste(qtl::deparseQTLformula(formula),
                                            "+ Q", n.qtl + 1, sep = ""))
         }     else {
             newformula <- formula
@@ -99,9 +99,9 @@ addqtlM <- function (cross, Y, chr, qtl, formula,
         qtlpos <- qtlpos[-todrop]
         n.qtl <- n.qtl - length(todrop)
         revnewqtlnum <- n.qtl + 1
-        formula <- qtl:::reviseqtlnuminformula(formula, notdropped,
+        formula <- qtl::reviseqtlnuminformula(formula, notdropped,
             newnum)
-        newformula <- qtl:::reviseqtlnuminformula(newformula, c(notdropped,
+        newformula <- qtl::reviseqtlnuminformula(newformula, c(notdropped,
             newqtlnum), c(newnum, revnewqtlnum))
     }
 
@@ -111,7 +111,7 @@ addqtlM <- function (cross, Y, chr, qtl, formula,
 
 
 
-#lod0 <- qtl:::fitqtlengine(pheno = pheno[,1], qtl = qtl, covar = NULL,
+#lod0 <- qtl::fitqtlengine(pheno = pheno[,1], qtl = qtl, covar = NULL,
 #        formula = formula, method = "hk", model = "normal", dropone = FALSE,
 #        get.ests = FALSE, run.checks = FALSE, cross.attr = cross.attr,
 #        sexpgm = sexpgm, tol = tol, maxit = maxit)$result.full[1, 4]
@@ -161,7 +161,7 @@ addqtlM <- function (cross, Y, chr, qtl, formula,
     }
     class(results) <- c("scanone", "data.frame")
     attr(results, "method") <- "hk"
-    attr(results, "formula") <- qtl:::deparseQTLformula(newformula)
+    attr(results, "formula") <- qtl::deparseQTLformula(newformula)
     results
 }
 

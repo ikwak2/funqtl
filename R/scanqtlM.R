@@ -50,7 +50,7 @@ scanqtlM <- function (cross, Y, chr, pos, formula, incl.markers = FALSE,
         formula <- as.formula(formula)
     }
     else {
-        formula.str <- qtl:::deparseQTLformula(formula)
+        formula.str <- qtl::deparseQTLformula(formula)
         for (i in 1:n.qtl) {
             qtl.term <- paste("Q", i, sep = "")
             if (length(grep(qtl.term, formula.str, ignore.case = TRUE)) ==
@@ -59,7 +59,7 @@ scanqtlM <- function (cross, Y, chr, pos, formula, incl.markers = FALSE,
         }
         formula <- as.formula(formula.str)
     }
-    formula <- qtl:::checkformula(formula, paste("Q", 1:length(chr),
+    formula <- qtl::checkformula(formula, paste("Q", 1:length(chr),
         sep = ""), NULL)
 
 
@@ -140,7 +140,7 @@ scanqtlM <- function (cross, Y, chr, pos, formula, incl.markers = FALSE,
         names(result) <- "LOD"
         class(result) <- "scanqtl"
         attr(result, "method") <- "hk"
-        attr(result, "formula") <- qtl:::deparseQTLformula(formula)
+        attr(result, "formula") <- qtl::deparseQTLformula(formula)
         return(result)
     }
     if (verbose) {
@@ -219,7 +219,7 @@ scanqtlM <- function (cross, Y, chr, pos, formula, incl.markers = FALSE,
     dimnames(result) <- dnames
     class(result) <- "scanqtl"
     attr(result, "method") <- "hk"
-    attr(result, "formula") <- qtl:::deparseQTLformula(formula)
+    attr(result, "formula") <- qtl::deparseQTLformula(formula)
     result
 }
 

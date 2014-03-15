@@ -151,17 +151,17 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
 
 #########
 
-    formula <- qtl:::checkformula(formula, qtl$altname, colnames(covar))
+    formula <- qtl::checkformula(formula, qtl$altname, colnames(covar))
 
 
 # identify which QTL are in the model formula
-    tovary <- sort(qtl:::parseformula(formula, qtl$altname, colnames(covar))$idx.qtl)
+    tovary <- sort(qtl::parseformula(formula, qtl$altname, colnames(covar))$idx.qtl)
     if(length(tovary) != qtl$n.qtl)
         reducedqtl <- dropfromqtl(qtl, index=(1:qtl$n.qtl)[-tovary])
     else reducedqtl <- qtl
 
     if (any(1:length(tovary) != tovary)) {
-        tempform <- strsplit(qtl:::deparseQTLformula(formula), " *~ *")[[1]][2]
+        tempform <- strsplit(qtl::deparseQTLformula(formula), " *~ *")[[1]][2]
         terms <- strsplit(tempform, " *\\+ *")[[1]]
         for (j in seq(along = terms)) {
             if (length(grep(":", terms[j])) > 0) {
@@ -205,7 +205,7 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
             basefitlod <- NULL
 
             for(phv in pheno.cols) {
-                basefit[[phv]] <- qtl:::fitqtlengine(pheno = pheno[,pheno.cols[phv]], qtl = reducedqtl,
+                basefit[[phv]] <- qtl::fitqtlengine(pheno = pheno[,pheno.cols[phv]], qtl = reducedqtl,
                                    covar = covar, formula = formula, method = method,
                                    model = model, dropone = TRUE, get.ests = FALSE,
                                    run.checks = FALSE, cross.attr = cross.attr,
@@ -222,7 +222,7 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
 
             for(phv in pheno.cols) {
 
-                basefit[[phv]] <- qtl:::fitqtlengine(pheno = pheno[,pheno.cols[phv]], qtl = reducedqtl,
+                basefit[[phv]] <- qtl::fitqtlengine(pheno = pheno[,pheno.cols[phv]], qtl = reducedqtl,
                           covar = covar, formula = formula, method = method,
                           model = model, dropone = FALSE, get.ests = FALSE,
                           run.checks = FALSE, cross.attr = cross.attr, sexpgm = sexpgm,
