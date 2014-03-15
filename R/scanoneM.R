@@ -34,7 +34,7 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
             
             E <- matrix(NA, n.ind, p)
             X <- cbind(rep(1,n.ind))
-            E <- .Call(stats:::C_Cdqrls, X, Y, tol)$residuals
+            E <- lm.fit(X, Y, tol=tol)$residuals
             Sigma <- crossprod(E)
             
             if( method == "hk") {
@@ -48,7 +48,7 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
                 LOD = NULL;
                 for(j in 1:n.mar[i]) {
                     X <- cbind(rep(1,n.ind), cross$geno[[i]]$prob[,j,1])
-                    E <- .Call(stats:::C_Cdqrls, X, Y, tol)$residuals
+                    E <- lm.fit(X, Y, tol=tol)$residuals
                     Sigma <- crossprod(E)
                     
                     if( method == "hk") {
@@ -89,7 +89,7 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
                 
                 E <- matrix(NA, n.ind, p)
                 X <- cbind(rep(1,n.ind))
-                E <- .Call(stats:::C_Cdqrls, X, nY, tol)$residuals
+                E <- lm.fit(X, nY, tol=tol)$residuals
                 Sigma <- crossprod(E)
                 
                 if( method == "hk") {
@@ -103,7 +103,7 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
                     LOD = NULL;
                     for(j in 1:n.mar[i]) {
                         X <- cbind(rep(1,n.ind), cross$geno[[i]]$prob[,j,1])
-                        E <- .Call(stats:::C_Cdqrls, X, nY, tol)$residuals
+                        E <- lm.fit(X, nY, tol=tol)$residuals
                         Sigma <- crossprod(E)
                         
                         if( method == "hk") {
