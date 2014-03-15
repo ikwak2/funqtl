@@ -75,7 +75,7 @@ refineqtlM <- function (cross, Y, qtl, chr, pos, qtl.name, formula,
 
     tovary <- sort(qtl:::parseformula(formula, qtl$altname, NULL)$idx.qtl)
     if (length(tovary) != qtl$n.qtl)
-        reducedqtl <- qtl:::dropfromqtl(qtl, index = (1:qtl$n.qtl)[-tovary])
+        reducedqtl <- qtl::dropfromqtl(qtl, index = (1:qtl$n.qtl)[-tovary])
     else reducedqtl <- qtl
     if (any(1:length(tovary) != tovary)) {
         tempform <- strsplit(qtl:::deparseQTLformula(formula), " *~ *")[[1]][2]

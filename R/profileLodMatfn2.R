@@ -148,7 +148,7 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
   # identify which QTL are in the model formula
     tovary <- sort(qtl:::parseformula(formula, qtl$altname, colnames(covar))$idx.qtl)
     if(length(tovary) != qtl$n.qtl)
-        reducedqtl <- qtl:::dropfromqtl(qtl, index=(1:qtl$n.qtl)[-tovary])
+        reducedqtl <- qtl::dropfromqtl(qtl, index=(1:qtl$n.qtl)[-tovary])
     else reducedqtl <- qtl
 
   # if a QTL is missing from the formula, we need to revise the formula, moving

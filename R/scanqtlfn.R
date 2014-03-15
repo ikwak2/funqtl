@@ -319,7 +319,7 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
                     type == "f2")) {
                     if (method == "imp")
 #
-                        qtl.obj$geno[, kk, ] <- qtl:::reviseXdata(type,
+                        qtl.obj$geno[, kk, ] <- qtl::reviseXdata(type,
                         "full", sexpgm, draws = qtl.obj$geno[,
                           kk, , drop = FALSE], cross.attr = attributes(cross))
                     else {
@@ -328,7 +328,7 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
                         1, ncol(temp)))
 #
                       dimnames(temp) <- list(NULL, "loc", 1:ncol(qtl.obj$prob[[kk]]))
-                      qtl.obj$prob[[kk]] <- qtl:::reviseXdata(type,
+                      qtl.obj$prob[[kk]] <- qtl::reviseXdata(type,
                         "full", sexpgm, prob = temp, cross.attr = attributes(cross))[,
                         1, ]
                     }

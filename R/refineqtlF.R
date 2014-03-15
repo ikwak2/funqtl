@@ -307,7 +307,7 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
         qtl <- origqtl
         cross <- origcross
     }
-    for (j in seq(along = tovary)) qtl <- qtl:::replaceqtl(cross, qtl,
+    for (j in seq(along = tovary)) qtl <- qtl::replaceqtl(cross, qtl,
         tovary[j], chrnam[j], newpos[j])
     if (!is.null(thenames))
         qtl$name <- thenames

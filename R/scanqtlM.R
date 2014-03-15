@@ -194,7 +194,7 @@ scanqtlM <- function (cross, Y, chr, pos, formula, incl.markers = FALSE,
                       temp <- qtl.obj$prob[[kk]]
                       temp <- array(temp, dim = c(nrow(temp), 1, ncol(temp)))
                       dimnames(temp) <- list(NULL, "loc", 1:ncol(qtl.obj$prob[[kk]]))
-                      qtl.obj$prob[[kk]] <- qtl:::reviseXdata(type,
+                      qtl.obj$prob[[kk]] <- qtl::reviseXdata(type,
                       "full", sexpgm, prob = temp, cross.attr = attributes(cross))[, 1, ]
                   }
                   current.pos[kk] <- pos.tmp[kk]
