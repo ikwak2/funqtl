@@ -46,7 +46,7 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
             out <- NULL;
             for(i in 1:n.chr) {
                 LOD = NULL;
-                for(j in 1:n.mar[i]) {
+                for(j in 1:ncol(cross$geno[[i]]$prob)) {
                     X <- cbind(rep(1,n.ind), cross$geno[[i]]$prob[,j,1])
                     E <- lm.fit(X, Y, tol=tol)$residuals
                     Sigma <- crossprod(E)
@@ -101,7 +101,7 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
                 out <- NULL;
                 for(i in 1:n.chr) {
                     LOD = NULL;
-                    for(j in 1:n.mar[i]) {
+                    for(j in 1:ncol(cross$geno[[i]]$prob)) {
                         X <- cbind(rep(1,n.ind), cross$geno[[i]]$prob[,j,1])
                         E <- lm.fit(X, nY, tol=tol)$residuals
                         Sigma <- crossprod(E)
