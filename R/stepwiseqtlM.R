@@ -1,7 +1,7 @@
 stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
     incl.markers = TRUE, refine.locations = TRUE,
     penalties,  additive.only = FALSE,
-    keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000, method=method, pheno.cols=pheno.cols)
+    keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000, method=c("hk", "f"), pheno.cols)
 {
     if (missing(pheno.cols)) {
         pheno.cols = 1:nphe(cross)

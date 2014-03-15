@@ -1,6 +1,6 @@
 plot2lod <-
 function (cross, out1, ylab = "QTL position", xlab = "Time", mval = 0,
-    col = heat.colors(100)[100:1], ...)
+    col = rev(heat.colors(100)), ...)
 {
     z2 <- t(as.matrix(out1[,c(-(1:2))]))
     nch <- nchr(cross)
