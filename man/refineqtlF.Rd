@@ -126,9 +126,10 @@ refineqtlF(cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL, formula, me
 
 data(exd)
 
-qtl1.c <- makeqtl(exd, chr = c(2), pos = c(30), what = "prob")
+exd <- calc.genoprob(exd, step=2)
+qtl1.c <- makeqtl(exd, chr = 2, pos = 30, what = "prob")
 thisqtl1.c <- refineqtlF(exd, pheno.cols = 1:10,  qtl = qtl1.c,
-                      formula = y~Q1, method = "hk")
+                         formula = y~Q1, method = "hk")
 
 
 }
