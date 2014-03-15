@@ -23,8 +23,8 @@ function(cross, pheno.cols, n.perm, ...) {
             temp$pheno <- pheno[sample(n),]
 
             out <- scanone(temp, pheno.col = pheno.cols, ...)
-            SLOD <- rowMeans(out[,-(1:2)])
-            MLOD <- apply(out[,-(1:2)], 1, max)
+            SLOD <- rowMeans(out[,-(1:2),drop=FALSE])
+            MLOD <- apply(out[,-(1:2),drop=FALSE], 1, max)
 
             Slods <- c(Slods, max(SLOD) )
             Mlods <- c(Mlods, max(MLOD) )
@@ -41,8 +41,8 @@ function(cross, pheno.cols, n.perm, ...) {
     } else {
 
         out <- scanone(cross, pheno.col = pheno.cols, ...)
-        SLOD <- rowMeans(out[,-(1:2)])
-        MLOD <- apply(out[,-(1:2)], 1, max)
+        SLOD <- rowMeans(out[,-(1:2),drop=FALSE])
+        MLOD <- apply(out[,-(1:2),drop=FALSE], 1, max)
 
         out[,3] <- SLOD
         out[,4] <- MLOD
