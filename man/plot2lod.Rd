@@ -57,8 +57,8 @@ data(simspal)
 simspal <- calc.genoprob(simspal, step=1)
 out1 <- scanone(simspal, pheno.col=1:241 , method="hk")
 
-plot2lod(simspal,out1, col=heat.colors(100)[100:1],
-main="The LOD image of the data")
+\dontshow{par(mar=c(3.1, 3.1, 1.6, 0.6))}
+plot2lod(simspal, out1, main="The LOD image of the data")
 
 
 
