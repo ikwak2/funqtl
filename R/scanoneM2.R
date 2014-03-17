@@ -1,6 +1,4 @@
-
-
-scanoneM2 <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"), pheno.cols ) {
+scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"), pheno.cols ) {
     
     if (missing(pheno.cols)) {
         pheno.cols = 1:nphe(cross)
