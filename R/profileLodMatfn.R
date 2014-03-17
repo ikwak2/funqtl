@@ -1,4 +1,4 @@
-profileLodMatfn2 <-
+profileLodMatfn <-
 function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
     formula, method = c("imp", "hk"), model = c("normal", "binary"),
     verbose = TRUE, tol = 1e-04, maxit.fitqtl = 1000 ) {
@@ -344,7 +344,6 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
         if(length(rn) == nrow(lastout[[i]])) rownames(lastout[[i]]) <- rn
     }
 
-#    attr(qtl, "lodprofileM") <- lastout
-    attr(qtl, "lodprofileM2") <- outout
+    attr(qtl, "lodprofileM") <- lastout
 
 }

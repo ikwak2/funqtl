@@ -1,4 +1,4 @@
-plotlodmatlist2 <- function(lodmatlist, ylab="QTL position", xlab="Time", mval=0, ...) {
+plotlodmatlist <- function(lodmatlist, ylab="QTL position", xlab="Time", mval=0, ...) {
     
     
     nlst <- length(lodmatlist)
