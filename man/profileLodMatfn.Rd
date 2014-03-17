@@ -1,20 +1,21 @@
-\name{profileLodMatfn2}
-\alias{profileLodMatfn2}
-
+\name{profileLodMatfn}
+\alias{profileLodMatfn}
 \title{
    Make a profile LOD score matrix for a given multiple QTL model.
 }
 \description{
    Calculate profile LOD scores for each chromosome. If there are more
    QTL's in one chromosome. It plot them separately, On the other hand, the
-   'profileLodMatfn' combine then in one chromosome taking maximum
+   'profileLodMatfn2' combine then in one chromosome taking maximum
    values of them.
 }
 \usage{
-profileLodMatfn2(cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL, formula, method = c("imp", "hk"), model = c("normal", "binary"), verbose = TRUE, tol = 1e-04, maxit.fitqtl = 1000)
+profileLodMatfn(cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL, formula, method = c("imp", "hk"), model = c("normal", "binary"), verbose = TRUE, tol = 1e-04, maxit.fitqtl = 1000)
 }
+
 \arguments{
   \item{cross}{
+
 An object of class 'cross'. See 'read.cross' for detail.
 }
   \item{pheno.cols}{
@@ -69,24 +70,26 @@ Columns in the phenotype matrix to be used as the phenotype.
 }
 }
 \value{
-A 'lodprofileM2' object.
+A 'lodprofileM' object.
 }
 \author{
   Il-Youp Kwak, <email: ikwak2@stat.wisc.edu>
 }
 
+
 \seealso{
 'plotlodmatlist','plotlodmatlist2', 'profileLodMatfn2'
 }
+
 \examples{
 data(simspal)
 simspal <- calc.genoprob(simspal, step=0)
 qtlslod <- makeqtl(simspal, chr = c(1, 4),
                pos = c(36.6, 27.8), what = "prob")
-lodmat1.c <- profileLodMatfn2(simspal, qtl =  qtlslod, pheno.cols =1:241,
+lodmat1.c <- profileLodMatfn(simspal, qtl =  qtlslod, pheno.cols =1:241,
                              formula = y~Q1 + Q2 , method = "hk",
                                                           verbose = F)
-plotlodmatlist2(lodmat1.c, main="The Profile LOD image of data")
+plotlodmatlist(lodmat1.c, main="The Profile LOD image of data")
 
 
 # difference between profileLodMatfn1 and 2

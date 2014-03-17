@@ -48,5 +48,16 @@ terms that include the new QTL omitted).
      'makeqtl', 'addtoqtl', 'addpair', 'addint'
 }
 \examples{
+data(simspal)
+qtl1 <- makeqtl(simspal, chr = c(4),
+               pos = c(27.8), what = "prob")
+
+added <- addqtlF(simspal, qtl =  qtl1, pheno.cols =1:241,
+                             formula = y~Q1 + Q2, method = "hk")
+
+summary(added)
+
+
+
 }
 \keyword{ models }

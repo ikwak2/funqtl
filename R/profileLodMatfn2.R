@@ -1,4 +1,4 @@
-profileLodMatfn <-
+profileLodMatfn2 <-
 function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
     formula, method = c("imp", "hk"), model = c("normal", "binary"),
     verbose = TRUE, tol = 1e-04, maxit.fitqtl = 1000 ) {
@@ -192,6 +192,31 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
     cross.attr <- attributes(cross)
 
 
+    #######
+    ######### outline of result form
+    ###
+    outout <- NULL;
+    for(ii in 1:lc) {
+        if(!(chrnam[ii] %in% names(outout))) {
+            outout[[chrnam[ii]]]$nqtl <- 1
+            outout[[chrnam[ii]]]$qtls <- curpos[ii]
+            outout[[chrnam[ii]]]$index <- ii
+        } else {
+            outout[[chrnam[ii]]]$nqtl <- outout[[chrnam[ii]]]$nqtl + 1
+            outout[[chrnam[ii]]]$qtls <- c(outout[[chrnam[ii]]]$qtls, curpos[ii])
+            outout[[chrnam[ii]]]$index <- c(outout[[chrnam[ii]]]$index, ii)
+        }
+    }
+
+    for(ii in names(outout) ) {
+        outout[[ii]]$index <- outout[[ii]]$index[ order(outout[[ii]]$qtls) ]
+    }
+
+#######
+#####
+
+
+
     basefit <- NULL
     basefitlod <- NULL
 
@@ -257,6 +282,40 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
     }
 
 
+    #############
+    ###########
+
+    for(ii in names(outout)) {
+        stp = 1
+        for(ij in outout[[ii]]$index) {
+            if (stp == 1) {
+                outout[[ii]]$out <- lastout[[ij]]
+                stp = 2
+            } else {
+                stposit = 10000000;
+                for( iz in nrow(outout[[ii]]$out):1 ) {
+                    if ( outout[[ii]]$out[iz,2] == lastout[[ij]][1,2] ) {
+                        stposit = iz;
+                        break;
+                    }
+                }
+                lst = 1;
+                for(iz in stposit:nrow(outout[[ii]]$out))  {
+                    outout[[ii]]$out[iz,] <- pmax(outout[[ii]]$out[iz,], lastout[[ij]][lst,])
+                    lst = lst + 1;
+                }
+                outout[[ii]]$out <- rbind(outout[[ii]]$out,
+                                          lastout[[ij]][lst:nrow(lastout[[ij]]),] )
+            }
+        }
+    }
+
+###########
+    #########
+
+########
+
+
 ########
 
     for( i in seq(along=lastout)) {
@@ -267,24 +326,24 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
 
     # make the profiles scanone objects
     for(i in seq(along=lastout)) { #i =1
-      class(lastout[[i]]) <- c("scanmult", "data.frame")
-      thechr <- qtl$chr[i]
-      if(method=="imp")
-        detailedmap <- attr(cross$geno[[thechr]]$draws,"map")
-      else
-        detailedmap <- attr(cross$geno[[thechr]]$prob,"map")
+        class(lastout[[i]]) <- c("scanmult", "data.frame")
+        thechr <- qtl$chr[i]
+        if(method=="imp")
+            detailedmap <- attr(cross$geno[[thechr]]$draws,"map")
+        else
+            detailedmap <- attr(cross$geno[[thechr]]$prob,"map")
 
-      if(is.matrix(detailedmap)) detailedmap <- detailedmap[1,]
+        if(is.matrix(detailedmap)) detailedmap <- detailedmap[1,]
 
-      r <- range(lastout[[i]][,2])+c(-1e-5, 1e-5)
-      rn <- names(detailedmap)[detailedmap>=r[1] & detailedmap<=r[2]]
-      o <- grep("^loc-*[0-9]+",rn)
-      if(length(o) > 0) # inter-marker locations cited as "c*.loc*"
-        rn[o] <- paste("c",thechr,".",rn[o],sep="")
-#      if(length(rn) != nrow(lastout[[i]])) return(list(lastout[[i]], rn, detailedmap))
-      if(length(rn) == nrow(lastout[[i]])) rownames(lastout[[i]]) <- rn
+        r <- range(lastout[[i]][,2])+c(-1e-5, 1e-5)
+        rn <- names(detailedmap)[detailedmap>=r[1] & detailedmap<=r[2]]
+        o <- grep("^loc-*[0-9]+",rn)
+        if(length(o) > 0) # inter-marker locations cited as "c*.loc*"
+            rn[o] <- paste("c",thechr,".",rn[o],sep="")
+                                        #      if(length(rn) != nrow(lastout[[i]])) return(list(lastout[[i]], rn, detailedmap))
+        if(length(rn) == nrow(lastout[[i]])) rownames(lastout[[i]]) <- rn
     }
 
-    attr(qtl, "lodprofileM") <- lastout
+    attr(qtl, "lodprofileM2") <- lastout
 
 }
