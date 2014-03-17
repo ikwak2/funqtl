@@ -58,12 +58,9 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
                         L1 <- sum(diag(Sigma))
                     }
                     
-<<<<<<< HEAD
-                    LOD <- c(LOD, n.ind/2*log(L0/L1,10 ) )
+#                    LOD <- c(LOD, n.ind/2*log(L0/L1,10 ) )
                    # LOD <- c(LOD, n.ind/2*log10(exp(1))*(L0 - L1) )
-=======
                     LOD <- c(LOD, n.ind/2*log10(exp(1))*(L0 - L1) )
->>>>>>> ea4ad426776436ba1a8f7f2892bfa36c5c127b22
                 }
                 out <- rbind(out, cbind(rep(chrnames(cross)[i],length(map)), map, LOD) )
             }
