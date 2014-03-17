@@ -21,6 +21,6 @@ or for Mac, download
 
     R CMD INSTALL qtl_1.31-6.tgz
 
-And then, use install R/funqtl:
+And then, install R/funqtl:
 
     install_github("ikwak2/funqtl")
