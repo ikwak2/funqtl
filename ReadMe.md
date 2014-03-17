@@ -11,12 +11,16 @@ with function valued trait on QTL mapping.
 
 #### Installation
 
-You need the `install_github` function in [devtools](http://cran.r-project.org/web/packages/devtools/index.html) package. So install
-and load devtools:
+You need a latest version of [qtl](http://www.rqtl.org) package
 
     if(!require(devtools)) install.packages("devtools")
-	    library(devtools)
+    install_github("qtl", "kbroman", "devel")
 
-And then, use `install_github` function to install R/funqtl:
+or for Mac, download
+[This](http://www.biostat.wisc.edu/~kbroman/tmp/qtl_1.31-6.tgz) and
+
+    R CMD INSTALL qtl_1.31-6.tgz
+
+And then, use install R/funqtl:
 
     install_github("ikwak2/funqtl")
