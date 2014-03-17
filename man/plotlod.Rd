@@ -1,31 +1,21 @@
 \name{plotlod}
 \alias{plotlod}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
   Plot signed LOD matrix.
 }
 \description{
-  %%  ~~ A concise (1-5 lines) description of what the function does. ~~
-  We can do QTL analysis for all the phenotypes for the function valued
-  trait. We will have a LOD matrix that (i,j)th element represent a LOD
-  score of ith phenotype at marker position j. We added one more
-  information. We ploted -LOD score if the effect of QTL is negative. 
+  Plot a signed version of a LOD matrix (taking -LOD when the QTL effect
+  is negative), where (i,j) element is for phenotype i at marker j.
 }
 \usage{
-plotlod(out, eff, y, gap, off.end=, ncol, ...)
+plotlod(output, effects, y, gap=25, off.end=0.5, ncol=251, ...)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{cross}{
-    %%     ~~Describe \code{cross} here~~
-    An object of class 'cross'. See 'read.cross' for details.
-  }
-  \item{out}{
-    %%     ~~Describe \code{z2} here~~
+  \item{output}{
     A matrix scaneone output using "hk" option.
     ex) out <- scanone(cross, pheno.col=1:10, method="hk")
   }
-  \item{eff}{
+  \item{effects}{
     The sign information whether the QTL having AA do negative effect.
     Get this buy using geteffects() function.
   }
@@ -46,7 +36,6 @@ plotlod(out, eff, y, gap, off.end=, ncol, ...)
   }
   
 \item{\dots}{
-  %%     ~~Describe \code{\dots} here~~
   More graphical components of 'image.plot'.
 }
 }
@@ -75,7 +64,4 @@ plotlod(out, eff, gap=15)
 
 
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ hplot }

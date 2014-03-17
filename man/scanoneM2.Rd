@@ -1,6 +1,6 @@
-\name{scanoneM}
-\alias{scanoneM}
-%- Also NEED an '\alias' for EACH other topic documented here.
+\name{scanoneM2}
+\alias{scanoneM2}
+
 \title{
   Genome scan with a single QTL model using dimensional reduction
 }
@@ -8,18 +8,18 @@
   QTL scan using dimensional reduction. 
 }
 \usage{
-scanoneM(cross, Y, pheno.cols, n.perm, method, ...)
+scanoneM2(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"), pheno.cols )
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
   \item{cross}{
     An object of class 'cross'. See 'read.cross' for details.
 }
-  \item{pheno.cols}{
-    Columns in the phenotype matrix to be used as the phenotype.
-}
   \item{Y}{
     Demension reduced data set. getY(cross) get reduced data set using PCA.
+}
+\item{tol}{
+  Tolerance; passed to lm.fit
 }
   \item{n.perm}{
     If specified, a permutation test is performed rather than an
@@ -30,6 +30,9 @@ scanoneM(cross, Y, pheno.cols, n.perm, method, ...)
 \item{method}{
   The "hk" option use multi-trait QTL mapping propsoed by Haley and
   Knott. The "f" option use FLOD score.
+}
+  \item{pheno.cols}{
+    Columns in the phenotype matrix to be used as the phenotype.
 }
   
 }
@@ -47,7 +50,6 @@ scanoneM(cross, Y, pheno.cols, n.perm, method, ...)
   Il-Youp Kwak, <email: ikwak2@stat.wisc.edu>
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
   'scanone', 'plot.scanone', 'summary.scanone', 'calc.genoprob',
@@ -58,30 +60,10 @@ scanoneM(cross, Y, pheno.cols, n.perm, method, ...)
      
      exd <- calc.genoprob(exd, step=2)
      Y <- getY(exd, criteria=.9)
-     out1 <- scanoneM(exd, Y, method = "hk")
-     out2 <- scanoneM(exd, Y, method = "f")
-     out3 <- scanoneM(exd, Y, method = "sl")
-     out4 <- scanoneM(exd, Y, method = "ml")
- 
-
-     # Summarize results
-     summary(out)
-     
-     # Plot the results : red for slod, blue for mlod
-     plot(out, out[,c(1,2,4)], col = c("red","blue"), ylab = "lod")
-     
-
-     # Permutation tests
-     perm1 <- scanone(exd, method="hk", n.perm=100)
-     # Threshold from the permutation test
-     summary(perm1, alpha=c(0.05, 0.10))
-     
-     # Results above the 0.05 threshold
-     summary(out, perms=perm1, alpha=0.05)
-     
+     out1 <- scanoneM2(exd, Y, method = "hk")
+     out2 <- scanoneM2(exd, Y, method = "f")
+     out3 <- scanoneM2(exd, Y, method = "sl")
+     out4 <- scanoneM2(exd, Y, method = "ml")
      
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{models}

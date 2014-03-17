@@ -48,7 +48,7 @@ plotlod <- function(output, effects, y, gap=25, off.end=0.5, ncol=251, ...)
     chr[[i]] <- c(chr[[i]], mean(chr[[i]]))
   }
 
-  layout(cbind(1, 2), width=c(5, 1))
+  layout(cbind(1, 2), widths=c(5, 1))
   image(pos, y, lod, xaxt="n", ylab="Time (hours)", xlab="",
         zlim=zlim, col=col, mgp=c(2.6, 1, 0), bty="n")
   title(xlab="Chromosome", mgp=c(2, 0, 0))
@@ -65,7 +65,7 @@ plotlod <- function(output, effects, y, gap=25, off.end=0.5, ncol=251, ...)
   image(0, lodscale, rbind(lodscale), xaxt="n", xlab="", yaxt="n",
         col=col, zlim=zlim)
 
-  axis(side=4, at=pretty(lodscale), lab=abs(pretty(lodscale)))
+  axis(side=4, at=pretty(lodscale), labels=abs(pretty(lodscale)))
   u <- par("usr")
   rect(u[1], u[3], u[2], u[4], xpd=TRUE)
 #  text(u[2]+diff(u[1:2])*4, maxlod/2, srt=90, "Cvi > Ler", xpd=TRUE)

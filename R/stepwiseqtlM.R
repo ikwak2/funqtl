@@ -1,7 +1,7 @@
 stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
     incl.markers = TRUE, refine.locations = TRUE,
     penalties,  additive.only = FALSE,
-    keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000, method=method, pheno.cols=pheno.cols)
+    keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000, method=c("hk", "f"), pheno.cols)
 {
     if (missing(pheno.cols)) {
         pheno.cols = 1:nphe(cross)
@@ -33,15 +33,12 @@ stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
             else stop("Chromosome ", wh, " (in QTL object) not in cross object.")
         }
         if (missing(formula)) {
-            if (!is.null(covar))
-                formula <- paste("y ~ ", paste(names(covar),
-                  collapse = "+"), "+")
-            else formula <- "y ~ "
+            formula <- "y ~ "
             formula <- paste(formula, paste(paste("Q", 1:length(qtl$chr),
                 sep = ""), collapse = "+"))
         }
         else {
-            temp <- qtl:::checkStepwiseqtlStart(qtl, formula, covar)
+            temp <- qtl::checkStepwiseqtlStart(qtl, formula)
             qtl <- temp$qtl
             formula <- temp$formula
         }
@@ -138,12 +135,12 @@ stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
         }
         lod <- as.numeric(getlodM(cross, Y = Y, qtl, formula = formula,
             tol = tol, method=method, pheno.cols=pheno.cols)) - lod0
-        curplod <- calc.plod(lod, qtl:::countqtlterms(formula, ignore.covar = TRUE),
+        curplod <- calc.plod(lod, qtl::countqtlterms(formula, ignore.covar = TRUE),
             penalties = penalties)
         attr(qtl, "pLOD") <- curplod
         n.qtl <- length(qtl$chr)
     }
-    attr(qtl, "formula") <- qtl:::deparseQTLformula(formula)
+    attr(qtl, "formula") <- qtl::deparseQTLformula(formula)
     attr(qtl, "pLOD") <- curplod
     if (curplod > 0) {
         curbest <- qtl
@@ -155,7 +152,7 @@ stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
 
     if (verbose)
         cat("    no.qtl = ", n.qtl, "  pLOD =", curplod, "  formula:",
-            qtl:::deparseQTLformula(formula), "\n")
+            qtl::deparseQTLformula(formula), "\n")
     if (verbose > 1)
         cat("         qtl:", paste(qtl$chr, round(qtl$pos, 1),
             sep = "@"), "\n")
@@ -174,10 +171,10 @@ stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
             wh <- sample(wh, 1)
         curqtl <- addtoqtl(cross, qtl, as.character(out[wh, 1]),
             out[wh, 2], paste("Q", n.qtl + 1, sep = ""))
-        curformula <- as.formula(paste(qtl:::deparseQTLformula(formula),
+        curformula <- as.formula(paste(qtl::deparseQTLformula(formula),
             "+Q", n.qtl + 1, sep = ""))
         curlod <- curlod + lod
-        curplod <- calc.plod(curlod, qtl:::countqtlterms(curformula,
+        curplod <- calc.plod(curlod, qtl::countqtlterms(curformula,
             ignore.covar = TRUE), penalties = penalties)
         if (verbose)
             cat("        plod =", curplod, "\n")
@@ -187,7 +184,7 @@ stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
                 if (verbose)
                   cat(" ---Scanning for QTL interacting with Q",
                     j, "\n", sep = "")
-                thisformula <- as.formula(paste(qtl:::deparseQTLformula(formula),
+                thisformula <- as.formula(paste(qtl::deparseQTLformula(formula),
                   "+Q", n.qtl + 1, "+Q", j, ":Q", n.qtl + 1,
                   sep = ""))
                 out <- addqtlM(cross, Y = Y, qtl = qtl,
@@ -200,7 +197,7 @@ stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
                 thisqtl <- addtoqtl(cross, qtl, as.character(out[wh,
                   1]), out[wh, 2], paste("Q", n.qtl + 1, sep = ""))
                 thislod <- thislod + lod
-                thisplod <- calc.plod(thislod, qtl:::countqtlterms(thisformula,
+                thisplod <- calc.plod(thislod, qtl::countqtlterms(thisformula,
                   ignore.covar = TRUE), penalties = penalties)
                 if (verbose)
                   cat("        plod =", thisplod, "\n")
@@ -233,10 +230,10 @@ stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
                     thislod)
                   if (length(wh) > 1)
                     wh <- sample(wh, 1)
-                  thisformula <- as.formula(paste(qtl:::deparseQTLformula(formula),
+                  thisformula <- as.formula(paste(qtl::deparseQTLformula(formula),
                     "+", rownames(temp)[wh]))
                   thislod <- thislod + lod
-                  thisplod <- calc.plod(thislod, qtl:::countqtlterms(thisformula,
+                  thisplod <- calc.plod(thislod, qtl::countqtlterms(thisformula,
                     ignore.covar = TRUE), penalties = penalties)
                   if (verbose)
                     cat("        plod =", thisplod, "\n")
@@ -253,7 +250,7 @@ stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
         }
         qtl <- curqtl
         n.qtl <- curnqtl
-        attr(qtl, "formula") <- qtl:::deparseQTLformula(curformula)
+        attr(qtl, "formula") <- qtl::deparseQTLformula(curformula)
         attr(qtl, "pLOD") <- curplod
         formula <- curformula
         lod <- curlod
@@ -269,14 +266,14 @@ stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
                 qtl <- rqtl
                 lod <- as.numeric(getlodM(cross, Y = Y, qtl, formula = formula,
                   tol = tol, method=method, pheno.cols=pheno.cols)) - lod0
-                curplod <- calc.plod(lod, qtl:::countqtlterms(formula,
+                curplod <- calc.plod(lod, qtl::countqtlterms(formula,
                   ignore.covar = TRUE), penalties = penalties)
                 attr(qtl, "pLOD") <- curplod
             }
         }
         if (verbose)
             cat("    no.qtl = ", n.qtl, "  pLOD =", curplod,
-                "  formula:", qtl:::deparseQTLformula(formula), "\n")
+                "  formula:", qtl::deparseQTLformula(formula), "\n")
         if (verbose > 1)
             cat("         qtl:", paste(qtl$chr, round(qtl$pos,
                 1), sep = "@"), "\n")
@@ -331,7 +328,7 @@ stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
             cn <- cn[-g]
             formula <- as.formula(paste("y~", paste(cn, collapse = "+")))
             if (n.qtl > numtodrop) {
-                for (j in (numtodrop + 1):n.qtl) formula <- qtl:::reviseqtlnuminformula(formula,
+                for (j in (numtodrop + 1):n.qtl) formula <- qtl::reviseqtlnuminformula(formula,
                   j, j - 1)
             }
             qtl <- dropfromqtl(qtl, index = numtodrop)
@@ -339,15 +336,15 @@ stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
                 sep = "")
             n.qtl <- n.qtl - 1
         }
-        curplod <- calc.plod(lod, qtl:::countqtlterms(formula, ignore.covar = TRUE),
+        curplod <- calc.plod(lod, qtl::countqtlterms(formula, ignore.covar = TRUE),
             penalties = penalties)
         if (verbose)
             cat("    no.qtl = ", n.qtl, "  pLOD =", curplod,
-                "  formula:", qtl:::deparseQTLformula(formula), "\n")
+                "  formula:", qtl::deparseQTLformula(formula), "\n")
         if (verbose > 1)
             cat("         qtl:", paste(qtl$chr, round(qtl$pos,
                 1), sep = ":"), "\n")
-        attr(qtl, "formula") <- qtl:::deparseQTLformula(formula)
+        attr(qtl, "formula") <- qtl::deparseQTLformula(formula)
         attr(qtl, "pLOD") <- curplod
         if (refine.locations) {
             if (verbose)
@@ -365,7 +362,7 @@ stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
                   qtl <- rqtl
                   lod <- as.numeric( getlodM(cross, Y = Y, qtl = qtl,
                     formula = formula, tol = tol, method=method, pheno.cols=pheno.cols) ) - lod0
-                  curplod <- calc.plod(lod, qtl:::countqtlterms(formula,
+                  curplod <- calc.plod(lod, qtl::countqtlterms(formula,
                     ignore.covar = TRUE), penalties = penalties)
                   attr(qtl, "pLOD") <- curplod
                 }
@@ -387,12 +384,12 @@ stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
         formula <- as.formula(attr(curbest, "formula"))
         if (length(chr) > 1) {
             n.qtl <- length(chr)
-            for (i in 1:n.qtl) formula <- qtl:::reviseqtlnuminformula(formula,
+            for (i in 1:n.qtl) formula <- qtl::reviseqtlnuminformula(formula,
                 i, n.qtl + i)
-            for (i in 1:n.qtl) formula <- qtl:::reviseqtlnuminformula(formula,
+            for (i in 1:n.qtl) formula <- qtl::reviseqtlnuminformula(formula,
                 n.qtl + o[i], i)
         }
-        attr(qtl, "formula") <- qtl:::deparseQTLformula(formula)
+        attr(qtl, "formula") <- qtl::deparseQTLformula(formula)
         attr(qtl, "pLOD") <- attr(curbest, "pLOD")
         curbest <- qtl
     }
@@ -401,7 +398,7 @@ stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
         class(curbest) <- "qtl"
         attr(curbest, "pLOD") <- 0
     }
-    attr(curbest, "formula") <- qtl:::deparseQTLformula(attr(curbest,
+    attr(curbest, "formula") <- qtl::deparseQTLformula(attr(curbest,
         "formula"), TRUE)
     curbest
 }
