@@ -46,7 +46,7 @@ getlodM <- function(cross, Y, formula, qtl, tol=1e-7, method = c("hk","f"), phen
 
     E <- matrix(NA, n.ind, p)
     X <- cbind(rep(1,n.ind))
-    E <- .Call(stats:::C_Cdqrls, X, Y, tol)$residuals
+    E <- lm.fit(X, Y, tol=tol)$residuals
     Sigma <- crossprod(E)
 
 
@@ -58,7 +58,7 @@ getlodM <- function(cross, Y, formula, qtl, tol=1e-7, method = c("hk","f"), phen
 
 
 
-    tempform <- strsplit(qtl:::deparseQTLformula(formula), " *~ *")[[1]][2]
+    tempform <- strsplit(qtl::deparseQTLformula(formula), " *~ *")[[1]][2]
     terms <- strsplit(tempform, " *\\+ *")[[1]]
 
     X <- NULL
@@ -95,7 +95,7 @@ getlodM <- function(cross, Y, formula, qtl, tol=1e-7, method = c("hk","f"), phen
 
         X <- cbind(X, Xadd)
     }
-    E <- .Call(stats:::C_Cdqrls, X, Y, tol)$residuals
+    E <- lm.fit(X, Y, tol=tol)$residuals
     Sigma <- crossprod(E)
     if( method == "hk") {
         L1 <- determinant(Sigma)$modulus

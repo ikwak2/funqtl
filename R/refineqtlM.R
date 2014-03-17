@@ -1,6 +1,6 @@
 refineqtlM <- function (cross, Y, qtl, chr, pos, qtl.name, formula,
     verbose = TRUE, maxit = 10, incl.markers = TRUE,
-    tol = 1e-04, maxit.fitqtl = 1000, method=c("hk","f"), pheno.cols=pheno.cols)
+    tol = 1e-04, maxit.fitqtl = 1000, method=c("hk","f"), pheno.cols)
 {
 
     if (missing(pheno.cols)) {
@@ -71,14 +71,14 @@ refineqtlM <- function (cross, Y, qtl, chr, pos, qtl.name, formula,
         formula <- paste("y ~", paste(qtl$altname, collapse = "+"))
         formula <- as.formula(formula)
     }
-    formula <- qtl:::checkformula(formula, qtl$altname,NULL)
+    formula <- qtl::checkformula(formula, qtl$altname,NULL)
 
-    tovary <- sort(qtl:::parseformula(formula, qtl$altname, NULL)$idx.qtl)
+    tovary <- sort(qtl::parseformula(formula, qtl$altname, NULL)$idx.qtl)
     if (length(tovary) != qtl$n.qtl)
-        reducedqtl <- qtl:::dropfromqtl(qtl, index = (1:qtl$n.qtl)[-tovary])
+        reducedqtl <- qtl::dropfromqtl(qtl, index = (1:qtl$n.qtl)[-tovary])
     else reducedqtl <- qtl
     if (any(1:length(tovary) != tovary)) {
-        tempform <- strsplit(qtl:::deparseQTLformula(formula), " *~ *")[[1]][2]
+        tempform <- strsplit(qtl::deparseQTLformula(formula), " *~ *")[[1]][2]
         terms <- strsplit(tempform, " *\\+ *")[[1]]
         for (j in seq(along = terms)) {
             if (length(grep(":", terms[j])) > 0) {

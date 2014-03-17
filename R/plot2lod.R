@@ -1,11 +1,11 @@
 plot2lod <-
 function (cross, out1, ylab = "QTL position", xlab = "Time", mval = 0,
-    col = heat.colors(100)[100:1], ...)
+    col = rev(heat.colors(100)), ...)
 {
     z2 <- t(as.matrix(out1[,c(-(1:2))]))
     nch <- nchr(cross)
     nchs <- table(out1[,1])
-#        lapply(cross$geno, function(t) ncol(t$data))
+
     end <- NULL
     start <- NULL
     num = 0
@@ -21,7 +21,7 @@ function (cross, out1, ylab = "QTL position", xlab = "Time", mval = 0,
     midpt <- (start + end)/2
     x <- 1:(dim(z3)[1])
     y <- 1:(dim(z3)[2])
-    par(mar = c(5.1, 6.1, 2.1, 2.1))
+
     image.plot(x, y, z3, yaxt = "n", xlab = xlab, ylab = ylab,
         col = col, ...)
     last <- end[nch]

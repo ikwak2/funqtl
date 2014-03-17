@@ -1,11 +1,9 @@
 \name{scanoneF}
 \alias{scanoneF}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
   Genome scan with a single QTL model
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
 Extension of 'scanone' function of 'qtl' package.
 Genome scan with a single QTL model, with possible allowance for
 covariates, using several possible models for the function valued phenotype.
@@ -13,7 +11,6 @@ covariates, using several possible models for the function valued phenotype.
 \usage{
 scanoneF(cross, pheno.cols, n.perm, ...)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{cross}{
     An object of class 'cross'. See 'read.cross' for details.
@@ -45,8 +42,6 @@ scanoneF(cross, pheno.cols, n.perm, ...)
   Il-Youp Kwak, <email: ikwak2@stat.wisc.edu>
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
 \seealso{
   'scanone', 'plot.scanone', 'summary.scanone', 'calc.genoprob',
 }
@@ -74,7 +69,4 @@ scanoneF(cross, pheno.cols, n.perm, ...)
 
 
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ models }
