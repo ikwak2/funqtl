@@ -1,5 +1,5 @@
-\name{plotlodmatlist2}
-\alias{plotlodmatlist2}
+\name{plotlodmatlist}
+\alias{plotlodmatlist}
 
 \title{
   Plot profile LOD maxrix.
@@ -8,17 +8,17 @@
   Plot profile LOD maxrix of given multiple QTL model.
 }
 \usage{
-plotlodmatlist2(lodmatlist, ylab = "QTL position", xlab = "Time", mval = 0, ...)
+plotlodmatlist(lodmatlist, ylab = "QTL position", xlab = "Time", mval = 0, ...)
 }
 \arguments{
   \item{lodmatlist}{
-    An 'lodprofileM' object that produced by 'profileLodMatfn' function.
+An 'lodprofileM' object that produced by 'profileLodMatfn' function.
 }
-  \item{ylab}{
-A lable of y. Default is "QTL position".
+\item{ylab}{
+  A lable of y. Default is "QTL position".
 }
   \item{xlab}{
-A lable of x. Default is "Time".
+    A lable of x. Default is "Time".
 }
   \item{mval}{
   The maximum LOD value of legend. The color of legend goes 0 to 'mval'. If this
@@ -28,27 +28,28 @@ A lable of x. Default is "Time".
 }
   \item{\dots}{
 More graphical components of 'image.plot'.
+
 }
 }
 \value{
 A graph of profile LOD matrix.
 }
 \author{
-  Il-Youp Kwak, <email: ikwak2@stat.wisc.edu>
+  Il-Youp Kwak, <ikwak2@stat.wisc.edu>
 }
 
 \seealso{
-'plotlodmatlist', 'profileLodMatfn', 'profileLodMatfn2'
+'plotlodmatlist2', 'profileLodMatfn', 'profileLodMatfn2'
 }
 \examples{
 data(simspal)
 simspal <- calc.genoprob(simspal, step=0)
 qtlslod <- makeqtl(simspal, chr = c(1, 4),
                pos = c(36.6, 27.8), what = "prob")
-lodmat1.c <- profileLodMatfn2(simspal, qtl =  qtlslod, pheno.cols =1:241,
+lodmat1.c <- profileLodMatfn(simspal, qtl =  qtlslod, pheno.cols =1:241,
                              formula = y~Q1 + Q2 , method = "hk",
                                                           verbose = F)
-plotlodmatlist2(lodmat1.c, main="The Profile LOD image of data")
+plotlodmatlist(lodmat1.c, main="The Profile LOD image of data")
 
 
 

@@ -8,7 +8,8 @@ export(profileLodMatfn, profileLodMatfn2)
 export(scanoneF)
 export(refineqtlF, addqtlF)
 export(stepwiseqtlF)
-
+export(plotlod, scanoneM)
+export(refineqtlM, stepwiseqtlM)
 
 
 exportPattern("^[[:alpha:]]+")
