@@ -1,5 +1,5 @@
-\name{plotlodmatlist}
-\alias{plotlodmatlist}
+\name{plotprofile}
+\alias{plotprofile}
 
 \title{
   Plot profile LOD maxrix.
@@ -8,7 +8,7 @@
   Plot profile LOD maxrix of given multiple QTL model.
 }
 \usage{
-plotlodmatlist(lodmatlist, ylab = "QTL position", xlab = "Time", mval = 0, ...)
+plotprofile(lodmatlist, ylab = "QTL position", xlab = "Time", mval = 0, ...)
 }
 \arguments{
   \item{lodmatlist}{
@@ -39,19 +39,11 @@ A graph of profile LOD matrix.
 }
 
 \seealso{
-\code[funqtl]{\link{plotlodmatlist2}}, \code[funqtl]{\link{profileLodMatfn}}, \code[funqtl]{\link{profileLodMatfn2}}
+\code[funqtl]{\link{plotlodmatlist2}}
 }
 \examples{
 data(simspal)
 simspal <- calc.genoprob(simspal, step=0)
-qtlslod <- makeqtl(simspal, chr = c(1, 4),
-               pos = c(36.6, 27.8), what = "prob")
-lodmat1.c <- profileLodMatfn(simspal, qtl =  qtlslod, pheno.cols =1:241,
-                             formula = y~Q1 + Q2 , method = "hk",
-                                                          verbose = F)
-plotlodmatlist(lodmat1.c, main="The Profile LOD image of data")
-
-
 
 # difference between profileLodMatfn1 and 2
 # version 1 gives separate two images if there is 2 qtl on same chromosome

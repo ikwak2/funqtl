@@ -3,8 +3,8 @@ import(qtl, fields)
 
 
 # Export all names
-export(plot2lod, plotlodmatlist, plotlodmatlist2)
-export(profileLodMatfn, profileLodMatfn2)
+export(plot2lod)
+export(getprofile, plotprofile)
 export(scanoneF)
 export(refineqtlF, addqtlF)
 export(stepwiseqtlF)
