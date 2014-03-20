@@ -107,12 +107,12 @@ qtlslod <- makeqtl(simspal, chr = c(1, 4),
 
 
 ``` {r profilelodimage, fig.height = 10, fig.width = 14}
-lodmat1.c <- profileLodMatfn2(simspal, qtl =  qtlslod, pheno.cols =1:241,
+lodmat1.c <- getprofile(simspal, qtl =  qtlslod, pheno.cols =1:241,
                              formula = y~Q1 + Q2 , method = "hk",
-							                              verbose = F)
-plotlodmatlist2(lodmat1.c, mval = 8, col=heat.colors(100)[100:1], main="The Profile LOD image of data")
+							  verbose = F, tpy="comb")
+plotprofile(lodmat1.c, mval = 8, col=heat.colors(100)[100:1], main="The Profile LOD image of data")
 ```
-You can get profilelod image by using `profileLodMatfn2` function and `plotlodmatlist2` function. You need to have an option `step = 0` in `calc.genoprob` function.
+You can get profilelod image by using `getprofile` function and `plotprofile` function. You need to have an option `step = 0` in `calc.genoprob` function.
 
 ## Effect plot
 
