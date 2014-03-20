@@ -158,7 +158,7 @@ c("normal", "binary"), incl.markers = TRUE, refine.locations = TRUE,
 
 
 \seealso{
-  \code[funqtl]{\link{refineqtlF}}, \code[funqtl]{\link{addqtlF}}
+  \code{\link{refineqtlF}}, \code{\link{addqtlF}}
 }
 \examples{
 

@@ -119,9 +119,9 @@ refineqtlF(cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL, formula, me
 
 
 \seealso{
-     \code[qtl]{\link{fitqtl}}, \code[funqtl]{\link{fitqtlF}}, \code[qtl]{\link{makeqtl}},
-     \code[qtl]{\link{scanqtl}}, \code[funqtl]{\link{scanqtlF}},
-     \code[qtl]{\link{addtoqtl}}, \code[qtl]{\link{dropfromqtl}}, \code[qtl]{\link{replaceqtl}}
+     \code{\link[qtl]{fitqtl}}, \code{\link[qtl]{makeqtl}},
+     \code{\link[qtl]{scanqtl}},
+     \code{\link[qtl]{addtoqtl}}, \code{\link[qtl]{dropfromqtl}}, \code{\link[qtl]{replaceqtl}}
 }
 \examples{
 

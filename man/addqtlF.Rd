@@ -44,7 +44,7 @@ terms that include the new QTL omitted).
 
 
 \seealso{
-     \code[qtl]{\link{addqtl}}, \code[qtl]{\link{scanone}}, \code[funqtl]{\link{scanoneF}}, \code[qtl]{\link{makeqtl}}
+     \code{\link[qtl]{addqtl}}, \code{\link[qtl]{scanone}}, \code{\link[funqtl]{scanoneF}}, \code{\link[qtl]{makeqtl}}
 }
 \examples{
 data(simspal)

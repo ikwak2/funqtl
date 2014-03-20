@@ -39,26 +39,23 @@ A graph of profile LOD matrix.
 }
 
 \seealso{
-\code[funqtl]{\link{plotlodmatlist2}}
+\code{\link{plotlodmatlist2}}
 }
 \examples{
 data(simspal)
 simspal <- calc.genoprob(simspal, step=0)
 
-# difference between profileLodMatfn1 and 2
-# version 1 gives separate two images if there is 2 qtl on same chromosome
-# version 2 gives one image for 2 qtl on same chromosome.
-
+# difference between tpy = "sep" and "comb"
 par(mfrow=c(1,2))
 qtlslod <- makeqtl(simspal, chr = c(1, 1, 4),
                pos = c(36.6, 61, 27.8), what = "prob")
-lodmat1 <- profileLodMatfn(simspal, qtl =  qtlslod, pheno.cols =1:241,
-                             formula = y~Q1 + Q2 + Q3 , method = "hk")
-lodmat2 <- profileLodMatfn2(simspal, qtl =  qtlslod, pheno.cols =1:241,
-                             formula = y~Q1 + Q2 + Q3 , method = "hk")
+lodmat1 <- getprofile(simspal, qtl =  qtlslod, pheno.cols =1:241,
+                    formula = y~Q1 + Q2 + Q3 , method = "hk", tpy = "sep")
+lodmat2 <- getprofile(simspal, qtl =  qtlslod, pheno.cols =1:241,
+                    formula = y~Q1 + Q2 + Q3 , method = "hk", tpy = "comb")
 
-plotlodmatlist(lodmat1, main="The Profile LOD image of data")
-plotlodmatlist2(lodmat2, main="The Profile LOD image of data")
+plotprofile(lodmat1, main="The Profile LOD image of data")
+plotprofile(lodmat2, main="The Profile LOD image of data")
 
 }
 \keyword{ hplot }

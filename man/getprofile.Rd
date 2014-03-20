@@ -85,7 +85,7 @@ A 'lodprofileM' or 'lodprofileM2' object.
 
 
 \seealso{
-\code[funqtl]{\link{plotprofile}}
+\code{\link{plotprofile}}
 }
 
 \examples{

@@ -43,7 +43,7 @@ scanoneF(cross, pheno.cols, n.perm, ...)
 }
 
 \seealso{
-  \code[qtl]{\link{scanone}}, \code[qtl]{\link{plot.scanone}}, \code[qtl]{\link{summary.scanone}}, \code[qtl]{\link{calc.genoprob}}
+  \code{\link[qtl]{scanone}}, \code{\link[qtl]{plot.scanone}}, \code{\link[qtl]{summary.scanone}}, \code{\link[qtl]{calc.genoprob}}
 }
 \examples{
 
