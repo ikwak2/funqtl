@@ -39,7 +39,7 @@ A graph of profile LOD matrix.
 }
 
 \seealso{
-'plotlodmatlist2', 'profileLodMatfn', 'profileLodMatfn2'
+\code[funqtl]{\link{plotlodmatlist2}}, \code[funqtl]{\link{profileLodMatfn}}, \code[funqtl]{\link{profileLodMatfn2}}
 }
 \examples{
 data(simspal)

@@ -11,7 +11,6 @@ export(stepwiseqtlF)
 export(plotlod, scanoneM)
 export(refineqtlM, stepwiseqtlM)
 
-
 exportPattern("^[[:alpha:]]+")
 
 # Hidden functions

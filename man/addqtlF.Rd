@@ -44,8 +44,7 @@ terms that include the new QTL omitted).
 
 
 \seealso{
-     'addqtl', 'scanone', 'scanoneF', 'fitqtl', 'scanqtl', 'refineqtl', 'refineqtlF',
-     'makeqtl', 'addtoqtl', 'addpair', 'addint'
+     \code[qtl]{\link{addqtl}}, \code[qtl]{\link{scanone}}, \code[funqtl]{\link{scanoneF}}, \code[qtl]{\link{makeqtl}}
 }
 \examples{
 data(simspal)

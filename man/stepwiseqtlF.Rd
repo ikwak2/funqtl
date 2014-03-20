@@ -149,14 +149,16 @@ c("normal", "binary"), incl.markers = TRUE, refine.locations = TRUE,
      Zeng, Z.-B., Kao, C.-H. and Basten, C. J. (1999) Estimating the
      genetic architecture of quantitative traits.  _Genetical
      Research_, *74*, 279-289.
-}
-\author{
-  Il-Youp Kwak, <email: ikwak2@stat.wisc.edu>
-}
+   }
+
+
+   \author{
+     Il-Youp Kwak, <email: ikwak2@stat.wisc.edu>
+   }
 
 
 \seealso{
-  'refineqtlF', 'addqtlF'
+  \code[funqtl]{\link{refineqtlF}}, \code[funqtl]{\link{addqtlF}}
 }
 \examples{
 

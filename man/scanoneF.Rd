@@ -43,12 +43,13 @@ scanoneF(cross, pheno.cols, n.perm, ...)
 }
 
 \seealso{
-  'scanone', 'plot.scanone', 'summary.scanone', 'calc.genoprob',
+  \code[qtl]{\link{scanone}}, \code[qtl]{\link{plot.scanone}}, \code[qtl]{\link{summary.scanone}}, \code[qtl]{\link{calc.genoprob}}
 }
 \examples{
 
      data(exd)
 
+     ## genotype probabilities
      exd <- calc.genoprob(exd, step=2)
      out <- scanoneF(exd)
 
@@ -66,6 +67,9 @@ scanoneF(cross, pheno.cols, n.perm, ...)
 
      # Results above the 0.05 threshold
      summary(out, perms=perm1, alpha=0.05)
+
+
+
 
 
 }

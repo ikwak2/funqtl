@@ -78,7 +78,7 @@ A 'lodprofileM' object.
 
 
 \seealso{
-'plotlodmatlist','plotlodmatlist2', 'profileLodMatfn2'
+\code[funqtl]{\link{plotlodmatlist}}, \code[funqtl]{\link{plotlodmatlist2}}, \code[funqtl]{\link{profileLodMatfn2}}
 }
 
 \examples{

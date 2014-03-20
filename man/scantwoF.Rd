@@ -58,7 +58,7 @@ scantwoF(cross, pheno.cols, usec=c("slod","mlod"), n.perm, ...)
 }
 
 \seealso{
-  'scantwo', 'summary.scantwo', 'calc.genoprob', 'scanoneF'
+  \code[qtl]{\link{scantwo}}, \code[qtl]{\link{summary.scantwo}}, \code[qtl]{\link{calc.genoprob}}, \code[funqtl]{\link{scanoneF}}
 }
 \examples{
 
