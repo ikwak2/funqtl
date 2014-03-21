@@ -1,3 +1,35 @@
+#' Plot signed LOD matrix.
+#'
+#' Plot a signed version of a LOD matrix (taking -LOD when the QTL effect is
+#' negative), where (i,j) element is for phenotype i at marker j.
+#'
+#'
+#' @param output A matrix scaneone output using "hk" option.  ex) out <-
+#' scanone(cross, pheno.col=1:10, method="hk")
+#' @param effects The sign information whether the QTL having AA do negative
+#' effect.  Get this buy using geteffects() function.
+#' @param y Positions of phenotypes in image.
+#' @param gap The gap among chromosomes.
+#' @param off.end The margin between end of chromosome image and a line
+#' segment.
+#' @param ncol The number of color between red and blue
+#' @param \dots More graphical components of 'image.plot'.
+#' @return A graph of signed LOD matrix.
+#' @author Karl W Broman, Il-Youp Kwak, <email: ikwak2@@stat.wisc.edu>
+#' @seealso 'geteffects'
+#' @keywords hplot
+#' @examples
+#'
+#'
+#' data(simspal)
+#' simspal <- calc.genoprob(simspal, step=1)
+#'
+#' out <- scanone(simspal, pheno.col=1:241 , method="hk")
+#' eff <- geteffects(simspal, pheno.cols=1:241)
+#'
+#' plotlod(out, eff, gap=15)
+#'
+
 plotlod <- function(output, effects, y, gap=25, off.end=0.5, ncol=251, ...)
 {
 

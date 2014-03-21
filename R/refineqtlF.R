@@ -1,3 +1,78 @@
+#' Refine the positions of QTL for function valued trait
+#'
+#' Extended version of 'refineqtl' function in 'qtl' package for function
+#' valued trait.  Iteratively scan the positions for QTL in the context of a
+#' multiple QTL model, to try to identify the positions that maximize slod
+#' criteria, for a fixed QTL model.
+#'
+#' This is an extended version of 'refineqtl' of 'qtl' package. For a multiple
+#' qtl model, this refines each qtl position to move for a better position that
+#' fits slod criteria given other qtl positions fixed. Do this process
+#' iteratively to find a refined version of multiple QTL.
+#'
+#' @param cross An object of class 'cross'. See 'read.cross' for details.
+#' @param pheno.cols Columns in the phenotype matrix to be used as the
+#' phenotype.
+#' @param qtl A QTL object, as produced by 'makeqtl', containing the positions
+#' of the QTL.  Provide either 'qtl' or the pair 'chr' and 'pos'.
+#' @param chr Vector indicating the chromosome for each QTL; if 'qtl' is
+#' provided, this should not be.
+#' @param pos Vector indicating the positions for each QTL; if 'qtl' is
+#' provided, this should not be.
+#' @param qtl.name Optional user-specified name for each QTL.  If 'qtl' is
+#' provided, this should not be.
+#' @param covar A matrix or data.frame of covariates.  These must be strictly
+#' numeric.
+#' @param formula An object of class 'formula' indicating the model to be
+#' fitted.  (It can also be the character string representation of a formula.)
+#' QTLs are indicated as 'Q1', 'Q2', etc.  Covariates are indicated by their
+#' names in 'covar'.
+#' @param method Indicates whether to use multiple imputation or Haley-Knott
+#' regression.
+#' @param model The phenotype model: the usual model or a model for binary
+#' traits
+#' @param verbose If TRUE, give feedback about progress.  If 'verbose' is an
+#' integer > 1, further messages from 'scanqtl' are also displayed.
+#' @param maxit Maximum number of iterations.
+#'
+#' @param incl.markers If FALSE, do calculations only at points on an evenly
+#' spaced grid.
+#' @param keeplodprofile If TRUE, keep the LOD profiles from the last iteration
+#' as attributes to the output.
+#' @param tol Tolerance for convergence for the binary trait model.
+#' @param maxit.fitqtl Maximum number of iterations for fitting the binary
+#' trait model.
+#' @return An object of class 'qtl', with QTL placed in their new positions.
+#'
+#' If 'keeplodprofile=TRUE', LOD profiles from the last pass through the
+#' refinement algorithm are retained as an attribute, '"lodprofile"', to the
+#' object.  These may be plotted with 'plotLodProfile'.
+#' @author Il-Youp Kwak, <email: ikwak2@@stat.wisc.edu>
+#' @seealso \code{\link[qtl]{fitqtl}}, \code{\link[qtl]{makeqtl}},
+#' \code{\link[qtl]{scanqtl}}, \code{\link[qtl]{addtoqtl}},
+#' \code{\link[qtl]{dropfromqtl}}, \code{\link[qtl]{replaceqtl}}
+#' @references Zeng, Z.-B., Kao, C.-H., and Basten, C. J. (1999) Estimating the
+#' genetic architecture of quantitative traits.  _Genet. Res._ *74*, 279-289.
+#'
+#' Haley, C. S. and Knott, S. A. (1992) A simple regression method for mapping
+#' quantitative trait loci in line crosses using flanking markers.  _Heredity_
+#' *69*, 315-324.
+#'
+#' Sen, S. and Churchill, G. A. (2001) A statistical framework for quantitative
+#' trait mapping.  _Genetics_ *159*, 371-387.
+#' @keywords models
+#' @examples
+#'
+#'
+#' data(exd)
+#'
+#' exd <- calc.genoprob(exd, step=2)
+#' qtl1.c <- makeqtl(exd, chr = 2, pos = 30, what = "prob")
+#' thisqtl1.c <- refineqtlF(exd, pheno.cols = 1:10,  qtl = qtl1.c,
+#'                          formula = y~Q1, method = "hk")
+#'
+#'
+
 refineqtlF <-
 function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
     formula, method = c("imp", "hk"), model = c("normal", "binary"),

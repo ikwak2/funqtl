@@ -1,20 +1,126 @@
+#' Stepwise selection for multiple QTL in function valued trait data
+#'
+#'
+#' Extension of 'stepwiseqtl' function of 'qtl' package. Performs
+#' forward/backward selection to identify a multiple QTL model for function
+#' valued trait data, with model choice made via a penalized LOD score, with
+#' separate penalties on main effects and interactions.
+#'
+#'
+#' @param cross An object of class 'cross'. See 'read.cross' for details.
+#' @param chr Optional vector indicating the chromosomes to consider in search
+#' for QTL.  This should be a vector of character strings referring to
+#' chromosomes by name; numeric values are converted to strings.  Refer to
+#' chromosomes with a preceding '-' to have all chromosomes but those
+#' considered.  A logical (TRUE/FALSE) vector may also be used.
+#' @param pheno.cols Columns in the phenotype matrix to be used as the
+#' phenotype.
+#' @param usec which criteria to use between 'slod' and 'mlod' for multiple QTL
+#' selection in function valued trait.
+#' @param qtl Optional QTL object (of class '"qtl"', as created by 'makeqtl')
+#' to use as a starting point.
+#' @param formula Optional formula to define the QTL model to be used as a
+#' starting point.
+#' @param max.qtl Maximum number of QTL to which forward selection should
+#' proceed.
+#' @param covar Data frame of additive covariates.
+#' @param method Indicates whether to use multiple imputation or Haley-Knott
+#' regression.
+#' @param model The phenotype model: the usual model or a model for binary
+#' traits
+#' @param incl.markers If FALSE, do calculations only at points on an evenly
+#' spaced grid.
+#' @param refine.locations If TRUE, use 'refineqtl' to refine the QTL locations
+#' after each step of forward and backward selection.
+#' @param additive.only If TRUE, allow only additive QTL models; if FALSE,
+#' consider also pairwise interactions among QTL.
+#' @param penalties Vector of three values indicating the penalty on main
+#' effects and heavy and light penalties on interactions.  See the Details
+#' below. If missing, default values are used that are based on simulations of
+#' backcrosses and intercrosses with genomes modeled after that of the mouse.
+#' @param keeptrace If TRUE, keep information on the sequence of models visited
+#' through the course of forward and backward selection as an attribute to the
+#' output.
+#' @param verbose If TRUE, give feedback about progress.  If 'verbose' is an
+#' integer > 1, even more information is printed.
+#' @param tol Tolerance for convergence for the binary trait model.
+#' @param maxit Maximum number of iterations for fitting the binary trait
+#' model.
+#' @return
+#'
+#' The output is a representation of the best model, as measured by the
+#' penalized LOD score (see Details), among all models visited.  This is QTL
+#' object (of class '"qtl"', as produced by 'makeqtl'), with attributes
+#' '"formula"', indicating the model formula, and '"pLOD"' indicating the
+#' penalized LOD score.
+#'
+#' %% If 'keeplodprofile=TRUE', LOD profiles from the last pass through %% the
+#' refinement algorithm are retained as an attribute, %% '"lodprofile"', to the
+#' object.  These may be plotted with %% 'plotLodProfile'.
+#'
+#' If 'keeptrace=TRUE', the output will contain an attribute '"trace"'
+#' containing information on the best model at each step of forward and
+#' backward elimination.  This is a list of objects of class '"compactqtl"',
+#' which is similar to a QTL object (as produced by 'makeqtl') but containing
+#' just a vector of chromosome IDs and positions for the QTL.  Each will also
+#' have attributes '"formula"' (containing the model formula) and '"pLOD"'
+#' (containing the penalized LOD score.  If 'n.perm' is missing, the function
+#' returns a data.frame whose first two columns contain the chromosome IDs and
+#' cM positions.  Subsequent third and fourth columns contain the SLOD and MLOD
+#' scores.
+#'
+#' If 'n.perm' is specified, the function returns the results of a permutation
+#' test and the output returns the matrix of two columns. The first column for
+#' SLOD and the second column for MLOD score.
+#' @author Il-Youp Kwak, <email: ikwak2@@stat.wisc.edu>
+#' @seealso \code{\link{refineqtlF}}, \code{\link{addqtlF}}
+#' @references Manichaikul, A., Moon, J. Y., Sen, S, Yandell, B. S. and Broman,
+#' K. W. (2009) A model selection approach for the identification of
+#' quantitative trait loci in experimental crosses, allowing epistasis.
+#' _Genetics_, *181*, 1077-1086.
+#'
+#' Broman, K. W. and Speed, T. P. (2002) A model selection approach for the
+#' identification of quantitative trait loci in experimental crosses (with
+#' discussion). _J Roy Stat Soc B_ *64*, 641-656, 731-775.
+#'
+#' Haley, C. S. and Knott, S. A. (1992) A simple regression method for mapping
+#' quantitative trait loci in line crosses using flanking markers.  _Heredity_
+#' *69*, 315-324.
+#'
+#' Sen, S. and Churchill, G. A. (2001) A statistical framework for quantitative
+#' trait mapping.  _Genetics_ *159*, 371-387.
+#'
+#' Zeng, Z.-B., Kao, C.-H. and Basten, C. J. (1999) Estimating the genetic
+#' architecture of quantitative traits.  _Genetical Research_, *74*, 279-289.
+#' @examples
+#'
+#'
+#' data(exd)
+#' exd <- calc.genoprob(exd, step = 0)
+#'
+#' qtlslod <- stepwiseqtlF(exd, pheno.cols = 1:10, max.qtl = 4, usec = "slod", method = "hk", penalties = c(1.3, 2.62, 1.74) )
+#'
+#' qtlmlod <- stepwiseqtlF(exd, pheno.cols = 1:10, max.qtl = 4, usec = "mlod", method = "hk", penalties = c(2.8, 3.62, 3.74) )
+#'
+#'
+
 stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), formula, max.qtl = 10,
 covar = NULL, method = c("imp", "hk"), model = c("normal",
 "binary"), incl.markers = TRUE, refine.locations = TRUE,
-additive.only = FALSE, penalties, 
+additive.only = FALSE, penalties,
 keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
 {
-    
+
     if (missing(pheno.cols))
     pheno.cols = 1:nphe(cross)
-    
+
     #
     if (!all(pheno.cols %in% 1:nphe(cross)))
     stop("pheno.cols should be in a range of 1 to ", nphe(cross))
-    
-    
+
+
     pheno <- cross$pheno[,pheno.cols]
-    
+
     if (!("cross" %in% class(cross)))
     stop("Input should have class \"cross\".")
     if (!missing(chr))
@@ -56,11 +162,11 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
     }
     if (!startatnull)
     qtl$name <- qtl$altname
-    
+
     method <- match.arg(method)
     model <- match.arg(model)
     usec <- match.arg(usec)
-    
+
     if (method == "imp") {
         if (!("draws" %in% names(cross$geno[[1]]))) {
             if ("prob" %in% names(cross$geno[[1]])) {
@@ -101,7 +207,7 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
         else if (method == "hk" && !("prob" %in% names(qtl)))
         stop("The qtl object doesn't contain QTL genotype probabilities; re-run makeqtl with what=\"prob\".")
     }
-    
+
     if (!is.null(covar))
     phcovar <- cbind(pheno, covar)
     else phcovar <- as.data.frame(pheno, stringsAsFactors = TRUE)
@@ -132,7 +238,7 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
         else firstformula <- formula
     }
     #####  Need modification
-    
+
     else {
         lod0 <- length(pheno)/2 * log10(sum((pheno - mean(pheno))^2)/sum(lm(pheno ~
         as.matrix(covar))$resid^2))
@@ -188,7 +294,7 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
                 curplod <- calc.plod(lod, c(1, 0, 0), penalties = penalties)
                 wh <- which(!is.na(out[, 4]) & out[, 4] == lod)
             }
-            
+
             if (length(wh) > 1)
             wh <- sample(wh, 1)
             qtl <- makeqtl(cross, as.character(out[wh, 1]), out[wh,
@@ -265,12 +371,12 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
             }
             qtl <- rqtl
         }
-        
-        
+
+
         res.full = NULL;
         #        qtl$name <- qtl$altname <- paste("Q", 1:qtl$n.qtl, sep = "")
         qtl$name <- qtl$altname
-        
+
         for(ii in pheno.cols) {
             res.full <- c(res.full, fitqtl(cross, pheno.col = ii, qtl, covar = covar, formula = formula,
             method = method, model = model, dropone = FALSE,
@@ -283,7 +389,7 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
         if(usec=="mlod") {
             lod <- max(res.full) - lod0
         }
-        
+
         curplod <- calc.plod(lod, qtl::countqtlterms(formula, ignore.covar = TRUE),
         penalties = penalties)
         attr(qtl, "pLOD") <- curplod
@@ -321,7 +427,7 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
         out <- addqtlF(cross, pheno.cols = pheno.cols, qtl = qtl,
         covar = covar, formula = formula, method = method,
         incl.markers = incl.markers, verbose = verbose.scan)
-        
+
         if(usec=="slod") {
             curlod <- max(out[, 3], na.rm = TRUE)
             wh <- which(!is.na(out[, 3]) & out[, 3] == curlod)
@@ -330,7 +436,7 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
             curlod <- max(out[, 4], na.rm = TRUE)
             wh <- which(!is.na(out[, 4]) & out[, 4] == curlod)
         }
-        
+
         if (length(wh) > 1)
         wh <- sample(wh, 1)
         curqtl <- addtoqtl(cross, qtl, as.character(out[wh, 1]),
@@ -354,8 +460,8 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
                 out <- addqtlF(cross, pheno.cols = pheno.cols, qtl = qtl,
                 covar = covar, formula = thisformula, method = method,
                 incl.markers = incl.markers, verbose = verbose.scan)
-                
-                
+
+
                 if(usec=="slod") {
                     thislod <- max(out[, 3], na.rm = TRUE)
                     wh <- which(!is.na(out[, 3]) & out[, 3] == thislod)
@@ -364,7 +470,7 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
                     thislod <- max(out[, 4], na.rm = TRUE)
                     wh <- which(!is.na(out[, 4]) & out[, 4] == thislod)
                 }
-                
+
                 if (length(wh) > 1)
                 wh <- sample(wh, 1)
                 thisqtl <- addtoqtl(cross, qtl, as.character(out[wh,
@@ -385,19 +491,19 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
             if (n.qtl > 1) {
                 if (verbose)
                 cat(" ---Look for additional interactions\n")
-                
-                
+
+
                 ## <<
-                
+
                 ## <<
-                
+
                 temp <- addint(cross, pheno.col = pheno.cols[1], qtl,
                 covar = covar,
                 formula = formula, method = method,
                 qtl.only = TRUE,
                 verbose = verbose.scan)
                 if(!is.null(temp)) {
-                    
+
                     lodlod <- NULL;
                     for(ii in pheno.cols) {
                         lodlod <- cbind(lodlod, addint(cross, pheno.col = ii, qtl,
@@ -414,7 +520,7 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
                         }
                         thislod <- max(lodlod, na.rm=TRUE)
                     }
-                    
+
                     if(usec=="mlod") {
                         if(!(is.matrix(lodlod))) {
                             lodlod <- max(lodlod)
@@ -423,9 +529,9 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
                         }
                         thislod <- max(lodlod, na.rm=TRUE)
                     }
-                    
-                    
-                    
+
+
+
                     wh <- which(!is.na(lodlod) & lodlod == thislod)
                     if (length(wh) > 1)
                     wh <- sample(wh, 1)
@@ -513,8 +619,8 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
                 if (verbose)
                 cat(" ---  Moved a bit\n")
                 qtl <- rqtl
-                
-                
+
+
                 res.full = NULL;
                 for(ii in pheno.cols) {
                     res.full <- c(res.full, fitqtl(cross, pheno.col = ii, qtl,
@@ -531,15 +637,15 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
                 if(usec=="mlod") {
                     lod <- max(res.full) - lod0
                 }
-                
-                
+
+
                 curplod <- calc.plod(lod, qtl::countqtlterms(formula,
                 ignore.covar = TRUE), penalties = penalties)
                 attr(qtl, "pLOD") <- curplod
             }
         }
-        
-        
+
+
         if (verbose)
         cat("    no.qtl = ", n.qtl, "  pLOD =", curplod,
         "  formula:", qtl::deparseQTLformula(formula), "\n")
@@ -565,14 +671,14 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
         if (n.qtl >= max.qtl)
         break
     }
-    
+
     if (verbose)
     cat(" -Starting backward deletion\n")
     while (n.qtl > 1) {
         i <- i + 1
-        
+
         ## <<
-        
+
         #        cat(qtl$name)
         #        cat(qtl$altname)
         #        cat("\n")
@@ -582,7 +688,7 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
         run.checks = FALSE, tol = tol, maxit = maxit)$result.drop
         rn <- rownames(out2)
         wh <- c(grep("^[Qq][0-9]+$", rn), grep("^[Qq][0-9]+:[Qq][0-9]+$", rn))
-        
+
         ## <<
         outout <- NULL;
         for(ii in pheno.cols) {
@@ -593,9 +699,9 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
             maxit = maxit)$result.drop[, 3]
             )
         }
-        
-        
-        
+
+
+
         if(usec=="slod") {
             outout <- apply(outout,1,mean)
         }
@@ -605,8 +711,8 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
         out <- outout[wh , drop = FALSE]
         thelod <- out
         minlod <- min(thelod, na.rm = TRUE)
-        
-        
+
+
         wh <- which(!is.na(thelod) & thelod == minlod)
         if (length(wh) > 1)
         wh <- sample(wh, 1)
@@ -664,11 +770,11 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
                     if (verbose)
                     cat(" ---  Moved a bit\n")
                     qtl <- rqtl
-                    
+
                     # <<
-                    
-                    
-                    
+
+
+
                     res.full = NULL;
                     for(ii in pheno.cols) {
                         res.full <- c(res.full, fitqtl(cross, pheno.col = ii, qtl,
@@ -685,7 +791,7 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
                     if(usec=="mlod") {
                         lod <- max(res.full) - lod0
                     }
-                    
+
                     curplod <- calc.plod(lod, qtl::countqtlterms(formula,
                     ignore.covar = TRUE), penalties = penalties)
                     attr(qtl, "pLOD") <- curplod
@@ -709,12 +815,12 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
             thetrace <- c(thetrace, temp)
         }
     }
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
     if (!is.null(curbest)) {
         chr <- curbest$chr
         pos <- curbest$pos
