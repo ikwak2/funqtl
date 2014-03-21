@@ -39,7 +39,7 @@ A graph of profile LOD matrix.
 }
 
 \seealso{
-\code{\link{plotlodmatlist2}}
+  \code{\link{getprofile}}
 }
 \examples{
 data(simspal)

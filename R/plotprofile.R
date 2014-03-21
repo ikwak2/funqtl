@@ -13,7 +13,7 @@
 #' @param \dots More graphical components of 'image.plot'.
 #' @return A graph of profile LOD matrix.
 #' @author Il-Youp Kwak, <ikwak2@@stat.wisc.edu>
-#' @seealso \code{\link{plotlodmatlist2}}
+#' @seealso \code{\link{getprofile}}
 #' @keywords hplot
 #' @examples
 #'

@@ -10,6 +10,7 @@ export(refineqtlF, addqtlF)
 export(stepwiseqtlF)
 export(plotlod, scanoneM)
 export(refineqtlM, stepwiseqtlM)
+export(calcpca)
 
 exportPattern("^[[:alpha:]]+")
 
