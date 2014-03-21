@@ -1,6 +1,6 @@
 # Import package dependencies
 import(qtl)
-
+import(fields)
 
 # Export all names
 export(plot2lod)
