@@ -29,7 +29,7 @@
 #'      data(exd)
 #'
 #'      exd <- calc.genoprob(exd, step=2)
-#'      Y <- getY(exd, criteria=.9)
+#'      Y <- calcpca(exd, criteria=.9)
 #'      out1 <- scanoneM(exd, Y, method = "hk")
 #'      out2 <- scanoneM(exd, Y, method = "f")
 #'      out3 <- scanoneM(exd, Y, method = "sl")

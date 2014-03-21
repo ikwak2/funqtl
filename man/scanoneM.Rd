@@ -5,7 +5,7 @@
   Genome scan with a single QTL model using dimensional reduction
 }
 \description{
-  QTL scan using dimensional reduction. 
+  QTL scan using dimensional reduction.
 }
 \usage{
 scanoneM(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"), pheno.cols )
@@ -35,7 +35,7 @@ scanoneM(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"), pheno.col
   \item{pheno.cols}{
     Columns in the phenotype matrix to be used as the phenotype.
 }
-  
+
 }
 \value{
      If 'n.perm' is missing, the function returns a data.frame whose
@@ -57,9 +57,9 @@ scanoneM(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"), pheno.col
 }
 \examples{
      data(exd)
-     
+
      exd <- calc.genoprob(exd, step=2)
-     Y <- getY(exd, criteria=.9)
+     Y <- calcpca(exd, criteria=.9)
      out1 <- scanoneM(exd, Y, method = "hk")
      out2 <- scanoneM(exd, Y, method = "f")
      out3 <- scanoneM(exd, Y, method = "sl")
