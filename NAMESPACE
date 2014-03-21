@@ -1,5 +1,5 @@
 # Import package dependencies
-import(qtl, fields)
+import(qtl)
 
 
 # Export all names
