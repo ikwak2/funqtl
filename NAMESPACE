@@ -3,7 +3,6 @@ import(qtl)
 import(fields)
 
 # Export all names
-export(plot2lod)
 export(getprofile, plotprofile)
 export(scanoneF)
 export(refineqtlF, addqtlF)

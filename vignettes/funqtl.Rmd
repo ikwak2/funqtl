@@ -45,14 +45,6 @@ and Knott 1992), considering each time point individually.
 The results are displayed below, with the y-axis representing genomic position
 and the x-axis representing time, and so each vertical slice is a genome scan
 for one time point.
-```{r plot2lod, fig.height=10, fig.width = 12}
-
-plot2lod(simspal, out, col=heat.colors(100)[100:1], main="The LOD
-image of the simspal data set")
-```
-Figure shows LOD image of the data set. It looks like we have some QTL on chromosome 1 and 4. And maybe on 3.
-
-We can also produce a signed lod image.
 ```{r signed lod}
 simspal <- calc.genoprob(simspal, step=1)
 out <- scanone(simspal, pheno.col=1:241 , method="hk")
@@ -62,8 +54,8 @@ eff <- geteffects(simspal, pheno.cols=1:241)
 ```{r plotload, fig.height=10, fig.width = 12}
 plotlod(out, eff, gap=15, main="The LOD image of the simspal data set")
 ```
-The results are displayed in the Figure above,
-with the x-axis representing genomic position and the y-axis representing time, and so each horizontal slice is a genome scan for one time point. We plot a signed LOD score, with the sign representing the estimated direction of the QTL effect. The most prominant QTL are on chromosomes 1 and 4.
+
+The x-axis representing genomic position and the y-axis representing time, and so each horizontal slice is a genome scan for one time point. We plot a signed LOD score, with the sign representing the estimated direction of the QTL effect. The most prominant QTL are on chromosomes 1 and 4.
 
 The chromosome 1 QTL affects later times, and the chromosome 4
 allele affects earlier times. There is an additional QTL of interest on distal chromosome 3
@@ -103,7 +95,7 @@ qtlslod <- makeqtl(simspal, chr = c(1, 4),
                pos = c(36.6, 27.8), what = "prob")
 ```
 
-`stepwiseqtlF` function returns qtl object by using stepwise QTL selection. It takes long time to run this function, so I run `makeqtl` function to get the result of `stepwiseqtlF` function. You will get the same result if you run `stepwiseqtlF` function. 
+`stepwiseqtlF` function returns qtl object by using stepwise QTL selection. It takes long time to run this function, so I run `makeqtl` function to get the result of `stepwiseqtlF` function. You will get the same result if you run `stepwiseqtlF` function.
 
 
 ``` {r profilelodimage, fig.height = 10, fig.width = 14}
@@ -133,7 +125,7 @@ time <- (0:240)/30
 ```
 To further characterize the effects of the QTL in the context of the inferred multiple-QTL
 models, we fit the selected multiple-QTL models at each time point, individually. the estimated baseline function and the estimated QTL effects, as a function of time.
-The estimated QTL effects in panels are for the difference between two alleles. 
+The estimated QTL effects in panels are for the difference between two alleles.
 
 
 ```{r effplot, fig.height=5, fig.width = 14}

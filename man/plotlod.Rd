@@ -1,14 +1,14 @@
 \name{plotlod}
 \alias{plotlod}
 \title{
-  Plot signed LOD matrix.
+  Plot signed or plain LOD image.
 }
 \description{
-  Plot a signed version of a LOD matrix (taking -LOD when the QTL effect
+  Plot signed or plain LOD image. (taking -LOD when the QTL effect
   is negative), where (i,j) element is for phenotype i at marker j.
 }
 \usage{
-plotlod(output, effects, y, gap=25, off.end=0.5, ncol=251, ...)
+plotlod(output, effects, y, gap=25, ncol=251, rev = FALSE, ...)
 }
 \arguments{
   \item{output}{
@@ -22,19 +22,19 @@ plotlod(output, effects, y, gap=25, off.end=0.5, ncol=251, ...)
   \item{y}{
     Positions of phenotypes in image.
   }
-  
+
   \item{gap}{
     The gap among chromosomes.
   }
 
-  \item{off.end}{
-    The margin between end of chromosome image and a line segment.
-  }
-  
   \item{ncol}{
     The number of color between red and blue
   }
-  
+
+  \item{rev}{
+    transepose x and y axis
+  }
+
 \item{\dots}{
   More graphical components of 'image.plot'.
 }
@@ -48,7 +48,7 @@ plotlod(output, effects, y, gap=25, off.end=0.5, ncol=251, ...)
 }
 
 \seealso{
-'geteffects'
+  \code{\link{geteffects}}
 
 }
 \examples{
@@ -59,8 +59,18 @@ simspal <- calc.genoprob(simspal, step=1)
 out <- scanone(simspal, pheno.col=1:241 , method="hk")
 eff <- geteffects(simspal, pheno.cols=1:241)
 
-plotlod(out, eff, gap=15)
+# set time increment
+nam <- names(output)[-(1:2)]
+y <- as.numeric(substr(nam, 2, nchar(nam)))/60
 
+# plot with effects
+plotlod(out, y, eff, gap=15)
+
+# without effects and rev = T
+plotlod(out, y, gap=15, rev = T)
+
+# plot without y
+plotlod(out, eff, gap=25)
 
 
 }
