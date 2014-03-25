@@ -9,6 +9,7 @@
 #' @param effects The sign information whether the QTL having AA do negative
 #' effect.  Get this buy using geteffects() function.
 #' @param y Positions of phenotypes in image.
+#' @param off.end ??
 #' @param gap The gap among chromosomes.
 #' @param ncol The number of color between red and blue
 #' @param rev transepose x and y axis
@@ -32,7 +33,7 @@
 #' plotlod(out, eff, gap=25)
 #'
 
-plotlod <- function(output, effects, y, gap=25, ncol=251, rev=FALSE, ...)
+plotlod <- function(output, effects, y, off.end = .5, gap=25, ncol=251, rev=FALSE, ...)
 {
 
     if(missing(y)) {
@@ -62,8 +63,8 @@ plotlod <- function(output, effects, y, gap=25, ncol=251, rev=FALSE, ...)
     for(i in seq(along=uchr)) {
         temppos <- output[output[,1]==i,2]
         temppos <- temppos - min(temppos)
-#        temppos <- rowMeans(cbind(c(temppos[1]-off.end, temppos),
-#                                  c(temppos, max(temppos)+off.end)))
+        temppos <- rowMeans(cbind(c(temppos[1]-off.end, temppos),
+                                  c(temppos, max(temppos)+off.end)))
         if(is.null(pos)) {
             pos <- temppos
             lod <- templod[output[,1]==i,]

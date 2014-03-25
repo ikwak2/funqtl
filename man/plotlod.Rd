@@ -23,6 +23,10 @@ plotlod(output, effects, y, gap=25, ncol=251, rev = FALSE, ...)
     Positions of phenotypes in image.
   }
 
+  \item{off.end}{
+    ..
+  }
+
   \item{gap}{
     The gap among chromosomes.
   }
@@ -60,11 +64,11 @@ out <- scanone(simspal, pheno.col=1:241 , method="hk")
 eff <- geteffects(simspal, pheno.cols=1:241)
 
 # set time increment
-nam <- names(output)[-(1:2)]
+nam <- names(out)[-(1:2)]
 y <- as.numeric(substr(nam, 2, nchar(nam)))/60
 
 # plot with effects
-plotlod(out, y, eff, gap=15)
+plotlod(out, eff, y, gap=15)
 
 # without effects and rev = T
 plotlod(out, y, gap=15, rev = T)
