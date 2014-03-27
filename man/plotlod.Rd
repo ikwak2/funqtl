@@ -8,7 +8,7 @@
   is negative), where (i,j) element is for phenotype i at marker j.
 }
 \usage{
-plotlod(output, effects, y, gap=25, ncol=251, rev = FALSE, ...)
+plotlod(output, effects, y, off.end = 0.5, gap=25, ncol=251, horizontal = FALSE, ...)
 }
 \arguments{
   \item{output}{
