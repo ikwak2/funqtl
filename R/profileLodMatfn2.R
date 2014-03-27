@@ -1,5 +1,4 @@
-profileLodMatfn2 <-
-function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
+profileLodMatfn2 <- function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
     formula, method = c("imp", "hk"), model = c("normal", "binary"),
     verbose = TRUE, tol = 1e-04, maxit.fitqtl = 1000 ) {
 
@@ -15,8 +14,6 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
             covar <- as.data.frame(covar, stringsAsFactors = TRUE)
         else stop("covar should be a data.frame")
     }
-
-
 
 
     if (!missing(qtl) && (!missing(chr) || !missing(pos) || !missing(qtl.name)))
@@ -91,7 +88,7 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
 
 
 
-    if (missing(pheno.cols))
+    if (!missing(pheno.cols))
         pheno.cols = 1:nphe(cross)
 
 #
@@ -304,8 +301,10 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
                     outout[[ii]]$out[iz,] <- pmax(outout[[ii]]$out[iz,], lastout[[ij]][lst,])
                     lst = lst + 1;
                 }
-                outout[[ii]]$out <- rbind(outout[[ii]]$out,
-                                          lastout[[ij]][lst:nrow(lastout[[ij]]),] )
+                if ( lst <= nrow(lastout[[ij]]) ) {
+                    outout[[ii]]$out <- rbind(outout[[ii]]$out,
+                                              lastout[[ij]][lst:nrow(lastout[[ij]]),] )
+                }
             }
         }
     }
@@ -344,6 +343,11 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
         if(length(rn) == nrow(lastout[[i]])) rownames(lastout[[i]]) <- rn
     }
 
-    attr(qtl, "lodprofileM2") <- lastout
+#    attr(qtl, "lodprofileM") <- lastout
+    attr(qtl, "lodprofileM2") <- outout
+    class(outout) <- c("lodprofileM2","list")
+    outout
 
 }
+
+

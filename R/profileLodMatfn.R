@@ -286,5 +286,6 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
     }
 
     attr(qtl, "lodprofileM") <- lastout
-
+    class(lastout) <- c("lodprofileM", "list")
+    lastout
 }
