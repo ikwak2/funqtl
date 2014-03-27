@@ -58,14 +58,24 @@
 #'
 
 getprofile <-
-function (tpy=c("comb","sep"), ...) {
+function(cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
+formula, method = c("imp", "hk"), model = c("normal", "binary"), verbose
+= TRUE, tol = 1e-04, maxit.fitqtl = 1000, tpy = c("comb","sep")) {
 
     tpy <- match.arg(tpy)
 
     if( tpy == "comb" ) {
-        out <- profileLodMatfn2(...)
+        out <- profileLodMatfn2(cross = cross, pheno.cols = pheno.cols, qtl = qtl,
+                                chr = chr, pos = pos, qtl.name = qtl.name,
+                                covar = covar, formula = formula, method = method,
+                                model = model, verbose = verbose, tol = tol,
+                                maxit.fitqtl = maxit.fitqtl)
     } else if (tpy == "sep") {
-        out <- profileLodMatfn(...)
+        out <- profileLodMatfn(cross = cross, pheno.cols = pheno.cols, qtl = qtl,
+                                chr = chr, pos = pos, qtl.name = qtl.name,
+                                covar = covar, formula = formula, method = method,
+                                model = model, verbose = verbose, tol = tol,
+                                maxit.fitqtl = maxit.fitqtl)
     }
     out
 }
