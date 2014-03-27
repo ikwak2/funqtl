@@ -35,7 +35,7 @@ plotlod(output, effects, y, gap=25, ncol=251, rev = FALSE, ...)
     The number of color between red and blue
   }
 
-  \item{rev}{
+  \item{horizontal}{
     transepose x and y axis
   }
 
@@ -71,7 +71,7 @@ y <- as.numeric(substr(nam, 2, nchar(nam)))/60
 plotlod(out, eff, y, gap=15)
 
 # without effects and rev = T
-plotlod(out, y, gap=15, rev = T)
+plotlod(out, y, gap=15, horizontal = T)
 
 # plot without y
 plotlod(out, eff, gap=25)

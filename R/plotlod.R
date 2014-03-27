@@ -12,7 +12,7 @@
 #' @param off.end ??
 #' @param gap The gap among chromosomes.
 #' @param ncol The number of color between red and blue
-#' @param rev transepose x and y axis
+#' @param horizontal transepose x and y axis if TRUE
 #' @param \dots More graphical components of 'image.plot'.
 #' @return A graph of signed LOD matrix.
 #' @author Karl W Broman, Il-Youp Kwak, <email: ikwak2@@stat.wisc.edu>
@@ -29,11 +29,11 @@
 #' nam <- names(output)[-(1:2)]
 #' y <- as.numeric(substr(nam, 2, nchar(nam)))/60
 #' plotlod(out, y, eff, gap=15)
-#' plotlod(out, y, gap=15, rev = T)
+#' plotlod(out, y, gap=15, horizontal = T)
 #' plotlod(out, eff, gap=25)
 #'
 
-plotlod <- function(output, effects, y, off.end = .5, gap=25, ncol=251, rev=FALSE, ...)
+plotlod <- function(output, effects, y, off.end = .5, gap=25, ncol=251, horizontal=FALSE, ...)
 {
 
     if(missing(y)) {
@@ -81,7 +81,7 @@ plotlod <- function(output, effects, y, off.end = .5, gap=25, ncol=251, rev=FALS
 
 
 
-    if(rev == FALSE) {
+    if(horizontal == FALSE) {
 
         ## add more space between regend and plot
         pos <- c(pos, max(pos) + gap)
