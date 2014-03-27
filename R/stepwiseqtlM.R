@@ -178,14 +178,7 @@ stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
 
     cross.type <- class(cross)[1]
     if (missing(penalties)) {
-        if (cross.type == "f2") {
-            penalties <- c(3.52, 4.28, 2.69)
-        }
-        else if (cross.type == "bc") {
-            penalties <- c(2.69, 2.62, 1.19)
-        }
-        else stop("No default penalties available for cross type ",
-            cross.type)
+        stop("No default penalties available for cross type ", cross.type)
     }
     else if (length(penalties) != 3) {
         if (length(penalties) == 1) {
