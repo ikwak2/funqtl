@@ -70,8 +70,8 @@ y <- as.numeric(substr(nam, 2, nchar(nam)))/60
 # plot with effects
 plotlod(out, eff, y, gap=15)
 
-# without effects and rev = T
-plotlod(out, y, gap=15, horizontal = T)
+# without effects and horizontal = TRUE
+plotlod(out, y, gap=15, horizontal = TRUE)
 
 # plot without y
 plotlod(out, eff, gap=25)

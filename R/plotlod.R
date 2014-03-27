@@ -29,7 +29,7 @@
 #' nam <- names(output)[-(1:2)]
 #' y <- as.numeric(substr(nam, 2, nchar(nam)))/60
 #' plotlod(out, y, eff, gap=15)
-#' plotlod(out, y, gap=15, horizontal = T)
+#' plotlod(out, y, gap=15, horizontal = TRUE)
 #' plotlod(out, eff, gap=25)
 #'
 
