@@ -122,6 +122,7 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
 
             lods = NULL;
             for( rep in 1:n.perm) {
+                cat("Permutation", rep,"\n")
                 o <- sample(n.ind)
                 if(is.vector(Y)) { nY <- Y[o] } else { nY <- Y[o,] }
 
@@ -161,6 +162,7 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
 
                 lods <- c(lods, max(out[,3]) )
             }
+            class(lods) <- c("scanoneperm","vector")
             return(lods)
         }
     }
