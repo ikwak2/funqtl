@@ -67,7 +67,7 @@ function(cross, pheno.cols, n.perm, ...) {
     if (n.perm > 0 ) {
 
         temp <- cross
-        pheno <- cross$pheno[,pheno.cols]
+        pheno <- cross$pheno
 
         Slods <- NULL;
         Mlods <- NULL;
