@@ -90,6 +90,9 @@ A 'lodprofileM' or 'lodprofileM2' object.
 
 \examples{
 data(simspal)
+\dontshow{simspal <- subset(simspal,chr=c(1,3,4), ind=1:50)}
+# Genotype probabilities for H-K
+# it should be step = 0 to run this function
 simspal <- calc.genoprob(simspal, step=0)
 
 # difference between tpy = "sep" and "comb"

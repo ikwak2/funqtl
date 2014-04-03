@@ -68,9 +68,5 @@ scanoneF(cross, pheno.cols, n.perm, ...)
      # Results above the 0.05 threshold
      summary(out, perms=perm1, alpha=0.05)
 
-
-
-
-
 }
 \keyword{ models }
