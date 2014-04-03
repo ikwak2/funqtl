@@ -113,3 +113,4 @@ plotlod <- function(output, effects, y, off.end = .5, gap=25, ncol=251, horizont
         }
     }
 }
+

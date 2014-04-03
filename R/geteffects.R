@@ -30,7 +30,7 @@ geteffects <- function(cross,pheno.cols) {
         pheno.cols=1:nphe(cross)
 
 #    out <- scanone(cross, pheno.col = pheno.cols, method="hk")
-    phe <- as.matrix(cross$pheno)
+    phe <- as.matrix(cross$pheno[,pheno.cols])
     eff <- NULL
     for(i in 1:nchr(cross)) {
         pr <- cross$geno[[i]]$prob[,,2]

@@ -44,19 +44,26 @@ terms that include the new QTL omitted).
 
 
 \seealso{
-     \code{\link[qtl]{addqtl}}, \code{\link[qtl]{scanone}}, \code{\link[funqtl]{scanoneF}}, \code{\link[qtl]{makeqtl}}
+     \code{\link[qtl]{addqtl}}, \code{\link[qtl]{scanone}}, \code{\link{scanoneF}}, \code{\link[qtl]{makeqtl}}
 }
 \examples{
 data(simspal)
-qtl1 <- makeqtl(simspal, chr = c(4),
+
+simspal <- subset(simspal, chr=c(1,4))
+\dontshow{simspal <- subset(simspal, ind=1:50)}
+
+qtl1 <- makeqtl(subd, chr = c(4),
                pos = c(27.8), what = "prob")
 
-added <- addqtlF(simspal, qtl =  qtl1, pheno.cols =1:241,
-                             formula = y~Q1 + Q2, method = "hk")
 
-summary(added)
+# scan for additional QTL
+\dontrun{added <- addqtlF(subd, qtl =  qtl1, pheno.cols =1:241,
+                             formula = y~Q1 + Q2, method = "hk")) }
+\dontshow{added <- addqtlF(subd, qtl =  qtl1, pheno.cols =130:180,
+                             formula = y~Q1 + Q2, method = "hk")  }
 
-
+max(added)
+plot(added)
 
 }
 \keyword{ models }

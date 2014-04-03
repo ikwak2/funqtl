@@ -35,16 +35,37 @@ calcpca(cross, n.max=5, criteria=.9, nn=0)
 
 
 \seealso{
-  'scanoneM'
+  \code{\link{scanoneM}}
 }
 \examples{
-     data(exd)
+data(simspal)
 
-     exd <- calc.genoprob(exd, step=2)
-     Y <- calcpca(exd, criteria=.9)
-     out1 <- scanoneM(exd, Y, method = "hk")
-     out2 <- scanoneM(exd, Y, method = "f")
-     out3 <- scanoneM(exd, Y, method = "sl")
-     out4 <- scanoneM(exd, Y, method = "ml")
+\dontshow{simspal <- subset(simspal,chr=1:4,ind=1:100)}
+# Genotype probabilities for H-K
+\dontrun{simspal <- calc.genoprob(simspal, step=2.5)
+}\dontshow{simspal <- calc.genoprob(simspal)}
+
+# dimensional reduction of Y
+Y <- calcpca(simspal, criteria=.999)
+
+# do multitrait mapping
+out.hk <- scanoneM(simspal, Y=Y, method="hk")
+out.f  <- scanoneM(simspal, Y=Y, method="f")
+out.sl <- scanoneM(simspal, Y=Y, method="sl")
+out.ml <- scanoneM(simspal, Y=Y, method="ml")
+
+# Summarize results
+summary(out.hk)
+summary(out.f)
+summary(out.sl)
+summary(out.ml)
+
+
+# Plot the results
+par(mfrow=c(3,1))
+plot(out.hk)
+plot(out.f)
+plot(out.sl, out.ml)
+
 }
 \keyword{ utilities }

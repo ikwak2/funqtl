@@ -58,9 +58,14 @@ plotlod(output, effects, y, off.end = 0.5, gap=25, ncol=251, horizontal = FALSE,
 \examples{
 
 data(simspal)
-simspal <- calc.genoprob(simspal, step=1)
+\dontshow{simspal <- subset(simspal,chr=1:4,ind=1:100)}
+# Genotype probabilities for H-K
+\dontrun{simspal <- calc.genoprob(simspal, step=2.5)
+}\dontshow{simspal <- calc.genoprob(simspal)}
 
 out <- scanone(simspal, pheno.col=1:241 , method="hk")
+
+# Calculate signed information
 eff <- geteffects(simspal, pheno.cols=1:241)
 
 # set time increment
@@ -68,13 +73,13 @@ nam <- names(out)[-(1:2)]
 y <- as.numeric(substr(nam, 2, nchar(nam)))/60
 
 # plot with effects
-plotlod(out, eff, y, gap=15)
+plotlod(out, effects = eff, y = y, gap=15)
 
 # without effects and horizontal = TRUE
-plotlod(out, y, gap=15, horizontal = TRUE)
+plotlod(out, y = y, gap=15, horizontal = TRUE)
 
 # plot without y
-plotlod(out, eff, gap=25)
+plotlod(out, effects = eff, gap=25)
 
 
 }

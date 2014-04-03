@@ -66,7 +66,12 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
 
             outs <- scanoneF(temp, pheno.cols=1:p)
 
-            return(outs)
+            if(method == "sl") {
+                return(outs[,1:3])
+            } else {
+                return(outs[,c(1,2,4)])
+            }
+
         } else {
 
             E <- matrix(NA, n.ind, p)

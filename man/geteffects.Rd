@@ -2,7 +2,7 @@
 \alias{geteffects}
 
 \title{
-  get coefficients of qtl. (get sign information) 
+  get coefficients of qtl. (get sign information)
 }
 \description{
   required function to run plotlod which plot signed lod image. The
@@ -21,7 +21,7 @@ geteffects(cross, pheno.cols)
   \item{pheno.cols}{
     phenotype columns to be used
   }
-  
+
 }
 \value{
   A matrix of coefficients. (i,j)th item is a coefficient of jth
@@ -34,17 +34,22 @@ geteffects(cross, pheno.cols)
 }
 
 \seealso{
-'plotlod'
-
+  \code{\link{plotlod}}
 }
 \examples{
 
 data(simspal)
-simspal <- calc.genoprob(simspal, step=1)
+\dontshow{simspal <- subset(simspal,chr=1:4,ind=1:100)}
+# Genotype probabilities for H-K
+\dontrun{simspal <- calc.genoprob(simspal, step=2.5)
+}\dontshow{simspal <- calc.genoprob(simspal)}
 
-out <- scanone(simspal, pheno.col=1:241 , method="hk")
-eff <- geteffects(simspal, pheno.cols=1:241)
+out <- scanone(simspal, pheno.col=100:241 , method="hk")
 
+# Calculate signed information
+eff <- geteffects(simspal, pheno.cols=100:241)
+
+# plot signed lod image
 plotlod(out, eff, gap=15)
 
 
