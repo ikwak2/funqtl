@@ -16,7 +16,7 @@ penalized LOD score, with separate penalties on main effects and interactions.
 
 }
 \usage{
-stepwiseqtlM(cross, chr, Y,  qtl, 
+stepwiseqtlM(cross, chr, Y,  qtl,
 formula, max.qtl = 10, incl.markers=TRUE, refine.locations = TRUE,
     penalties, additive.only = FALSE,
     keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000,
@@ -153,7 +153,10 @@ formula, max.qtl = 10, incl.markers=TRUE, refine.locations = TRUE,
 
 
 \seealso{
-  'refineqtlF', 'addqtlF'
+  \code{\link[qtl]{stepwiseqtl}}, \code{\link{stepwiseqtlF}}
 }
 \examples{
+
+# I'm working on it
+
 }

@@ -279,8 +279,8 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
             basefit <- NULL
             basefitlod <- NULL
 
-            for(phv in pheno.cols) {
-                basefit[[phv]] <- qtl::fitqtlengine(pheno = pheno[,pheno.cols[phv]], qtl = reducedqtl,
+            for(phv in 1:length(pheno.cols)) {
+                basefit[[phv]] <- qtl::fitqtlengine(pheno = pheno[,phv], qtl = reducedqtl,
                                    covar = covar, formula = formula, method = method,
                                    model = model, dropone = TRUE, get.ests = FALSE,
                                    run.checks = FALSE, cross.attr = cross.attr,
@@ -295,9 +295,9 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
             basefit <- NULL
             basefitlod <- NULL
 
-            for(phv in pheno.cols) {
+            for(phv in 1:length(pheno.cols)) {
 
-                basefit[[phv]] <- qtl::fitqtlengine(pheno = pheno[,pheno.cols[phv]], qtl = reducedqtl,
+                basefit[[phv]] <- qtl::fitqtlengine(pheno = pheno[,phv], qtl = reducedqtl,
                           covar = covar, formula = formula, method = method,
                           model = model, dropone = FALSE, get.ests = FALSE,
                           run.checks = FALSE, cross.attr = cross.attr, sexpgm = sexpgm,
