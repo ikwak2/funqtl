@@ -10,8 +10,10 @@ export(stepwiseqtlF)
 export(plotlod, scanoneM)
 export(refineqtlM, stepwiseqtlM)
 export(calcpca)
+export(geteffects)
 
-exportPattern("^[[:alpha:]]+")
+
+# exportPattern("^[[:alpha:]]+")
 
 # Hidden functions
 #   scanqtlfn
