@@ -52,14 +52,14 @@ data(simspal)
 simspal <- subset(simspal, chr=c(1,4))
 \dontshow{simspal <- subset(simspal, ind=1:50)}
 
-qtl1 <- makeqtl(subd, chr = c(4),
+qtl1 <- makeqtl(simspal, chr = c(4),
                pos = c(27.8), what = "prob")
 
 
 # scan for additional QTL
-\dontrun{added <- addqtlF(subd, qtl =  qtl1, pheno.cols =1:241,
+\dontrun{added <- addqtlF(simspal, qtl =  qtl1, pheno.cols =1:241,
                              formula = y~Q1 + Q2, method = "hk")) }
-\dontshow{added <- addqtlF(subd, qtl =  qtl1, pheno.cols =130:180,
+\dontshow{added <- addqtlF(simspal, qtl =  qtl1, pheno.cols =130:180,
                              formula = y~Q1 + Q2, method = "hk")  }
 
 max(added)
