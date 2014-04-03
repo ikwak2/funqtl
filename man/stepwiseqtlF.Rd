@@ -162,13 +162,12 @@ c("normal", "binary"), incl.markers = TRUE, refine.locations = TRUE,
 }
 \examples{
 
-data(exd)
-exd <- calc.genoprob(exd, step = 0)
+data(simspal)
+\dontshow{simspal <- subset(simspal,chr=c(1,3,4), ind=1:50)}
+# Genotype probabilities for H-K
+simspal <- calc.genoprob(simspal, step=0)
 
-qtlslod <- stepwiseqtlF(exd, pheno.cols = 1:10, max.qtl = 4, usec = "slod", method = "hk", penalties = c(1.3, 2.62, 1.74) )
-
-qtlmlod <- stepwiseqtlF(exd, pheno.cols = 1:10, max.qtl = 4, usec = "mlod", method = "hk", penalties = c(2.8, 3.62, 3.74) )
-
-
+\dontrun{qtlslod <- stepwiseqtlF(simspal, pheno.cols = 1:241, max.qtl = 4, usec = "slod", method = "hk", penalties = c(2.36, 2.76, 2) )}
+\dontshow{qtlslod <- stepwiseqtlF(simspal, pheno.cols = 80:82, max.qtl = 4, usec = "slod", method = "hk", penalties = c(1.72, 2.76, 2) )}
 
 }
