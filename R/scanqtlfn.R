@@ -242,7 +242,7 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
         results <- NULL
         results2 <- NULL
         for (ii in 1:length(pheno.cols)) {
-            results[[ii]] <- qtl::fitqtlengine(pheno = pheno[,pheno.cols[ii]], qtl = qtl, covar = covar,
+            results[[ii]] <- qtl::fitqtlengine(pheno = pheno[,ii], qtl = qtl, covar = covar,
             formula = formula, method = method, model = model,
             dropone = FALSE, get.ests = FALSE, run.checks = FALSE,
             cross.attr = cross.attr, sexpgm = sexpgm, tol = tol,
@@ -343,7 +343,7 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
         fit <- NULL;
         fitresults <- NULL;
         for(ii in 1:length(pheno.cols)) {
-            fit[[ii]] <- qtl::fitqtlengine(pheno = pheno[,pheno.cols[ii]], qtl = qtl.obj, covar = covar,
+            fit[[ii]] <- qtl::fitqtlengine(pheno = pheno[,ii], qtl = qtl.obj, covar = covar,
                  formula = formula, method = method, model = model,
                  dropone = FALSE, get.ests = FALSE, run.checks = FALSE,
                  cross.attr = cross.attr, sexpgm = sexpgm, tol = tol,
