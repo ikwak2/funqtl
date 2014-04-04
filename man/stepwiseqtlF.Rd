@@ -139,10 +139,6 @@ incl.markers = TRUE, refine.locations = TRUE,
 
      Sen, S. and Churchill, G. A. (2001) A statistical framework for
      quantitative trait mapping.  _Genetics_ *159*, 371-387.
-
-     Zeng, Z.-B., Kao, C.-H. and Basten, C. J. (1999) Estimating the
-     genetic architecture of quantitative traits.  _Genetical
-     Research_, *74*, 279-289.
    }
 
 

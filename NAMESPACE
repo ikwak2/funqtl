@@ -4,7 +4,7 @@ import(fields)
 
 # Export all names
 export(getprofile, plotprofile)
-export(scanoneF)
+export(scanoneF, scantwoF)
 export(refineqtlF, addqtlF)
 export(stepwiseqtlF)
 export(plotlod, scanoneM)
