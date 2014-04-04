@@ -4,11 +4,6 @@
   Stepwise selection for multiple QTL in function valued trait data
 }
 \description{
-
-Need update
-
-
-
 Extension of 'stepwiseqtl' function of 'qtl' package.
 Performs forward/backward selection to identify a multiple QTL
 model for function valued trait data, with model choice made via a
@@ -124,28 +119,6 @@ formula, max.qtl = 10, incl.markers=TRUE, refine.locations = TRUE,
      permutation test and the output returns the matrix of two
      columns. The first column for SLOD and the second column for MLOD score.
 
-}
-\references{
-     Manichaikul, A., Moon, J. Y., Sen, S, Yandell, B. S. and Broman,
-     K. W. (2009) A model selection approach for the identification of
-     quantitative trait loci in experimental crosses, allowing
-     epistasis. _Genetics_, *181*, 1077-1086.
-
-     Broman, K. W. and Speed, T. P. (2002) A model selection approach
-     for the identification of quantitative trait loci in experimental
-     crosses (with discussion). _J Roy Stat Soc B_ *64*, 641-656,
-     731-775.
-
-     Haley, C. S. and Knott, S. A. (1992) A simple regression method
-     for mapping quantitative trait loci in line crosses using flanking
-     markers.  _Heredity_ *69*, 315-324.
-
-     Sen, S. and Churchill, G. A. (2001) A statistical framework for
-     quantitative trait mapping.  _Genetics_ *159*, 371-387.
-
-     Zeng, Z.-B., Kao, C.-H. and Basten, C. J. (1999) Estimating the
-     genetic architecture of quantitative traits.  _Genetical
-     Research_, *74*, 279-289.
 }
 \author{
   Il-Youp Kwak, <email: ikwak2@stat.wisc.edu>

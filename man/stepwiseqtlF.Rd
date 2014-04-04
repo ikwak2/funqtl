@@ -4,8 +4,6 @@
   Stepwise selection for multiple QTL in function valued trait data
 }
 \description{
-
-Extension of 'stepwiseqtl' function of 'qtl' package.
 Performs forward/backward selection to identify a multiple QTL
 model for function valued trait data, with model choice made via a
 penalized LOD score, with separate penalties on main effects and interactions.
@@ -13,8 +11,8 @@ penalized LOD score, with separate penalties on main effects and interactions.
 }
 \usage{
 stepwiseqtlF(cross, chr, pheno.cols, qtl, usec=c("slod","mlod"),
-formula, max.qtl = 10, covar = NULL, method = c("imp", "hk"), model =
-c("normal", "binary"), incl.markers = TRUE, refine.locations = TRUE,
+formula, max.qtl = 10, covar = NULL, method = c("imp", "hk"),
+incl.markers = TRUE, refine.locations = TRUE,
     additive.only = FALSE, penalties,
     keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
 
@@ -56,10 +54,6 @@ c("normal", "binary"), incl.markers = TRUE, refine.locations = TRUE,
   \item{method}{
     Indicates whether to use multiple imputation or Haley-Knott
     regression.
-  }
-  \item{model}{
-    The phenotype model: the usual model or a model for binary
-    traits
   }
   \item{incl.markers}{
     If FALSE, do calculations only at points on an evenly

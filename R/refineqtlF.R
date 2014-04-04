@@ -29,8 +29,6 @@
 #' names in 'covar'.
 #' @param method Indicates whether to use multiple imputation or Haley-Knott
 #' regression.
-#' @param model The phenotype model: the usual model or a model for binary
-#' traits
 #' @param verbose If TRUE, give feedback about progress.  If 'verbose' is an
 #' integer > 1, further messages from 'scanqtl' are also displayed.
 #' @param maxit Maximum number of iterations.
@@ -75,12 +73,13 @@
 
 refineqtlF <-
 function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
-    formula, method = c("imp", "hk"), model = c("normal", "binary"),
+    formula, method = c("imp", "hk"),
     verbose = TRUE, maxit = 10, incl.markers = TRUE, keeplodprofile = TRUE,
     tol = 1e-04, maxit.fitqtl = 1000) {
 
+
     method <- match.arg(method)
-    model <- match.arg(model)
+    model <- "normal"
     if (!("cross" %in% class(cross)))
         stop("The cross argument must be an object of class \"cross\".")
     if (!missing(formula) && is.character(formula))

@@ -13,7 +13,7 @@
 
 }
 \usage{
-refineqtlF(cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL, formula, method = c("imp", "hk"), model = c("normal", "binary"), verbose = TRUE, maxit = 10, incl.markers = TRUE, keeplodprofile = TRUE, tol = 1e-04, maxit.fitqtl = 1000)
+refineqtlF(cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL, formula, method = c("imp", "hk"), verbose = TRUE, maxit = 10, incl.markers = TRUE, keeplodprofile = TRUE, tol = 1e-04, maxit.fitqtl = 1000)
 }
 \arguments{
   \item{cross}{
@@ -52,10 +52,6 @@ refineqtlF(cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL, formula, me
   \item{method}{
     Indicates whether to use multiple imputation or Haley-Knott
     regression.
-  }
-  \item{model}{
-    The phenotype model: the usual model or a model for binary
-    traits
   }
   \item{verbose}{
     If TRUE, give feedback about progress.  If 'verbose' is an
@@ -131,7 +127,6 @@ exd <- calc.genoprob(exd, step=2)
 qtl1.c <- makeqtl(exd, chr = 2, pos = 30, what = "prob")
 thisqtl1.c <- refineqtlF(exd, pheno.cols = 1:10,  qtl = qtl1.c,
                          formula = y~Q1, method = "hk")
-
 
 }
 \keyword{ models }

@@ -26,8 +26,6 @@
 #' @param covar Data frame of additive covariates.
 #' @param method Indicates whether to use multiple imputation or Haley-Knott
 #' regression.
-#' @param model The phenotype model: the usual model or a model for binary
-#' traits
 #' @param incl.markers If FALSE, do calculations only at points on an evenly
 #' spaced grid.
 #' @param refine.locations If TRUE, use 'refineqtl' to refine the QTL locations
@@ -105,8 +103,8 @@
 #'
 
 stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), formula, max.qtl = 10,
-covar = NULL, method = c("imp", "hk"), model = c("normal",
-"binary"), incl.markers = TRUE, refine.locations = TRUE,
+                          covar = NULL, method = c("imp", "hk"),
+                          incl.markers = TRUE, refine.locations = TRUE,
 additive.only = FALSE, penalties,
 keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
 {
@@ -164,7 +162,7 @@ keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
     qtl$name <- qtl$altname
 
     method <- match.arg(method)
-    model <- match.arg(model)
+    model <- "normal"
     usec <- match.arg(usec)
 
     if (method == "imp") {
