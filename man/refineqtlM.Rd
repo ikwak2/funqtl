@@ -12,10 +12,10 @@
   "hk" and "f" criteria, for a fixed QTL model.
 }
 \usage{
-refineqtlM <- function (cross, Y, qtl, chr, pos, qtl.name, formula,
-    verbose = TRUE, maxit = 10, incl.markers = TRUE,
-    tol = 1e-04, maxit.fitqtl = 1000, method=c("hk","f"), pheno.cols)
+refineqtlM(cross, Y, qtl, chr, pos, qtl.name, formula, verbose = TRUE,
+  maxit = 10, incl.markers = TRUE, tol = 1e-04, maxit.fitqtl = 1000, method=c("hk","f"), pheno.cols)
 }
+
 \arguments{
   \item{cross}{
     An object of class 'cross'. See 'read.cross' for details.
@@ -74,7 +74,7 @@ refineqtlM <- function (cross, Y, qtl, chr, pos, qtl.name, formula,
 \details{
   This is an extended version of 'refineqtl' of 'qtl' package. For a
   multiple qtl model, this refines each qtl position to move for a
-  better position that fits slod criteria given other qtl positions
+  better position that fits "hk" or "f" criteria given other qtl positions
   fixed. Do this process iteratively to find a refined version of
   multiple QTL.
 
