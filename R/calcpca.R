@@ -3,7 +3,7 @@
 #' Do dimensional reduction using pca.
 #'
 #'
-#' @param cross An object of class 'cross'. See 'read.cross' for details.
+#' @param cross An object of class \code{"cross"}. See the \code{\link[qtl]{read.cross}} for details.
 #' @param n.max The number of maximum reduced dimension.
 #' @param criteria how much of variance explained.
 #' @param nn The number of exact reduced dimension
@@ -11,18 +11,12 @@
 #' @author Il-Youp Kwak, <email: ikwak2@@stat.wisc.edu>
 #' @seealso \code{\link{scanoneM}}
 #' @keywords utilities
+#' @export
 #' @examples
-#'
-#'      data(exd)
-#'
-#'      exd <- calc.genoprob(exd, step=2)
-#'      Y <- calcpca(exd, criteria=.9)
-#'      out1 <- scanoneM(exd, Y, method = "hk")
-#'      out2 <- scanoneM(exd, Y, method = "f")
-#'      out3 <- scanoneM(exd, Y, method = "sl")
-#'      out4 <- scanoneM(exd, Y, method = "ml")
-#'
-
+#' data(sexd)
+#' exd <- calc.genoprob(exd, step=2)
+#' Y <- calcpca(exd, criteria=0.9)
+#' out1 <- scanoneM(exd, Y, method = "hk")
 calcpca <- function(cross, n.max=5, criteria=.9, nn = 0) {
 
     Y = cross$pheno

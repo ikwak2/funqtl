@@ -1,3 +1,4 @@
+#' @export
 refineqtlM <- function (cross, Y, qtl, chr, pos, qtl.name, formula,
     verbose = TRUE, maxit = 10, incl.markers = TRUE,
     tol = 1e-04, maxit.fitqtl = 1000, method=c("hk","f"), pheno.cols)

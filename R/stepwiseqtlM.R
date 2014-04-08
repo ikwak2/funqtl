@@ -1,24 +1,24 @@
 #' Stepwise selection for multiple QTL in function valued trait data
 #'
 #'
-#' Extension of 'stepwiseqtl' function of 'qtl' package. Performs
+#' Extension of the R/qtl function \code{\link[qtl]{stepwiseqtl}}. Performs
 #' forward/backward selection to identify a multiple QTL model for function
 #' valued trait data, with model choice made via a penalized LOD score, with
 #' separate penalties on main effects and interactions.
 #'
 #'
-#' @param cross An object of class 'cross'. See 'read.cross' for details.
+#' @param cross An object of class \code{"cross"}. See \code{\link[qtl]{read.cross}} for details.
 #' @param chr Optional vector indicating the chromosomes to consider in search
 #' for QTL.  This should be a vector of character strings referring to
 #' chromosomes by name; numeric values are converted to strings.  Refer to
-#' chromosomes with a preceding '-' to have all chromosomes but those
+#' chromosomes with a preceding \code{"-"} to have all chromosomes but those
 #' considered.  A logical (TRUE/FALSE) vector may also be used.
 #' @param pheno.cols Columns in the phenotype matrix to be used as the
 #' phenotype.
 #' @param Y Demension reduced data set. getY(cross) get reduced data set using
 #' PCA.
-#' @param method which criteria to use: 'hk', 'f', 'sl' and 'ml'.
-#' @param qtl Optional QTL object (of class '"qtl"', as created by 'makeqtl')
+#' @param method which criteria to use: \code{"hk"}, \code{"f"}, \code{"sl"}, or \code{"ml"}.
+#' @param qtl Optional QTL object (of class \code{"qtl"}, as created by \code{\link[qtl]{makeqtl}})
 #' to use as a starting point.
 #' @param formula Optional formula to define the QTL model to be used as a
 #' starting point.
@@ -47,32 +47,23 @@
 #' @param tol Tolerance for convergence for the binary trait model.
 #' @param maxit Maximum number of iterations for fitting the binary trait
 #' model.
+#' @export
 #' @return
 #'
 #' The output is a representation of the best model, as measured by the
 #' penalized LOD score (see Details), among all models visited.  This is QTL
-#' object (of class '"qtl"', as produced by 'makeqtl'), with attributes
-#' '"formula"', indicating the model formula, and '"pLOD"' indicating the
+#' object (of class \code{"qtl"}, as produced by \code{\link[qtl]{makeqtl}}), with attributes
+#' \code{"formula"}, indicating the model formula, and \code{"pLOD"} indicating the
 #' penalized LOD score.
 #'
-#' %% If 'keeplodprofile=TRUE', LOD profiles from the last pass through %% the
-#' refinement algorithm are retained as an attribute, %% '"lodprofile"', to the
-#' object.  These may be plotted with %% 'plotLodProfile'.
-#'
-#' If 'keeptrace=TRUE', the output will contain an attribute '"trace"'
+#' If \code{keeptrace=TRUE}, the output will contain an attribute \code{"trace"}
 #' containing information on the best model at each step of forward and
-#' backward elimination.  This is a list of objects of class '"compactqtl"',
-#' which is similar to a QTL object (as produced by 'makeqtl') but containing
+#' backward elimination.  This is a list of objects of class \code{"compactqtl"},
+#' which is similar to a QTL object (as produced by \code{\link[qtl]{makeqtl}}) but containing
 #' just a vector of chromosome IDs and positions for the QTL.  Each will also
-#' have attributes '"formula"' (containing the model formula) and '"pLOD"'
-#' (containing the penalized LOD score.  If 'n.perm' is missing, the function
-#' returns a data.frame whose first two columns contain the chromosome IDs and
-#' cM positions.  Subsequent third and fourth columns contain the SLOD and MLOD
-#' scores.
+#' have attributes \code{"formula"} (containing the model formula) and \code{"pLOD"}
+#' (containing the penalized LOD score.  
 #'
-#' If 'n.perm' is specified, the function returns the results of a permutation
-#' test and the output returns the matrix of two columns. The first column for
-#' SLOD and the second column for MLOD score.
 #' @author Il-Youp Kwak, <email: ikwak2@@stat.wisc.edu>
 #' @seealso \code{\link{refineqtlF}}, \code{\link{addqtlF}}
 #' @references Manichaikul, A., Moon, J. Y., Sen, S, Yandell, B. S. and Broman,
@@ -94,14 +85,7 @@
 #' Zeng, Z.-B., Kao, C.-H. and Basten, C. J. (1999) Estimating the genetic
 #' architecture of quantitative traits.  _Genetical Research_, *74*, 279-289.
 #' @examples
-#'
-#'
-#' data(exd)
-#' exd <- calc.genoprob(exd, step = 0)
-#'
-#' # need update
-#'
-
+#' cat("An example needs to be added.\n")
 
 stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
     incl.markers = TRUE, refine.locations = TRUE,

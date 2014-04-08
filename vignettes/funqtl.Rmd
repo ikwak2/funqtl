@@ -12,6 +12,7 @@ opts_chunk$set(fig.width = 12)
 
 ```{r loading_run, echo=FALSE, message=FALSE}
 library(funqtl)
+data(simspal)
 ```
 
 This vignette illustrates the use of the funqtl package for QTL
@@ -76,7 +77,7 @@ The function `geteffects` estimates the QTL effect at each locus, for
 each time point.
 
 ```{r geteffects}
-eff <- geteffects(simspal, pheno.cols=1:241)
+eff <- geteffects(simspal, pheno.cols=1:n.phe)
 ```
 
 The function `plotlod` plots a heat map of signed LOD scores: the LOD

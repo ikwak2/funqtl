@@ -1,9 +1,6 @@
-#' get coefficients of qtl. (get sign information)
+#' Estimate QTL effects
 #'
-#' required function to run plotlod which plot signed lod image. The plotlod
-#' function need a sign information for each LOD score. This geteffects
-#' function get coefficients at each gene position. So we can get sign
-#' information from this function.
+#' Estimate QTL effect at each genomic position for each of multiple phenotypes.
 #'
 #'
 #' @param cross An object of class 'cross'. See 'read.cross' for details.
@@ -11,25 +8,20 @@
 #' @return A matrix of coefficients. (i,j)th item is a coefficient of jth
 #' position as a qtl of ith observation.
 #' @author Karl W Broman, Il-Youp Kwak, <email: ikwak2@@stat.wisc.edu>
-#' @seealso 'plotlod'
+#' @seealso \code{\link{plotlod}}
 #' @keywords models
+#' @export
 #' @examples
-#'
-#'
 #' data(simspal)
-#' simspal <- calc.genoprob(simspal, step=1)
+#' simspal <- calc.genoprob(simspal)
+#' phe <- 1:nphe(simspal)
+#' \dontshow{phe <- seq(1, nphe(simspal), by=60)}
+#' eff <- geteffects(simspal, pheno.cols=phe)
 #'
-#' out <- scanone(simspal, pheno.col=1:241 , method="hk")
-#' eff <- geteffects(simspal, pheno.cols=1:241)
-#'
-#' plotlod(out, eff, gap=15)
-#'
-
 geteffects <- function(cross,pheno.cols) {
     if(missing(pheno.cols))
         pheno.cols=1:nphe(cross)
 
-#    out <- scanone(cross, pheno.col = pheno.cols, method="hk")
     phe <- as.matrix(cross$pheno[,pheno.cols])
     eff <- NULL
     for(i in 1:nchr(cross)) {

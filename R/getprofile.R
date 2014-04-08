@@ -5,16 +5,16 @@
 #'
 #' @param cross
 #'
-#' An object of class 'cross'. See 'read.cross' for detail.
+#' An object of class \code{"cross"}. See \code{\link[qtl]{read.cross}} for detail.
 #' @param pheno.cols Columns in the phenotype matrix to be used as the
 #' phenotype.
-#' @param qtl A QTL object, as produced by 'makeqtl', containing the positions
-#' of the QTL.  Provide either 'qtl' or the pair 'chr' and 'pos'.
-#' @param chr Vector indicating the chromosome for each QTL; if 'qtl' is
+#' @param qtl A QTL object, as produced by \code{\link[qtl]{makeqtl}}, containing the positions
+#' of the QTL.  Provide either \code{qtl} or the pair \code{chr} and \code{pos}.
+#' @param chr Vector indicating the chromosome for each QTL; if \code{qtl} is
 #' provided, this should not be.
-#' @param pos Vector indicating the positions for each QTL; if 'qtl' is
+#' @param pos Vector indicating the positions for each QTL; if \code{qtl} is
 #' provided, this should not be.
-#' @param qtl.name Optional user-specified name for each QTL.  If 'qtl' is
+#' @param qtl.name Optional user-specified name for each QTL.  If \code{qtl} is
 #' provided, this should not be.
 #' @param covar A matrix or data.frame of covariates.  These must be strictly
 #' numeric.
@@ -32,31 +32,31 @@
 #' @param maxit.fitqtl Maximum number of iterations for fitting the binary
 #' trait model.
 #' @param tpy type of output. If there are more QTL's in one chromosome. It
-#' plot them separately if tpy = "sep", On the other hand, it combine then in
-#' one chromosome taking maximum values of them if tpy = "comb".
-#' @return A 'lodprofileM' or 'lodprofileM2' object.
+#' plot them separately if \code{tpy = "sep"}, On the other hand, it combine then in
+#' one chromosome taking maximum values of them if \code{tpy = "comb"}.
+#' @return A \code{"lodprofileM"} or \code{"lodprofileM2"} object.
 #' @author Il-Youp Kwak, <email: ikwak2@@stat.wisc.edu>
 #' @seealso \code{\link{plotprofile}}
 #' @keywords models
+#' @export
 #' @examples
-#'
 #' data(simspal)
 #' simspal <- calc.genoprob(simspal, step=0)
 #'
 #' # difference between tpy = "sep" and "comb"
 #'
 #' par(mfrow=c(1,2))
+#' phe <- 1:nphe(simspal)
+#' \dontshow{phe <- seq(1, nphe(simspal), by=60)}
 #' qtlslod <- makeqtl(simspal, chr = c(1, 1, 4),
 #'                pos = c(36.6, 61, 27.8), what = "prob")
-#' lodmat1 <- getprofile(simspal, qtl =  qtlslod, pheno.cols =1:241,
+#' lodmat1 <- getprofile(simspal, qtl =  qtlslod, pheno.cols =phe,
 #'                     formula = y~Q1 + Q2 + Q3 , method = "hk", tpy = "sep")
-#' lodmat2 <- getprofile(simspal, qtl =  qtlslod, pheno.cols =1:241,
-#'                     formula = y~Q1 + Q2 + Q3 , method = "hk", tpy = "comb")
-#'
 #' plotprofile(lodmat1, main="The Profile LOD image of data")
-#' plotprofile(lodmat2, main="The Profile LOD image of data")
 #'
-
+#' lodmat2 <- getprofile(simspal, qtl =  qtlslod, pheno.cols =phe,
+#'                     formula = y~Q1 + Q2 + Q3 , method = "hk", tpy = "comb")
+#' plotprofile(lodmat2, main="The Profile LOD image of data")
 getprofile <-
 function(cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
 formula, method = c("imp", "hk"), model = c("normal", "binary"), verbose
