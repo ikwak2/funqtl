@@ -13,7 +13,7 @@
 #' @keywords utilities
 #' @export
 #' @examples
-#' data(sexd)
+#' data(exd)
 #' exd <- calc.genoprob(exd, step=2)
 #' Y <- calcpca(exd, criteria=0.9)
 #' out1 <- scanoneM(exd, Y, method = "hk")

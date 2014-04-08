@@ -39,14 +39,6 @@ stepwiseqtlM(cross, chr, Y, qtl, formula, max.qtl = 10, incl.markers = TRUE,
   \item{max.qtl}{Maximum number of QTL to which forward
   selection should proceed.}
 
-  \item{covar}{Data frame of additive covariates.}
-
-  \item{method}{Indicates whether to use multiple
-  imputation or Haley-Knott regression.}
-
-  \item{model}{The phenotype model: the usual model or a
-  model for binary traits}
-
   \item{incl.markers}{If FALSE, do calculations only at
   points on an evenly spaced grid.}
 

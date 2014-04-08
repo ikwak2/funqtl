@@ -39,9 +39,7 @@
 #'
 #' @export
 #' @author Il-Youp Kwak, <email: ikwak2@@stat.wisc.edu>
-#' @seealso \code{\link[qtl]{fitqtl}}, \code{\link[qtl]{makeqtl}},
-#' \code{\link[qtl]{scanqtl}}, \code{\link[qtl]{addtoqtl}},
-#' \code{\link[qtl]{dropfromqtl}}, \code{\link[qtl]{replaceqtl}}
+#' @seealso \code{\link[qtl]{refineqtl}}, \code{\link{refineqtlM}}
 #' @references Zeng, Z.-B., Kao, C.-H., and Basten, C. J. (1999) Estimating the
 #' genetic architecture of quantitative traits.  _Genet. Res._ *74*, 279-289.
 #'

@@ -24,11 +24,6 @@
 #' starting point.
 #' @param max.qtl Maximum number of QTL to which forward selection should
 #' proceed.
-#' @param covar Data frame of additive covariates.
-#' @param method Indicates whether to use multiple imputation or Haley-Knott
-#' regression.
-#' @param model The phenotype model: the usual model or a model for binary
-#' traits
 #' @param incl.markers If FALSE, do calculations only at points on an evenly
 #' spaced grid.
 #' @param refine.locations If TRUE, use 'refineqtl' to refine the QTL locations
