@@ -4,11 +4,11 @@
 #' version of addqtl function in qtl package.
 #'
 #'
-#' @param cross An object of class 'cross'. See 'read.cross' for details.
+#' @param cross An object of class \code{"cross"}. See \code{\link[qtl]{read.cross}} for details.
 #' @param pheno.cols Columns in the phenotype matrix to be used as the
 #' phenotype.
-#' @param \dots See 'addqtl' for details.
-#' @return An object of class 'scanone', as produced by the 'scanone' function.
+#' @param \dots Passed to the R/qtl function \code{\link[qtl]{addqtl}}.
+#' @return An object of class \code{"scanone"}, as produced by the R/qtl function \code{\link[qtl]{scanone}}.
 #' LOD scores are relative to the base model (with any terms that include the
 #' new QTL omitted).
 #' @author Il-Youp Kwak, <email: ikwak2@@stat.wisc.edu>
@@ -17,22 +17,20 @@
 #' @references Haley, C. S. and Knott, S. A. (1992) A simple regression method
 #' for mapping quantitative trait loci in line crosses using flanking markers.
 #' _Heredity_ *69*, 315-324.
-#'
-#' Sen, S. and Churchill, G. A. (2001) A statistical framework for quantitative
-#' trait mapping.  _Genetics_ *159*, 371-387.
 #' @keywords models
+#' @export
 #' @examples
 #'
 #' data(simspal)
-#' qtl1 <- makeqtl(simspal, chr = c(4),
-#'                pos = c(27.8), what = "prob")
+#' \dontshow{simspal <- subset(simspal, chr=c(1,4), ind=1:50)}
 #'
-#' added <- addqtlF(simspal, qtl =  qtl1, pheno.cols =1:241,
-#'                              formula = y~Q1 + Q2, method = "hk")
+#' qtl1 <- makeqtl(simspal, chr = 4, 27.8, what="prob")
 #'
-#' summary(added)
-#'
-
+#' phe <- 1:nphe(simspal)
+#' \dontshow{phe <- seq(1, nphe(simspal), by=60)}
+#' added <- addqtlF(simspal, qtl =  qtl1, pheno.cols =phe, method="hk")
+#' max(added)
+#' plot(added)
 addqtlF <-
 function(cross, pheno.cols, ...) {
 

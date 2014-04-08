@@ -1,25 +1,26 @@
 #' Two-dimensional genome scan with a two-QTL model for function valued trait
 #' data.
 #'
-#' Extension of 'scantwo' function of 'qtl' package. Two-dimensional genome
+#' Extension of the R/qtl function \code{\link[qtl]{scantwo}}. Two-dimensional genome
 #' scan with a two-QTL model for function valuded trait data.
 #'
 #'
-#' @param cross An object of class 'cross'. See 'read.cross' for details.
+#' @param cross An object of class \code{"cross"}. See \code{\link[qtl]{read.cross}} for details.
 #' @param pheno.cols Columns in the phenotype matrix to be used as the
 #' phenotype.
-#' @param usec Which method to use between 'slod' and 'mlod' in two-QTL scan.
+#' @param usec Which method to use (\code{"slod"} or \code{"mlod"}) in the two-QTL scan.
 #' @param n.perm If specified, a permutation test is performed rather than an
 #' analysis of the observed data.  This argument defines the number of
 #' permutation replicates.
 #' @param \dots More parameters controled in 'scantwo'. See 'scantwo' for
 #' details.
-#' @return If 'n.perm' is missing, the function returns a list with class
-#' '"scantwo"' and containing three components.  The first component is a
+#' @export
+#' @return If \code{n.perm} is missing, the function returns a list with class
+#' \code{"scantwo"} and containing three components.  The first component is a
 #' matrix of dimension [tot.pos x tot.pos]; the upper triangle contains the
 #' (S/MLOD) scores for the additive model, and the lower triangle contains the
 #' LOD scores for the full model.  The diagonal contains the results of
-#' 'scanone'. The second component of the output is a data.frame indicating the
+#' a single-QTL scan. The second component of the output is a data.frame indicating the
 #' locations at which the two-QTL (S/MLOD) scores were calculated.  The first
 #' column is the chromosome identifier, the second column is the position in
 #' cM, the third column is a 1/0 indicator for ease in later pulling out only
@@ -29,31 +30,21 @@
 #' covariates, which is needed for a proper calculation of conditional (S/MLOD)
 #' scores.
 #'
-#' If 'n.perm' is specified, the function returns a list with six different LOD
+#' If \code{n.perm} is specified, the function returns a list with six different LOD
 #' scores from each of the permutation replicates. ... need more ..
 #' @author Il-Youp Kwak, <email: ikwak2@@stat.wisc.edu>
-#' @seealso \code{\link[qtl]{scantwo}}, \code{\link[qtl]{summary.scantwo}},
-#' \code{\link[qtl]{calc.genoprob}}, \code{\link[funqtl]{scanoneF}}
+#' @seealso \code{\link[qtl]{scantwo}}, code{\link[funqtl]{scanoneF}}
 #' @keywords models
 #' @examples
-#'
-#'
 #' data(exd)
 #' exd <- calc.genoprob(exd, step = 0)
-#'
 #' out <-scantwoF(exd, method = "hk", usec="slod")
 #' plot(out)
 #'
-#' # permutations
-#'
 #' # Permutation tests
-#' \dontrun{permo <- scantowF(exd, method="hk", n.perm=1000)}
-#' \dontshow{permo <- scanone(exd, method="hk", n.perm=5)}
-#'
-#' summary(permo, alpha=0.05)
-#'
-#'
-
+#' n.perm <- 1000
+#' \dontrun{permo <- scantwoF(exd, method="hk", n.perm=n.perm)
+#' summary(permo, alpha=0.05)}
 scantwoF <- function(cross, pheno.cols, usec=c("slod","mlod"), n.perm, ...) {
 
     n = nind(cross)

@@ -88,17 +88,14 @@ profileLodMatfn2 <- function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar 
 
 
 
-    if (!missing(pheno.cols))
+    if (missing(pheno.cols))
         pheno.cols = 1:nphe(cross)
 
-#
     if (!all(pheno.cols %in% 1:nphe(cross)))
         stop("pheno.cols should be in a range of 1 to ", nphe(cross))
 
-    #
-    pheno <- as.data.frame(cross$pheno[, pheno.cols], stringsAsFactors = TRUE)
+    pheno <- cross$pheno
 
-    #
     if (!is.null(covar) && nrow(covar) != nrow(pheno))
         stop("nrow(covar) != no. individuals in cross.")
     if (!is.null(covar))
@@ -111,7 +108,6 @@ profileLodMatfn2 <- function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar 
         origcross <- cross
         origqtl <- qtl
         cross <- subset(cross, ind = !hasmissing)
-#
         pheno <- pheno[!hasmissing,]
 
         if (!is.null(covar))
@@ -136,8 +132,6 @@ profileLodMatfn2 <- function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar 
             covar <- NULL
         else covar <- covar[, !is.na(m), drop = FALSE]
     }
-
-#########
 
     formula <- qtl::checkformula(formula, qtl$altname, colnames(covar))
 
@@ -209,15 +203,10 @@ profileLodMatfn2 <- function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar 
         outout[[ii]]$index <- outout[[ii]]$index[ order(outout[[ii]]$qtls) ]
     }
 
-#######
-#####
-
-
-
     basefit <- NULL
     basefitlod <- NULL
 
-    for(phv in pheno.cols) {
+    for(phv in seq(along=pheno.cols)) {
         basefit[[phv]] <- qtl::fitqtlengine(pheno = pheno[,pheno.cols[phv]], qtl = reducedqtl,
                                 covar = covar, formula = formula, method = method,
                                 model = model, dropone = TRUE, get.ests = FALSE,
@@ -227,7 +216,7 @@ profileLodMatfn2 <- function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar 
 
     }
 
-    for (j in 1:lc) { # j=1
+    for (j in 1:lc) {
         otherchr <- chrnam[-j]
         otherpos <- curpos[-j]
         thispos <- as.list(curpos)
@@ -243,8 +232,8 @@ profileLodMatfn2 <- function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar 
         }  else
         thispos[[j]] <- c(-Inf, Inf)
 
-        for( tt in 1:length(pheno.cols) ) { # tt = 1
-            out <- scanqtl(cross = cross, pheno.col = tt,
+        for( tt in seq(along=pheno.cols) ) {
+            out <- scanqtl(cross = cross, pheno.col = pheno.cols[tt],
                            chr = chrnam, pos = thispos, covar = covar, formula = formula,
                            method = method, model = model, incl.markers =TRUE,
                            verbose = scanqtl.verbose, tol = tol, maxit = maxit.fitqtl)
@@ -264,7 +253,6 @@ profileLodMatfn2 <- function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar 
             qn <- names(lastout)
 
             if(tt == 1) {
-#                names(lastout) <- qtl$name[tovary]
                 pos <- as.numeric(matrix(unlist(strsplit(names(out), "@")),
                                          byrow=TRUE,ncol=2)[,2])
                 chr <- as.numeric(rep(qtl$chr[tovary][j], length(pos)))
@@ -278,9 +266,6 @@ profileLodMatfn2 <- function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar 
         }
     }
 
-
-    #############
-    ###########
 
     for(ii in names(outout)) {
         stp = 1
@@ -309,22 +294,15 @@ profileLodMatfn2 <- function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar 
         }
     }
 
-###########
-    #########
-
-########
-
-
-########
 
     for( i in seq(along=lastout)) {
-        colnames(lastout[[i]]) <- c("pos", "chr", colnames(cross$pheno))
+        colnames(lastout[[i]]) <- c("pos", "chr", colnames(cross$pheno)[pheno.cols])
         lastout[[i]] <- as.data.frame(lastout[[i]])
     }
 
 
     # make the profiles scanone objects
-    for(i in seq(along=lastout)) { #i =1
+    for(i in seq(along=lastout)) {
         class(lastout[[i]]) <- c("scanmult", "data.frame")
         thechr <- qtl$chr[i]
         if(method=="imp")
@@ -339,11 +317,9 @@ profileLodMatfn2 <- function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar 
         o <- grep("^loc-*[0-9]+",rn)
         if(length(o) > 0) # inter-marker locations cited as "c*.loc*"
             rn[o] <- paste("c",thechr,".",rn[o],sep="")
-                                        #      if(length(rn) != nrow(lastout[[i]])) return(list(lastout[[i]], rn, detailedmap))
         if(length(rn) == nrow(lastout[[i]])) rownames(lastout[[i]]) <- rn
     }
 
-#    attr(qtl, "lodprofileM") <- lastout
     attr(qtl, "lodprofileM2") <- outout
     class(outout) <- c("lodprofileM2","list")
     outout

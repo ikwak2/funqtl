@@ -4,36 +4,37 @@
 #' is negative), where (i,j) element is for phenotype i at marker j.
 #'
 #'
-#' @param output A matrix scaneone output using "hk" option.  ex) out <-
-#' scanone(cross, pheno.col=1:10, method="hk")
+#' @param output An object of class \code{"scanone"} as produced by
+#' \code{\link[qtl]{scanone}}.
 #' @param effects The sign information whether the QTL having AA do negative
-#' effect.  Get this buy using geteffects() function.
-#' @param y Positions of phenotypes in image.
-#' @param off.end ??
-#' @param gap The gap among chromosomes.
-#' @param ncol The number of color between red and blue
-#' @param horizontal transepose x and y axis if TRUE
-#' @param \dots More graphical components of 'image.plot'.
-#' @return A graph of signed LOD matrix.
+#' effect.  Get this by using \code{\link{geteffects}}.
+#' @param y Positions of phenotypes in image (e.g., the times).
+#' @param ylab y-axis label
+#' @param gap The gap between chromosomes.
+#' @param ncolors The number of colors between blue and red.
+#' @param horizontal If TRUE, transpose the x and y axes
+#' @param \dots More graphical components, passed \code{\link[fields]{image.plot}}.
+#' @return None.
 #' @author Karl W Broman, Il-Youp Kwak, <email: ikwak2@@stat.wisc.edu>
 #' @seealso \code{\link{geteffects}}
 #' @keywords hplot
+#' @import qtl fields
+#' @export
 #' @examples
-#'
-#'
 #' data(simspal)
-#' simspal <- calc.genoprob(simspal, step=1)
-#'
-#' out <- scanone(simspal, pheno.col=1:241 , method="hk")
-#' eff <- geteffects(simspal, pheno.cols=1:241)
-#' nam <- names(output)[-(1:2)]
+#' simspal <- calc.genoprob(simspal)
+#' phe <- 1:nphe(simspal)
+#' \dontshow{phe <- seq(1, nphe(simspal), by=60)}
+#' out <- scanone(simspal, pheno.col=phe, method="hk")
+#' eff <- geteffects(simspal, pheno.cols=phe)
+#' nam <- phenames(simspal)
 #' y <- as.numeric(substr(nam, 2, nchar(nam)))/60
-#' plotlod(out, y, eff, gap=15)
-#' plotlod(out, y, gap=15, horizontal = TRUE)
-#' plotlod(out, eff, gap=25)
+#' \dontshow{y <- y[phe]}
+#' plotlod(out, eff, y,  gap=15)
+#' plotlod(out, y=y, gap=15, horizontal = TRUE)
 #'
-
-plotlod <- function(output, effects, y, off.end = .5, gap=25, ncol=251, horizontal=FALSE, ...)
+plotlod <- function(output, effects, y, ylab="Time", gap=25,
+                    ncolors=251, horizontal=FALSE, ...)
 {
 
     if(missing(y)) {
@@ -43,23 +44,25 @@ plotlod <- function(output, effects, y, off.end = .5, gap=25, ncol=251, horizont
     templod <- as.matrix(output[,-(1:2)])
     maxlod <- max(templod, na.rm=TRUE)
     zlim <- c(0, maxlod)
-    val <- sqrt(seq(0, 1, len=ncol))
+    val <- sqrt(seq(0, 1, len=ncolors))
     col <- rgb(1, rev(val), rev(val))
     if(!missing(effects)) {
         if(!all(dim(effects) == dim(templod)))
             stop("dim(effects) doesn't conform to dim(output)")
         templod[effects < 0] <- templod[effects<0] * -1
         zlim <- c(-maxlod, maxlod)
-        ncol=(ncol-1)/2+1
-        val <- sqrt(seq(0, 1, len=ncol))
+        ncolors=(ncolors-1)/2+1
+        val <- sqrt(seq(0, 1, len=ncolors))
         col <- c(rgb(val, val, 1), rgb(1, rev(val), rev(val))[-1])
     }
+
 
     uchr <- unique(output[,1])
     pos <- NULL
     lod <- NULL
     chr <- vector("list", length(uchr))
     names(chr) <- uchr
+    off.end <- 0.5 # spacing off the ends of the chromosomes
     for(i in seq(along=uchr)) {
         temppos <- output[output[,1]==i,2]
         temppos <- temppos - min(temppos)
@@ -88,7 +91,7 @@ plotlod <- function(output, effects, y, off.end = .5, gap=25, ncol=251, horizont
         lod <- rbind(lod, rep(0, ncol(lod)))
 
         ## plot
-        image.plot(pos, y, lod, xaxt="n", ylab="Time (hours)", xlab="",
+        image.plot(pos, y, lod, xaxt="n", ylab=ylab, xlab="",
               zlim=zlim, col=col, mgp=c(2.6, 1, 0), bty="n")
         title(xlab="Chromosome", mgp=c(2, 0, 0))
         u <- par("usr")

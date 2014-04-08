@@ -1,23 +1,22 @@
 #' Stepwise selection for multiple QTL in function valued trait data
 #'
 #'
-#' Extension of 'stepwiseqtl' function of 'qtl' package. Performs
+#' Extension of the R/qtl function \code{\link[qtl]{stepwiseqtl}}. Performs
 #' forward/backward selection to identify a multiple QTL model for function
 #' valued trait data, with model choice made via a penalized LOD score, with
 #' separate penalties on main effects and interactions.
 #'
 #'
-#' @param cross An object of class 'cross'. See 'read.cross' for details.
+#' @param cross An object of class \code{"cross"}. See \code{\link[qtl]{read.cross}} for details.
 #' @param chr Optional vector indicating the chromosomes to consider in search
 #' for QTL.  This should be a vector of character strings referring to
 #' chromosomes by name; numeric values are converted to strings.  Refer to
-#' chromosomes with a preceding '-' to have all chromosomes but those
+#' chromosomes with a preceding \code{"-"} to have all chromosomes but those
 #' considered.  A logical (TRUE/FALSE) vector may also be used.
 #' @param pheno.cols Columns in the phenotype matrix to be used as the
 #' phenotype.
-#' @param usec which criteria to use between 'slod' and 'mlod' for multiple QTL
-#' selection in function valued trait.
-#' @param qtl Optional QTL object (of class '"qtl"', as created by 'makeqtl')
+#' @param usec Which method to use (\code{"slod"} or \code{"mlod"})
+#' @param qtl Optional QTL object (of class \code{"qtl"}, as created by \code{\link[qtl]{makeqtl}})
 #' to use as a starting point.
 #' @param formula Optional formula to define the QTL model to be used as a
 #' starting point.
@@ -28,7 +27,7 @@
 #' regression.
 #' @param incl.markers If FALSE, do calculations only at points on an evenly
 #' spaced grid.
-#' @param refine.locations If TRUE, use 'refineqtl' to refine the QTL locations
+#' @param refine.locations If TRUE, use \code{\link{refineqtlF}} to refine the QTL locations
 #' after each step of forward and backward selection.
 #' @param additive.only If TRUE, allow only additive QTL models; if FALSE,
 #' consider also pairwise interactions among QTL.
@@ -39,7 +38,7 @@
 #' @param keeptrace If TRUE, keep information on the sequence of models visited
 #' through the course of forward and backward selection as an attribute to the
 #' output.
-#' @param verbose If TRUE, give feedback about progress.  If 'verbose' is an
+#' @param verbose If TRUE, give feedback about progress.  If \code{verbose} is an
 #' integer > 1, even more information is printed.
 #' @param tol Tolerance for convergence for the binary trait model.
 #' @param maxit Maximum number of iterations for fitting the binary trait
@@ -48,30 +47,20 @@
 #'
 #' The output is a representation of the best model, as measured by the
 #' penalized LOD score (see Details), among all models visited.  This is QTL
-#' object (of class '"qtl"', as produced by 'makeqtl'), with attributes
-#' '"formula"', indicating the model formula, and '"pLOD"' indicating the
+#' object (of class \code{"qtl"}, as produced by \code{\link[qtl]{makeqtl}}), with attributes
+#' \code{"formula"}, indicating the model formula, and \code{"pLOD"} indicating the
 #' penalized LOD score.
 #'
-#' %% If 'keeplodprofile=TRUE', LOD profiles from the last pass through %% the
-#' refinement algorithm are retained as an attribute, %% '"lodprofile"', to the
-#' object.  These may be plotted with %% 'plotLodProfile'.
-#'
-#' If 'keeptrace=TRUE', the output will contain an attribute '"trace"'
+#' If \code{keeptrace=TRUE}, the output will contain an attribute \code{"trace"}
 #' containing information on the best model at each step of forward and
-#' backward elimination.  This is a list of objects of class '"compactqtl"',
-#' which is similar to a QTL object (as produced by 'makeqtl') but containing
+#' backward elimination.  This is a list of objects of class \code{"compactqtl"},
+#' which is similar to a QTL object (as produced by \code{\link[qtl]{makeqtl}}) but containing
 #' just a vector of chromosome IDs and positions for the QTL.  Each will also
-#' have attributes '"formula"' (containing the model formula) and '"pLOD"'
-#' (containing the penalized LOD score.  If 'n.perm' is missing, the function
-#' returns a data.frame whose first two columns contain the chromosome IDs and
-#' cM positions.  Subsequent third and fourth columns contain the SLOD and MLOD
-#' scores.
-#'
-#' If 'n.perm' is specified, the function returns the results of a permutation
-#' test and the output returns the matrix of two columns. The first column for
-#' SLOD and the second column for MLOD score.
+#' have attributes \code{"formula"} (containing the model formula) and \code{"pLOD"}
+#' (containing the penalized LOD score.  
 #' @author Il-Youp Kwak, <email: ikwak2@@stat.wisc.edu>
 #' @seealso \code{\link{refineqtlF}}, \code{\link{addqtlF}}
+#' @export
 #' @references Manichaikul, A., Moon, J. Y., Sen, S, Yandell, B. S. and Broman,
 #' K. W. (2009) A model selection approach for the identification of
 #' quantitative trait loci in experimental crosses, allowing epistasis.
@@ -85,23 +74,17 @@
 #' quantitative trait loci in line crosses using flanking markers.  _Heredity_
 #' *69*, 315-324.
 #'
-#' Sen, S. and Churchill, G. A. (2001) A statistical framework for quantitative
-#' trait mapping.  _Genetics_ *159*, 371-387.
-#'
 #' Zeng, Z.-B., Kao, C.-H. and Basten, C. J. (1999) Estimating the genetic
 #' architecture of quantitative traits.  _Genetical Research_, *74*, 279-289.
 #' @examples
-#'
-#'
-#' data(exd)
-#' exd <- calc.genoprob(exd, step = 0)
-#'
-#' qtlslod <- stepwiseqtlF(exd, pheno.cols = 1:10, max.qtl = 4, usec = "slod", method = "hk", penalties = c(1.3, 2.62, 1.74) )
-#'
-#' qtlmlod <- stepwiseqtlF(exd, pheno.cols = 1:10, max.qtl = 4, usec = "mlod", method = "hk", penalties = c(2.8, 3.62, 3.74) )
-#'
-#'
-
+#' data(simspal)
+#' \dontshow{simspal <- subset(simspal,chr=c(1,3,4), ind=1:50)}
+#' # Genotype probabilities for H-K
+#' simspal <- calc.genoprob(simspal, step=0)
+#' phe <- 1:nphe(simspal)
+#' \dontshow{phe <- 80:82}
+#' qtlslod <- stepwiseqtlF(simspal, pheno.cols = phe, max.qtl = 4, usec = "slod",
+#'                         method = "hk", penalties = c(2.36, 2.76, 2) )
 stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), formula, max.qtl = 10,
                           covar = NULL, method = c("imp", "hk"),
                           incl.markers = TRUE, refine.locations = TRUE,

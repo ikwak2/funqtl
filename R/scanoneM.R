@@ -1,39 +1,55 @@
-#' Genome scan with a single QTL model using dimensional reduction
-#'
 #' QTL scan using dimensional reduction.
 #'
+#' Genome scan with a single QTL model using dimensional reduction
 #'
-#' @param cross An object of class 'cross'. See 'read.cross' for details.
-#' @param Y Demension reduced data set. getY(cross) get reduced data set using
-#' PCA.
-#' @param tol Tolerance; passed to lm.fit
+#' @param cross An object of class \code{"cross"}. See \code{\link[qtl]{read.cross}} for details.
+#' @param Y Dimension-reduced data set.
+#' @param tol Tolerance; passed to \code{\link[stats]{lm.fit}}
 #' @param n.perm If specified, a permutation test is performed rather than an
 #' analysis of the observed data.  This argument defines the number of
 #' permutation replicates.
-#' @param method The "hk" option use multi-trait QTL mapping propsoed by Haley
-#' and Knott. The "f" option use FLOD score.
+#' @param method The \code{"hk"} option use multi-trait QTL mapping proposed by Haley
+#' and Knott. The \code{"f"} option use an FLOD score.
 #' @param pheno.cols Columns in the phenotype matrix to be used as the
 #' phenotype.
-#' @return If 'n.perm' is missing, the function returns a data.frame whose
+#' @return If \code{n.perm} is missing, the function returns a data.frame whose
 #' first two columns contain the chromosome IDs and cM positions.  Subsequent
 #' third and fourth columns contain the SLOD and MLOD scores.
 #'
-#' If 'n.perm' is specified, the function returns the results of a permutation
+#' If \code{n.perm} is specified, the function returns the results of a permutation
 #' test and the output returns the matrix of two columns. The first column for
 #' SLOD and the second column for MLOD score.
 #' @author Il-Youp Kwak, <email: ikwak2@@stat.wisc.edu>
-#' @seealso 'scanone', 'plot.scanone', 'summary.scanone', 'calc.genoprob',
+#' @seealso \code{\link[qtl]{scanone}}, \code{\link{scanoneF}}
 #' @keywords model
+#' @export
 #' @examples
+#' data(simspal)
 #'
-#'      data(exd)
+#' \dontshow{simspal <- subset(simspal,chr=1:4,ind=1:100)}
+#' # Genotype probabilities for H-K
+#' simspal <- calc.genoprob(simspal)
 #'
-#'      exd <- calc.genoprob(exd, step=2)
-#'      Y <- calcpca(exd, criteria=.9)
-#'      out1 <- scanoneM(exd, Y, method = "hk")
-#'      out2 <- scanoneM(exd, Y, method = "f")
-#'      out3 <- scanoneM(exd, Y, method = "sl")
-#'      out4 <- scanoneM(exd, Y, method = "ml")
+#' # dimensional reduction of Y
+#' Y <- calcpca(simspal, criteria=.999)
+#' 
+#' # do multitrait mapping
+#' out.hk <- scanoneM(simspal, Y=Y, method="hk")
+#' out.f  <- scanoneM(simspal, Y=Y, method="f")
+#' out.sl <- scanoneM(simspal, Y=Y, method="sl")
+#' out.ml <- scanoneM(simspal, Y=Y, method="ml")
+#'
+#' # Summarize results
+#' summary(out.hk)
+#' summary(out.f)
+#' summary(out.sl)
+#' summary(out.ml)
+#' 
+#' # Plot the results
+#' par(mfrow=c(3,1))
+#' plot(out.hk)
+#' plot(out.f)
+#' plot(out.sl, out.ml)
 
 scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"), pheno.cols ) {
 
@@ -42,7 +58,7 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
     }
 
     method <- match.arg(method)
-    n.ind <- nind(cross) # n
+    n.ind <- nind(cross)
     n.phe <- nphe(cross)
     n.chr <- nchr(cross)
     n.mar <- nmar(cross)
@@ -101,8 +117,6 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
                     }
 
                     LOD <- c(LOD, n.ind/2*log(L0/L1,10 ) )
-                   # LOD <- c(LOD, n.ind/2*log10(exp(1))*(L0 - L1) )
-  #                  LOD <- c(LOD, n.ind/2*log10(exp(1))*(L0 - L1) )
                 }
                 out <- rbind(out, cbind(rep(as.numeric(chrnames(cross)[i]),length(map)), map, LOD) )
             }
@@ -158,8 +172,6 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
                             L1 <- sum(diag(Sigma))
                         }
                         LOD <- c(LOD, n.ind/2*log(L0/L1,10 ) )
-#                        LOD <- c(LOD, n.ind/2*log(L0/L1,10) )
-                     #   LOD <- c(LOD, n.ind/2*log10(exp(1))*(L0 - L1) )
 
                     }
                     out <- rbind(out, cbind(rep(as.numeric(chrnames(cross)[i]),length(map)), map, LOD) )

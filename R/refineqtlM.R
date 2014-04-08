@@ -1,3 +1,50 @@
+#' Refine the positions of QTL for function valued trait
+#'
+#' Extended version of the R/qtl function \code{\link[qtl]{refineqtl}} for
+#' function-valued traits.  Iteratively scan the positions for QTL in
+#' the context of a multiple QTL model, to try to identify the
+#' positions that maximize \code{"hk"} and \code{"f"} criteria, for a fixed QTL
+#' model.
+#'
+#' @param cross An object of class \code{"cross"}. See \code{\link[qtl]{read.cross}} for details.
+#' @param Y Matrix of phenotypes
+#' @param qtl A QTL object, as produced by \code{\link[qtl]{makeqtl}}, containing the positions
+#' of the QTL.  Provide either \code{qtl} or the pair \code{chr} and \code{pos}.
+#' @param chr Vector indicating the chromosome for each QTL; if \code{qtl} is
+#' provided, this should not be.
+#' @param pos Vector indicating the positions for each QTL; if \code{qtl} is
+#' provided, this should not be.
+#' @param qtl.name Optional user-specified name for each QTL.  If \code{qtl} is
+#' provided, this should not be.
+#' @param formula An object of class \code{"formula"} indicating the model to be
+#' fitted.  (It can also be the character string representation of a formula.)
+#' QTLs are indicated as 'Q1', 'Q2', etc.  Covariates are indicated by their
+#' names in \code{covar}.
+#' @param verbose If TRUE, give feedback about progress.  If \code{verbose} is an
+#' integer > 1, further messages from \code{\link[qtl]{scanqtl}} are also displayed.
+#' @param maxit Maximum number of iterations.
+#' @param incl.markers If FALSE, do calculations only at points on an evenly
+#' spaced grid.
+#' @param tol Tolerance passed to \code{\link[stats]{lm.fit}}
+#' @param maxit.fitqtl Maximum number of iterations for fitting the binary
+#' trait model.
+#' @param method Indicates whether to use \code{"hk"} or \code{"f"} criteria
+#' @param pheno.cols Columns in the phenotype matrix to be used as the phenotype.
+#' 
+#' @return An object of class \code{"qtl"}, with QTL placed in their new positions.
+#'
+#' @details
+#'  This is an extended version of 'refineqtl' of 'qtl' package. For a
+#'  multiple qtl model, this refines each qtl position to move for a
+#'  better position that fits "hk" or "f" criteria given other qtl positions
+#'  fixed. Do this process iteratively to find a refined version of
+#'  multiple QTL.
+#'
+#' @author Il-Youp Kwak, <email: ikwak2@@stat.wisc.edu>
+#' @seealso \code{\link[qtl]{refineqtl}}, \code{\link{refineqtlM}}
+#' @export
+#' @examples
+#' cat("An example needs to be added.\n")
 refineqtlM <- function (cross, Y, qtl, chr, pos, qtl.name, formula,
     verbose = TRUE, maxit = 10, incl.markers = TRUE,
     tol = 1e-04, maxit.fitqtl = 1000, method=c("hk","f"), pheno.cols)

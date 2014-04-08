@@ -1,36 +1,31 @@
 #' Refine the positions of QTL for function valued trait
 #'
-#' Extended version of 'refineqtl' function in 'qtl' package for function
-#' valued trait.  Iteratively scan the positions for QTL in the context of a
-#' multiple QTL model, to try to identify the positions that maximize slod
+#' Extended version of the R/qtl function \code{\link[qtl]{refineqtl}} for
+#' function-valued traits.  Iteratively scan the positions for QTL in the context of a
+#' multiple QTL model, to try to identify the positions that maximize SLOD
 #' criteria, for a fixed QTL model.
 #'
-#' This is an extended version of 'refineqtl' of 'qtl' package. For a multiple
-#' qtl model, this refines each qtl position to move for a better position that
-#' fits slod criteria given other qtl positions fixed. Do this process
-#' iteratively to find a refined version of multiple QTL.
-#'
-#' @param cross An object of class 'cross'. See 'read.cross' for details.
+#' @param cross An object of class \code{"cross"}. See \code{\link[qtl]{read.cross}} for details.
 #' @param pheno.cols Columns in the phenotype matrix to be used as the
 #' phenotype.
-#' @param qtl A QTL object, as produced by 'makeqtl', containing the positions
-#' of the QTL.  Provide either 'qtl' or the pair 'chr' and 'pos'.
-#' @param chr Vector indicating the chromosome for each QTL; if 'qtl' is
+#' @param qtl A QTL object, as produced by \code{\link[qtl]{makeqtl}}, containing the positions
+#' of the QTL.  Provide either \code{qtl} or the pair \code{chr} and \code{pos}.
+#' @param chr Vector indicating the chromosome for each QTL; if \code{qtl} is
 #' provided, this should not be.
-#' @param pos Vector indicating the positions for each QTL; if 'qtl' is
+#' @param pos Vector indicating the positions for each QTL; if \code{qtl} is
 #' provided, this should not be.
-#' @param qtl.name Optional user-specified name for each QTL.  If 'qtl' is
+#' @param qtl.name Optional user-specified name for each QTL.  If \code{qtl} is
 #' provided, this should not be.
 #' @param covar A matrix or data.frame of covariates.  These must be strictly
 #' numeric.
-#' @param formula An object of class 'formula' indicating the model to be
+#' @param formula An object of class \code{"formula"} indicating the model to be
 #' fitted.  (It can also be the character string representation of a formula.)
 #' QTLs are indicated as 'Q1', 'Q2', etc.  Covariates are indicated by their
-#' names in 'covar'.
+#' names in \code{covar}.
 #' @param method Indicates whether to use multiple imputation or Haley-Knott
 #' regression.
-#' @param verbose If TRUE, give feedback about progress.  If 'verbose' is an
-#' integer > 1, further messages from 'scanqtl' are also displayed.
+#' @param verbose If TRUE, give feedback about progress.  If \code{verbose} is an
+#' integer > 1, further messages from \code{\link[qtl]{scanqtl}} are also displayed.
 #' @param maxit Maximum number of iterations.
 #'
 #' @param incl.markers If FALSE, do calculations only at points on an evenly
@@ -40,37 +35,24 @@
 #' @param tol Tolerance for convergence for the binary trait model.
 #' @param maxit.fitqtl Maximum number of iterations for fitting the binary
 #' trait model.
-#' @return An object of class 'qtl', with QTL placed in their new positions.
+#' @return An object of class \code{"qtl"}, with QTL placed in their new positions.
 #'
-#' If 'keeplodprofile=TRUE', LOD profiles from the last pass through the
-#' refinement algorithm are retained as an attribute, '"lodprofile"', to the
-#' object.  These may be plotted with 'plotLodProfile'.
+#' @export
 #' @author Il-Youp Kwak, <email: ikwak2@@stat.wisc.edu>
-#' @seealso \code{\link[qtl]{fitqtl}}, \code{\link[qtl]{makeqtl}},
-#' \code{\link[qtl]{scanqtl}}, \code{\link[qtl]{addtoqtl}},
-#' \code{\link[qtl]{dropfromqtl}}, \code{\link[qtl]{replaceqtl}}
+#' @seealso \code{\link[qtl]{refineqtl}}, \code{\link{refineqtlM}}
 #' @references Zeng, Z.-B., Kao, C.-H., and Basten, C. J. (1999) Estimating the
 #' genetic architecture of quantitative traits.  _Genet. Res._ *74*, 279-289.
 #'
 #' Haley, C. S. and Knott, S. A. (1992) A simple regression method for mapping
 #' quantitative trait loci in line crosses using flanking markers.  _Heredity_
 #' *69*, 315-324.
-#'
-#' Sen, S. and Churchill, G. A. (2001) A statistical framework for quantitative
-#' trait mapping.  _Genetics_ *159*, 371-387.
 #' @keywords models
 #' @examples
-#'
-#'
 #' data(exd)
-#'
 #' exd <- calc.genoprob(exd, step=2)
 #' qtl1.c <- makeqtl(exd, chr = 2, pos = 30, what = "prob")
 #' thisqtl1.c <- refineqtlF(exd, pheno.cols = 1:10,  qtl = qtl1.c,
-#'                          formula = y~Q1, method = "hk")
-#'
-#'
-
+#'                          method = "hk")
 refineqtlF <-
 function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
     formula, method = c("imp", "hk"),
@@ -89,10 +71,6 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
             covar <- as.data.frame(covar, stringsAsFactors = TRUE)
         else stop("covar should be a data.frame")
     }
-#    if (LikePheVector(pheno.col, nind(cross), nphe(cross))) {
-#        cross$pheno <- cbind(pheno.col, cross$pheno)
-#        pheno.col <- 1
-#    }
     if (!missing(qtl) && (!missing(chr) || !missing(pos) || !missing(qtl.name)))
         warning("qtl argument is provided, and so chr, pos and qtl.name are ignored.")
     if (missing(qtl) && (missing(chr) || missing(pos)))
@@ -162,29 +140,15 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
     }))/2
     if (mind <= 0)
         mind <- 1e-06
-#    if (length(pheno.col) > 1) {
-#        pheno.col <- pheno.col[1]
-#        warning("refineqtl can take just one phenotype; only the first will be used")
-#    }
-
-#    if (is.character(pheno.col)) {
-#        num <- find.pheno(cross, pheno.col)
-#        if (is.na(num))
-#        stop("Couldn't identify phenotype \"", pheno.col,   "\"")
-#        pheno.col <- num
-#    }
 
     if (missing(pheno.cols))
         pheno.cols = 1:nphe(cross)
 
-    #
     if (!all(pheno.cols %in% 1:nphe(cross)))
         stop("pheno.cols should be in a range of 1 to ", nphe(cross))
 
-    #
     pheno <- as.data.frame(cross$pheno[, pheno.cols], stringsAsFactors = TRUE)
 
-    #
     if (!is.null(covar) && nrow(covar) != nrow(pheno))
         stop("nrow(covar) != no. individuals in cross.")
     if (!is.null(covar))
@@ -197,7 +161,7 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
         origcross <- cross
         origqtl <- qtl
         cross <- subset(cross, ind = !hasmissing)
-#
+
         pheno <- pheno[!hasmissing,]
 
         if (!is.null(covar))
@@ -223,12 +187,10 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
         else covar <- covar[, !is.na(m), drop = FALSE]
     }
 
-#########
-
     formula <- qtl::checkformula(formula, qtl$altname, colnames(covar))
 
 
-# identify which QTL are in the model formula
+    # identify which QTL are in the model formula
     tovary <- sort(qtl::parseformula(formula, qtl$altname, colnames(covar))$idx.qtl)
     if(length(tovary) != qtl$n.qtl)
         reducedqtl <- dropfromqtl(qtl, index=(1:qtl$n.qtl)[-tovary])
@@ -274,7 +236,7 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
     cross.attr <- attributes(cross)
     for (i in 1:maxit) {
         if (keeplodprofile) {
-#
+
             basefit <- NULL
             basefitlod <- NULL
 
@@ -289,7 +251,6 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
 
         }
 
-#
         else {
             basefit <- NULL
             basefitlod <- NULL
@@ -305,7 +266,6 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
             }
         }
 
-#
         if (i == 1) {
             origlod <- curlod <- thisitlod <- mean(basefitlod)
             origpos <- curpos
@@ -317,7 +277,7 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
             while (o[1] != oldo[lc]) o <- sample(lc)
         oldo <- o
         newpos <- curpos
-        for (j in o) { # j=4
+        for (j in o) {
             otherchr <- chrnam[-j]
             otherpos <- newpos[-j]
             thispos <- as.list(newpos)
@@ -333,8 +293,6 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
             }
             else thispos[[j]] <- c(-Inf, Inf)
 
-
-##
             out <- scanqtlfn(cross = cross, pheno.cols = pheno.cols,
                        chr = chrnam, pos = thispos, covar = covar, formula = formula,
                        method = method, model = model, incl.markers = incl.markers,
@@ -346,7 +304,7 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
             if (verbose) {
                 cat(" Q", j, " pos: ", curpos[j], " -> ", newpos[j],
                   "\n", sep = "")
-                #
+
                 cat("    LOD increase: ", round(max(out) - curlod,
                   3), "\n")
             }
@@ -386,13 +344,10 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
     if (!is.null(thenames))
         qtl$name <- thenames
 
-#####
     if (keeplodprofile) {
-#
         dropresult <- basefit[[1]]$result.drop
         if (is.null(dropresult)) {
             if (length(lastout) == 1) {
-#
                 dropresult <- rbind(c(NA, NA, basefit[[1]]$result.full[1, 4]))
                 rownames(dropresult) <- names(lastout)
             }
@@ -404,7 +359,6 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
         rn <- rownames(dropresult)
         qn <- names(lastout)
         for (i in seq(along = lastout)) {
-#
             if (length(lastout) == 1) {
                 drprest <- NULL
                 for( ii in 1:length(pheno.cols) ) {
@@ -419,7 +373,6 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
                 }
                 drprest <- mean(drprest)
             }
-#
             lastout[[i]] <- lastout[[i]] - (max(lastout[[i]]) - drprest)
 
             pos <- as.numeric(matrix(unlist(strsplit(names(lastout[[i]]),
