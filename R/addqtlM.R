@@ -10,7 +10,7 @@ addqtlM <- function (cross, Y, chr, qtl, formula,
     
     if(missing(Y)) {
         p <- nphe(cross)
-        Y <- as.matrix(cross$pheno)
+        Y <- as.matrix(cross$pheno[,pheno.cols])
     } else {
         if(is.vector(Y)) { p = 1} else {p = ncol(Y)}
     }
