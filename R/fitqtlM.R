@@ -165,7 +165,7 @@ fitqtlM <- function(cross, Y, formula, qtl, tol=1e-7, method=c("hk","f"), pheno.
           #  LOD = n.ind/2*log10(exp(1))*(L0 - L1)
             result.drop <- c(result.drop, result.full[1,4] - LOD)
         }
-        names(result.drop) <- terms
+        names(result.drop) <- qtl$name
     }
 
     return(list( result.full = result.full, result.drop = result.drop, lod = result.full[1,4]) )

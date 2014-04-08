@@ -25,12 +25,14 @@
 #' @param maxit Maximum number of iterations.
 #' @param incl.markers If FALSE, do calculations only at points on an evenly
 #' spaced grid.
+#' @param keeplodprofile If TRUE, keep the LOD profiles from the last iteration
+#' as attributes to the output.
 #' @param tol Tolerance passed to \code{\link[stats]{lm.fit}}
 #' @param maxit.fitqtl Maximum number of iterations for fitting the binary
 #' trait model.
 #' @param method Indicates whether to use \code{"hk"} or \code{"f"} criteria
 #' @param pheno.cols Columns in the phenotype matrix to be used as the phenotype.
-#' 
+#'
 #' @return An object of class \code{"qtl"}, with QTL placed in their new positions.
 #'
 #' @details
@@ -46,7 +48,7 @@
 #' @examples
 #' cat("An example needs to be added.\n")
 refineqtlM <- function (cross, Y, qtl, chr, pos, qtl.name, formula,
-    verbose = TRUE, maxit = 10, incl.markers = TRUE,
+    verbose = TRUE, maxit = 10, incl.markers = TRUE, keeplodprofile = TRUE,
     tol = 1e-04, maxit.fitqtl = 1000, method=c("hk","f"), pheno.cols)
 {
 
@@ -237,6 +239,49 @@ refineqtlM <- function (cross, Y, qtl, chr, pos, qtl.name, formula,
                   tovary[j], chrnam[j], newpos[j])
     if (!is.null(thenames))
         qtl$name <- thenames
+
+
+    if (keeplodprofile) {
+        dropresult <- basefit$result.drop
+        if (is.null(dropresult)) {
+            if (length(lastout) == 1) {
+                dropresult <- rbind(c(NA, NA, basefit$result.full[1,
+                  4]))
+                rownames(dropresult) <- names(lastout)
+            }
+            else stop("There's a problem: need dropresult, but didn't obtain one.")
+        }
+        rn <- names(dropresult)
+        qn <- names(lastout)
+        for (i in seq(along = lastout)) {
+            lastout[[i]] <- lastout[[i]] - (max(lastout[[i]]) -
+                dropresult[rn == qn[i]])
+            pos <- as.numeric(matrix(unlist(strsplit(names(lastout[[i]]),
+                "@")), byrow = TRUE, ncol = 2)[, 2])
+            chr <- rep(qtl$chr[tovary][i], length(pos))
+            lastout[[i]] <- data.frame(chr = chr, pos = pos,
+                lod = as.numeric(lastout[[i]]), stringsAsFactors = TRUE)
+        }
+        names(lastout) <- qtl$name[tovary]
+        for (i in seq(along = lastout)) {
+            class(lastout[[i]]) <- c("scanone", "data.frame")
+            thechr <- qtl$chr[i]
+            detailedmap <- attr(cross$geno[[thechr]]$prob, "map")
+            if (is.matrix(detailedmap))
+                detailedmap <- detailedmap[1, ]
+            r <- range(lastout[[i]][, 2]) + c(-1e-05, 1e-05)
+            rn <- names(detailedmap)[detailedmap >= r[1] & detailedmap <=
+                r[2]]
+            o <- grep("^loc-*[0-9]+", rn)
+            if (length(o) > 0)
+                rn[o] <- paste("c", thechr, ".", rn[o], sep = "")
+            if (length(rn) == nrow(lastout[[i]]))
+                rownames(lastout[[i]]) <- rn
+        }
+        attr(qtl, "lodprofile") <- lastout
+    }
+
+
 
     if ("pLOD" %in% names(attributes(qtl)) && curlod > origlod)
         attr(qtl, "pLOD") <- attr(qtl, "pLOD") + curlod - origlod
