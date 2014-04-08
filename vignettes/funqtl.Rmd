@@ -3,59 +3,95 @@
 %\VignetteIndexEntry{Users Guide for R/funqtl}
 -->
 
-# QTL mapping on Simulated data sets
+# funqtl: QTL mapping with function-valued traits
 
-This is a simple analysis on simulated data set, simspal, using R/funqtl package.
-  There are 162 RIL individuals typed at a total of 234 markers on five
-  chromosomes.
-
-
-```{r loading}
-library(qtl)
-library(funqtl)
-data(simspal)
-simspal
+```{r knitr_options, echo=FALSE, results=FALSE}
+library(knitr)
+opts_chunk$set(fig.width = 12)
 ```
+
+```{r loading_run, echo=FALSE, message=FALSE}
+library(funqtl)
+```
+
+This vignette illustrates the use of the funqtl package for QTL
+mapping with function-valued traits (e.g., growth measured over time).
 
 
 ## Data
 
-```{r plots, fig.width = 12}
-pheno1 <- simspal$pheno
-map10 <- pull.map(simspal)
+We will consider the analysis of a simulated data set, `simspal`.
+There are `r nind(simspal)` recombinant inbred lines typed at a total
+of `r totmar(simspal)` markers on `r nchr(simspal)` chromosomes.
+
+We first load the funqtl package (which will also load R/qtl and other
+packages) and the data.
+
+```{r loading, eval=FALSE}
+library(funqtl)
+data(simspal)
+```
+
+
+Here's a quick summary of the data.
+
+```{r summary_simspal}
+summary(simspal)
+```
+
+
+The following plots the genetic marker map and the function-valued trait
+for five of the RIL.
+
+```{r plot_map_and_pheno}
 par(mfrow=c(1,2))
-plot(map10, main="")
-plot(1:241, pheno1[160,], type="l", xlab="Time", ylim=c(-120,0), ylab="Root Tip Angle (degrees)", main="" )
-for(i in c(19, 20, 132, 72))
-  lines(1:241, pheno1[i,])
+plotMap(simspal, main="")
+plot(1:241, simspal$pheno[160,], type="l", xlab="Time", ylim=c(-120,0),
+     ylab="Root Tip Angle (degrees)")
+ind <- c(19, 20, 132, 72)
+color <- c("blue", "red", "green", "orange")
+for(i in seq(along=ind))
+  lines(1:241, simspal$pheno[ind[i],], col=color[i])
 ```
-The estimated genetic
-map and the trait values for five randomly selected RIL are displayed.
 
 
-## LOD images
 
-Now let's make an LOD image of all time points.
+## Single-QTL analysis at the individual time points
+
+We first perform single-QTL genome scans at each time point, individually.
+
+We use `calc.genoprob` in R/qtl to calculate QTL genotype
+probabilities and then `scanone` to perform the genome scans, using
+Haley-Knott regression (Haley and Knott 1992). We'll perform
+calculations solely at the marker positions (`step=0`) to speed up the
+calculations.
+
 ```{r scanone}
-simspal <- calc.genoprob(simspal, step=1)
-out <- scanone(simspal, pheno.col = 1:241, method="hk")
+n.phe <- nphe(simspal)
+simspal <- calc.genoprob(simspal, step=0)
+out <- scanone(simspal, pheno.col = 1:n.phe, method="hk")
 ```
-We first applied interval mapping by Haley-Knott regression (Haley
-and Knott 1992), considering each time point individually.
-The results are displayed below, with the y-axis representing genomic position
-and the x-axis representing time, and so each vertical slice is a genome scan
-for one time point.
-```{r signed lod}
-simspal <- calc.genoprob(simspal, step=1)
-out <- scanone(simspal, pheno.col=1:241 , method="hk")
+
+The function `geteffects` estimates the QTL effect at each locus, for
+each time point.
+
+```{r geteffects}
 eff <- geteffects(simspal, pheno.cols=1:241)
 ```
 
+The function `plotlod` plots a heat map of signed LOD scores: the LOD
+scores, taking the signs of the estimated effects.
+
 ```{r plotload, fig.height=10, fig.width = 12}
-plotlod(out, eff, gap=15, main="The LOD image of the simspal data set")
+plotlod(out, eff, gap=15, main="The LOD image of the simspal data set",
+        ylab="Time")
 ```
 
-The x-axis representing genomic position and the y-axis representing time, and so each horizontal slice is a genome scan for one time point. We plot a signed LOD score, with the sign representing the estimated direction of the QTL effect. The most prominant QTL are on chromosomes 1 and 4.
+The x-axis represents genomic position and the y-axis represents
+time, and so each horizontal slice is a genome scan for one time
+point. We plot a signed LOD score, with the sign representing the
+estimated direction of the QTL effect. The most prominant QTL are on
+chromosomes 1 and 4.
 
 The chromosome 1 QTL affects later times, and the chromosome 4
 allele affects earlier times. There is an additional QTL of interest on distal chromosome 3
