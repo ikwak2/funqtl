@@ -16,27 +16,26 @@
 #' @keywords hplot
 #' @export
 #' @examples
-#'
 #' data(simspal)
-#' \dontshow{simspal <- subset(simspal,chr=c(1,3,4), ind=1:50)}
 #' simspal <- calc.genoprob(simspal, step=0)
+#' \dontshow{simspal <- subset(simspal,chr=c(1,3,4), ind=1:50)}
 #'
 #' phe <- 1:nphe(simspal)
 #' \dontshow{phe <- seq(1, nphe(simspal), by=60)}
-#' 
+#'
 #' # difference between tpy = "sep" and "comb"
+#'
 #' par(mfrow=c(1,2))
 #' qtlslod <- makeqtl(simspal, chr = c(1, 1, 4),
 #'                pos = c(36.6, 61, 27.8), what = "prob")
-#' lodmat1 <- getprofile(simspal, qtl =  qtlslod, pheno.colsphe,
+#' lodmat1 <- getprofile(simspal, qtl =  qtlslod, pheno.cols =phe,
 #'                     formula = y~Q1 + Q2 + Q3 , method = "hk", tpy = "sep")
 #' plotprofile(lodmat1, main="tpy=\"sep\"")
 #'
-#' lodmat2 <- getprofile(simspal, qtl =  qtlslod, pheno.cols=phe,
+#' lodmat2 <- getprofile(simspal, qtl =  qtlslod, pheno.cols =phe,
 #'                     formula = y~Q1 + Q2 + Q3 , method = "hk", tpy = "comb")
 #' plotprofile(lodmat2, main="tpy=\"comb\"")
 #'
-
 plotprofile <- function(lodmatlist, ylab="QTL position", xlab="Time", mval=0, ...) {
 
     if(class(lodmatlist)[1] == "lodprofileM") {

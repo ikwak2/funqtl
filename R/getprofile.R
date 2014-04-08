@@ -42,21 +42,23 @@
 #' @examples
 #' data(simspal)
 #' simspal <- calc.genoprob(simspal, step=0)
+#' \dontshow{simspal <- subset(simspal,chr=c(1,3,4), ind=1:50)}
+#'
+#' phe <- 1:nphe(simspal)
+#' \dontshow{phe <- seq(1, nphe(simspal), by=60)}
 #'
 #' # difference between tpy = "sep" and "comb"
 #'
 #' par(mfrow=c(1,2))
-#' phe <- 1:nphe(simspal)
-#' \dontshow{phe <- seq(1, nphe(simspal), by=60)}
 #' qtlslod <- makeqtl(simspal, chr = c(1, 1, 4),
 #'                pos = c(36.6, 61, 27.8), what = "prob")
 #' lodmat1 <- getprofile(simspal, qtl =  qtlslod, pheno.cols =phe,
 #'                     formula = y~Q1 + Q2 + Q3 , method = "hk", tpy = "sep")
-#' plotprofile(lodmat1, main="The Profile LOD image of data")
+#' plotprofile(lodmat1, main="tpy=\"sep\"")
 #'
 #' lodmat2 <- getprofile(simspal, qtl =  qtlslod, pheno.cols =phe,
 #'                     formula = y~Q1 + Q2 + Q3 , method = "hk", tpy = "comb")
-#' plotprofile(lodmat2, main="The Profile LOD image of data")
+#' plotprofile(lodmat2, main="tpy=\"comb\"")
 getprofile <-
 function(cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
 formula, method = c("imp", "hk"), model = c("normal", "binary"), verbose
