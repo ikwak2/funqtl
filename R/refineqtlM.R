@@ -166,10 +166,10 @@ refineqtlM <- function (cross, Y, qtl, chr, pos, qtl.name, formula,
     cross.attr <- attributes(cross)
     for (i in 1:maxit) {
 
-        basefit <- getlodM(cross=cross, Y=Y, formula=formula, qtl = qtl, method=method, pheno.cols=pheno.cols)
+        basefit <- fitqtlM(cross=cross, Y=Y, formula=formula, qtl = qtl, method=method, pheno.cols=pheno.cols)
 
         if (i == 1) {
-            origlod <- curlod <- thisitlod <- as.numeric(basefit)
+            origlod <- curlod <- thisitlod <- basefit$result.full[1,4]
             origpos <- curpos
         }
         if (verbose)
