@@ -11,3 +11,4 @@ Suggests: knitr
 License: GPL-2
 Packaged: 2012-10-22 18:56:05 UTC; kbroman
 VignetteBuilder: knitr
+BuildVignettes: no

@@ -1,0 +1,188 @@
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Users Guide for R/funqtl}
+-->
+
+# funqtl: QTL mapping with function-valued traits
+
+```{r knitr_options, echo=FALSE, results=FALSE}
+library(knitr)
+opts_chunk$set(fig.width = 12)
+```
+
+```{r loading_run, echo=FALSE, message=FALSE}
+library(funqtl)
+data(simspal)
+```
+
+This vignette illustrates the use of the funqtl package for QTL
+mapping with function-valued traits (e.g., growth measured over time).
+
+
+## Data
+
+We will consider the analysis of a simulated data set, `simspal`.
+There are `r nind(simspal)` recombinant inbred lines typed at a total
+of `r totmar(simspal)` markers on `r nchr(simspal)` chromosomes.
+
+We first load the funqtl package (which will also load R/qtl and other
+packages) and the data.
+
+```{r loading, eval=FALSE}
+library(funqtl)
+data(simspal)
+```
+
+
+Here's a quick summary of the data.
+
+```{r summary_simspal}
+summary(simspal)
+```
+
+
+The following plots the genetic marker map and the function-valued trait
+for five of the RIL.
+
+```{r plot_map_and_pheno}
+par(mfrow=c(1,2))
+plotMap(simspal, main="")
+plot(1:241, simspal$pheno[160,], type="l", xlab="Time", ylim=c(-120,0),
+     ylab="Root Tip Angle (degrees)")
+ind <- c(19, 20, 132, 72)
+color <- c("blue", "red", "green", "orange")
+for(i in seq(along=ind))
+  lines(1:241, simspal$pheno[ind[i],], col=color[i])
+```
+
+
+
+## Single-QTL analysis at the individual time points
+
+We first perform single-QTL genome scans at each time point, individually.
+
+We use `calc.genoprob` in R/qtl to calculate QTL genotype
+probabilities and then `scanone` to perform the genome scans, using
+Haley-Knott regression (Haley and Knott 1992). We'll perform
+calculations solely at the marker positions (`step=0`) to speed up the
+calculations.
+
+```{r scanone}
+n.phe <- nphe(simspal)
+simspal <- calc.genoprob(simspal, step=0)
+out <- scanone(simspal, pheno.col = 1:n.phe, method="hk")
+```
+
+The function `geteffects` estimates the QTL effect at each locus, for
+each time point.
+
+```{r geteffects}
+eff <- geteffects(simspal, pheno.cols=1:n.phe)
+```
+
+The function `plotlod` plots a heat map of signed LOD scores: the LOD
+scores, taking the signs of the estimated effects.
+
+```{r plotload, fig.height=10, fig.width = 12}
+plotlod(out, eff, gap=15, main="The LOD image of the simspal data set",
+        ylab="Time")
+```
+
+The x-axis represents genomic position and the y-axis represents
+time, and so each horizontal slice is a genome scan for one time
+point. We plot a signed LOD score, with the sign representing the
+estimated direction of the QTL effect. The most prominant QTL are on
+chromosomes 1 and 4.
+
+The chromosome 1 QTL affects later times, and the chromosome 4
+allele affects earlier times. There is an additional QTL of interest on distal chromosome 3
+
+## SLOD and MLOD scores
+
+```{r slodmlod}
+out1 <- scanoneF(simspal, pheno.cols = 1:241, method="hk")
+
+```
+The SLOD and MLOD statistics combine the results across time points, by taking the average
+or the maximum LOD, respectively, at each genomic location.
+
+
+```{r slodmlodcurve, fig.height=10, fig.width = 12}
+par(mfrow=c(2,1))
+plot(out1, ylim=c(0,3.5), main="The SLOD curve for IBMset1", bandcol="gray90")
+abline(h=2.02, col="red", lty=3)
+plot(out1[,c(1,2,4)], ylim=c(0,7), main="The MLOD curve for IBMset1", bandcol="gray90")
+abline(h=3.46, col="red", lty=3)
+
+# permutation threshold
+# permout <- scanoneF(simspal, pheno.cols=1:241, method = "hk", n.perm=1000)
+# summary(permout) # display 5, 10 % threshold of permutation result
+```
+
+The results are in Figure above. Horizontal lines indicate the 5% genome-wide significance thresholds, derived by a permutation test. We didn't run the code above since it takes a long time (about one hour maybe) .
+
+## Getting multiple QTL
+
+```{r stepwiseqtlscan}
+
+#qtlslod <- stepwiseqtlF(simspal, pheno.cols = 1:241, max.qtl = 6,
+#                       usec = "slod", method = "hk", penalties = c(2.02, 2.62, 1.74) )
+simspal <- calc.genoprob(simspal, step=0)
+qtlslod <- makeqtl(simspal, chr = c(1, 4),
+               pos = c(36.6, 27.8), what = "prob")
+```
+
+`stepwiseqtlF` function returns qtl object by using stepwise QTL selection. It takes long time to run this function, so I run `makeqtl` function to get the result of `stepwiseqtlF` function. You will get the same result if you run `stepwiseqtlF` function.
+
+
+``` {r profilelodimage, fig.height = 10, fig.width = 14}
+lodmat1.c <- getprofile(simspal, qtl =  qtlslod, pheno.cols =1:241,
+                             formula = y~Q1 + Q2 , method = "hk",
+							  verbose = F, tpy="comb")
+plotprofile(lodmat1.c, mval = 8, col=heat.colors(100)[100:1], main="The Profile LOD image of data")
+```
+You can get profilelod image by using `getprofile` function and `plotprofile` function. You need to have an option `step = 0` in `calc.genoprob` function.
+
+## Effect plot
+
+```{r effectplot}
+
+slodeff <- vector("list", nphe(simspal))
+
+for(i in 1:nphe(simspal)) {
+    slodeff[[i]] <- summary(fitqtl(simspal, phe=i, qtl=qtlslod,
+                            method="hk", get.ests=TRUE, dropone=FALSE))$ests[,1]*c(1,2,2)
+}
+
+nam <- names(slodeff[[1]])
+slodeff <- matrix(unlist(slodeff), byrow=TRUE, ncol=length(nam))
+colnames(slodeff) <- nam
+
+time <- (0:240)/30
+```
+To further characterize the effects of the QTL in the context of the inferred multiple-QTL
+models, we fit the selected multiple-QTL models at each time point, individually. the estimated baseline function and the estimated QTL effects, as a function of time.
+The estimated QTL effects in panels are for the difference between two alleles.
+
+
+```{r effplot, fig.height=5, fig.width = 14}
+par(mfrow=c(1,3))
+plot(time, slodeff[,1], lwd=2, type="l",
+     xlab="Time (hours)",
+	      ylab="Tip angle (degrees)", col="red", ylim=c(-110,0))
+		  mtext("baseline curve", side=3, line=0.5)
+
+plot(time, slodeff[,2], lwd=2, ylim = c(-5,9), type="l",
+     xlab="Time (hours)",
+	      ylab="QTL effect", col="red")
+		  abline(h=0)
+		  mtext("chr 1, 37 cM", side=3, line=0.5)
+
+plot(time, slodeff[,3], lwd=2, ylim = c(-5,9), type="l",
+     xlab="Time (hours)",
+	      ylab="QTL effect", col="red")
+		  mtext("chr 4, 28 cM", side=3, line=0.5)
+		  abline(h=0)
+```
+
+

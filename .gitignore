@@ -1,3 +1,6 @@
 .DS_Store
-vignettes/funqtl.md
 .RData
+vignettes/funqtl.md
+vignettes/funqtl.R
+vignettes/funqtl.html
+vignettes/figure
