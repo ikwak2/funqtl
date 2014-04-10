@@ -1,5 +1,9 @@
 .DS_Store
+.RData
+.Rhistory
 Makefile
 vignettes/funqtl.md
+vignettes/funqtl.R$
+vignettes/funqtl.html
+vignettes/figure
 ReadMe.md
-.RData

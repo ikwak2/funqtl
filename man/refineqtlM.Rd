@@ -5,7 +5,7 @@
 \usage{
 refineqtlM(cross, Y, qtl, chr, pos, qtl.name, formula, verbose = TRUE,
   maxit = 10, incl.markers = TRUE, keeplodprofile = TRUE, tol = 0.0001,
-maxit.fitqtl = 1000,  method = c("hk", "f"), pheno.cols)
+  maxit.fitqtl = 1000, method = c("hk", "f"), pheno.cols)
 }
 \arguments{
   \item{cross}{An object of class \code{"cross"}. See
@@ -42,8 +42,8 @@ maxit.fitqtl = 1000,  method = c("hk", "f"), pheno.cols)
   \item{incl.markers}{If FALSE, do calculations only at
   points on an evenly spaced grid.}
 
-  \item{keeplodprofile}{If TRUE, keep the LOD profiles from the last
-  iteration as attributes to the output.}
+  \item{keeplodprofile}{If TRUE, keep the LOD profiles from
+  the last iteration as attributes to the output.}
 
   \item{tol}{Tolerance passed to
   \code{\link[stats]{lm.fit}}}
