@@ -4,6 +4,7 @@
 #'
 #'
 #' @param lodmatlist An \code{"lodprofileM"} object as produced by \code{\link{getprofile}}
+#' @param times A vector of times at which the phenotypes were measured.
 #' @param ylab A label of y. Default is "QTL position".
 #' @param xlab A label of x. Default is "Time".
 #' @param mval The maximum LOD value of legend. The color of legend goes 0 to
@@ -36,11 +37,13 @@
 #'                     formula = y~Q1 + Q2 + Q3 , method = "hk", tpy = "comb")
 #' plotprofile(lodmat2, main="tpy=\"comb\"")
 #'
-plotprofile <- function(lodmatlist, ylab="QTL position", xlab="Time", mval=0, ...) {
+plotprofile <- function(lodmatlist, times, ylab="QTL position", xlab="Time", mval=0, ...) {
+
+    if(missing(times)) times <- NULL
 
     if(class(lodmatlist)[1] == "lodprofileM") {
-        plotlodmatlist(lodmatlist, ylab=ylab, xlab=xlab, mval=mval, ...)
+        plotlodmatlist(lodmatlist, times=times, ylab=ylab, xlab=xlab, mval=mval, ...)
     } else if (class(lodmatlist)[1] == "lodprofileM2") {
-        plotlodmatlist2(lodmatlist, ylab=ylab, xlab=xlab, mval=mval, ...)
+        plotlodmatlist2(lodmatlist, times=times, ylab=ylab, xlab=xlab, mval=mval, ...)
     }
 }

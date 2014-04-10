@@ -3,12 +3,15 @@
 \alias{plotprofile}
 \title{Plot profile LOD matrix.}
 \usage{
-plotprofile(lodmatlist, ylab = "QTL position", xlab = "Time", mval = 0,
-  ...)
+plotprofile(lodmatlist, times, ylab = "QTL position", xlab = "Time",
+  mval = 0, ...)
 }
 \arguments{
   \item{lodmatlist}{An \code{"lodprofileM"} object as
   produced by \code{\link{getprofile}}}
+
+  \item{times}{A vector of times at which the phenotypes
+  were measured.}
 
   \item{ylab}{A label of y. Default is "QTL position".}
 
