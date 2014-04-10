@@ -96,9 +96,8 @@ fitqtlM <- function(cross, Y, formula, qtl, tol=1e-7, method=c("hk","f"), pheno.
     } else {
         L1 <- sum(diag(Sigma))
     }
-    LOD <- n.ind/2*log(L0/L1,10 )
 
-    # LOD = n.ind/2*log10(exp(1))*(L0 - L1)
+    LOD <- n.ind/2*(L0/L1)/log(10)
 
     dfM = p * length(terms)
     dfE = p * n.ind - dfM - p
@@ -161,8 +160,7 @@ fitqtlM <- function(cross, Y, formula, qtl, tol=1e-7, method=c("hk","f"), pheno.
             } else {
                 L1 <- sum(diag(Sigma))
             }
-            LOD <- n.ind/2*log(L0/L1,10 )
-          #  LOD = n.ind/2*log10(exp(1))*(L0 - L1)
+            LOD <- n.ind/2*(L0/L1)/log(10)
             result.drop <- c(result.drop, result.full[1,4] - LOD)
         }
         names(result.drop) <- qtl$name
