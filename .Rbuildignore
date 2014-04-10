@@ -1,7 +1,7 @@
 .DS_Store
 Makefile
 vignettes/funqtl.md
-vignettes/funqtl.R
+vignettes/funqtl.R$
 vignettes/funqtl.html
 vignettes/figure
 ReadMe.md
