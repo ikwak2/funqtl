@@ -1,4 +1,4 @@
-plotlodmatlist <- function(lodmatlist, ylab="QTL position", xlab="Time", mval=0, ...) {
+plotlodmatlist <- function(lodmatlist, times, ylab="QTL position", xlab="Time", mval=0, ...) {
 
 
     nlst <- length(lodmatlist)
@@ -26,20 +26,20 @@ plotlodmatlist <- function(lodmatlist, ylab="QTL position", xlab="Time", mval=0,
     z3 <- t(z3)
     x <- 1:(dim(z3)[1])
     y <- 1:(dim(z3)[2])
+    if(!missing(times) && !is.null(times)) {
+      if(length(times) != length(x))
+        stop("times should have length ", length(x))
+      x <- times
+    }
 
     par(mar=c(5.1,6.1,2.1,2.1))
     image.plot(x, y, z3, yaxt="n", xlab=xlab, ylab=ylab, ...)
 
-#        image.plot(x, y, z3, yaxt="n", xlab=xlab, ylab=ylab)
-
-
     last <- end[nlst]
     start <- c(start, last + 2)
     for(i in 1:nlst)
-        rect(0,end[i], nt+1,start[i+1], col="white")
-
-    rect(0,end[i], nt+1,start[i+1]+1, col="white")
-
+      rect(x[1]-diff(x[1:2]),end[i], x[length(x)]+diff(x[1:2]),start[i+1]-0.5, col="white", border="white")
+    rect(x[1]-diff(x[1:2]),max(end), x[length(x)]+diff(x[1:2]),max(start)+1, col="white", border="white")
 
     u <- par("usr") # plot ranges [left,right, bottom,top]
 
