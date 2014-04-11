@@ -245,12 +245,12 @@ refineqtlM <- function (cross, Y, qtl, chr, pos, qtl.name, formula,
         dropresult <- basefit$result.drop
         if (is.null(dropresult)) {
             if (length(lastout) == 1) {
-                dropresult <- rbind(c(NA, NA, basefit$result.full[1,
-                  4]))
-                rownames(dropresult) <- names(lastout)
+                dropresult <- basefit$result.full[1, 4]
+                names(dropresult) <- names(lastout)
             }
             else stop("There's a problem: need dropresult, but didn't obtain one.")
         }
+        
         rn <- names(dropresult)
         qn <- names(lastout)
         for (i in seq(along = lastout)) {
