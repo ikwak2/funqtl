@@ -171,7 +171,7 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
                         } else {
                             L1 <- sum(diag(Sigma))
                         }
-                        LOD <- c(LOD, n.ind/2*(L0 - L1)/lod(10) )
+                        LOD <- c(LOD, n.ind/2*(L0 - L1)/log(10) )
 
                     }
                     out <- rbind(out, cbind(rep(as.numeric(chrnames(cross)[i]),length(map)), map, LOD) )
