@@ -99,10 +99,11 @@ getlodM <- function(cross, Y, formula, qtl, tol=1e-7, method = c("hk","f"), phen
     Sigma <- crossprod(E)
     if( method == "hk") {
         L1 <- determinant(Sigma)$modulus
+        LOD <- n.ind/2*(L0 - L1)/log(10)
     } else {
         L1 <- sum(diag(Sigma))
+        LOD <- n.ind/2*log(L0/L1, 10)
     }
-    LOD <- n.ind/2*(L0 - L1)/log(10)
 }
 
 
