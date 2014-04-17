@@ -52,6 +52,11 @@
 #' plot(out.sl, out.ml)
 
 scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"), pheno.cols ) {
+    
+    if (!("prob" %in% names(cross$geno[[1]]))) {
+        warning("First running calc.genoprob.")
+        cross <- calc.genoprob(cross)
+    }
 
     if (missing(pheno.cols)) {
         pheno.cols = 1:nphe(cross)
@@ -73,10 +78,6 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
     if(n.perm == 0) {
 
         if (method == "sl" || method == "ml") {
-            if (!("prob" %in% names(cross$geno[[1]]))) {
-                warning("First running calc.genoprob.")
-                cross <- calc.genoprob(cross)
-            }
             temp <- cross
             temp$pheno[,1:p] <- Y
 
