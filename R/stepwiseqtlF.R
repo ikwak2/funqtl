@@ -88,8 +88,8 @@
 stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), formula, max.qtl = 10,
                           covar = NULL, method = c("imp", "hk"),
                           incl.markers = TRUE, refine.locations = TRUE,
-additive.only = FALSE, penalties,
-keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
+                          additive.only = FALSE, penalties,
+                          keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
 {
 
     if (missing(pheno.cols))
