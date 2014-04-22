@@ -95,10 +95,8 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
     if (missing(pheno.cols))
     pheno.cols = 1:nphe(cross)
 
-    #
     if (!all(pheno.cols %in% 1:nphe(cross)))
     stop("pheno.cols should be in a range of 1 to ", nphe(cross))
-
 
     pheno <- cross$pheno[,pheno.cols]
 
@@ -106,10 +104,6 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
     stop("Input should have class \"cross\".")
     if (!missing(chr))
     cross <- subset(cross, chr)
-    #    if (LikePheVector(pheno.col, nind(cross), nphe(cross))) {
-    #        cross$pheno <- cbind(pheno.col, cross$pheno)
-    #        pheno.col <- 1
-    #    }
     if (!missing(qtl)) {
         if (!("qtl" %in% class(qtl)))
         stop("The qtl argument must be an object of class \"qtl\".")
@@ -355,7 +349,6 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
 
 
         res.full = NULL;
-        #        qtl$name <- qtl$altname <- paste("Q", 1:qtl$n.qtl, sep = "")
         qtl$name <- qtl$altname
 
         for(ii in pheno.cols) {
@@ -431,7 +424,7 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
         cat("        plod =", curplod, "\n")
         curnqtl <- n.qtl + 1
         if (!additive.only) {
-            for (j in 1:n.qtl) { #j=2
+            for (j in 1:n.qtl) {
                 if (verbose)
                 cat(" ---Scanning for QTL interacting with Q",
                 j, "\n", sep = "")
@@ -472,11 +465,6 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
             if (n.qtl > 1) {
                 if (verbose)
                 cat(" ---Look for additional interactions\n")
-
-
-                ## <<
-
-                ## <<
 
                 temp <- addint(cross, pheno.col = pheno.cols[1], qtl,
                 covar = covar,
@@ -532,56 +520,6 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
                     }
                 }
             }
-            #            if (scan.pairs) {
-            #                if (verbose)
-            #                    cat(" ---Scan for an additional pair\n")
-            #                out <- addpair(cross, pheno.col = pheno.col,
-            #                  qtl = qtl, covar = covar, formula = formula,
-            #                  method = method, incl.markers = incl.markers,
-            #                  verbose = verbose.scan)
-            #                thelod <- out$lod
-            #                loda <- max(thelod[upper.tri(thelod)], na.rm = TRUE)
-            #                ploda <- calc.plod(loda + lod, c(2, 0, 0, 0) +
-            #                  countqtlterms(formula, ignore.covar = TRUE),
-            #                  penalties = penalties)
-            #                lodf <- max(thelod[lower.tri(thelod)], na.rm = TRUE)
-            #                plodf <- calc.plod(lodf + lod, c(2, 0, 1, 1) +
-            #                  countqtlterms(formula, ignore.covar = TRUE),
-            #                  penalties = penalties)
-            #                if (verbose) {
-            #                  cat("        ploda =", ploda, "\n")
-            #                  cat("        plodf =", plodf, "\n")
-            #                }
-            #                if (ploda > curplod && loda > plodf) {
-            #                  temp <- max(out, what = "add")
-            #                  if (nrow(temp) > 1)
-            #                    temp <- temp[sample(1:nrow(temp), 1), ]
-            #                  curqtl <- addtoqtl(cross, qtl, c(as.character(temp[1,
-            #                    1]), as.character(temp[1, 2])), c(temp[1,
-            #                    3], temp[1, 4]), paste("Q", n.qtl + 1:2,
-            #                    sep = ""))
-            #                  curformula <- as.formula(paste(deparseQTLformula(formula),
-            #                    "+Q", n.qtl + 1, "+Q", n.qtl + 2, sep = ""))
-            #                  curplod <- ploda
-            #                  lod <- loda + lod
-            #                  curnqtl <- n.qtl + 2
-            #                }
-            #                else if (plodf > curplod) {
-            #                  temp <- max(out, what = "full")
-            #                  if (nrow(temp) > 1)
-            #                    temp <- temp[sample(1:nrow(temp), 1), ]
-            #                  curqtl <- addtoqtl(cross, qtl, c(as.character(temp[1,
-            #                    1]), as.character(temp[1, 2])), c(temp[1,
-            #                    3], temp[1, 4]), paste("Q", n.qtl + 1:2,
-            #                    sep = ""))
-            #                  curformula <- as.formula(paste(deparseQTLformula(formula),
-            #                    "+Q", n.qtl + 1, "+Q", n.qtl + 2, "+Q", n.qtl +
-            #                      1, ":Q", n.qtl + 2, sep = ""))
-            #                  curplod <- plodf
-            #                  lod <- lodf + lod
-            #                  curnqtl <- n.qtl + 2
-            #                }
-            #            }
         }
         qtl <- curqtl
         n.qtl <- curnqtl
@@ -658,11 +596,6 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
     while (n.qtl > 1) {
         i <- i + 1
 
-        ## <<
-
-        #        cat(qtl$name)
-        #        cat(qtl$altname)
-        #        cat("\n")
         qtl$name <- qtl$altname
         out2 <- fitqtl(cross, pheno.col=pheno.cols[1], qtl, covar = covar, formula = formula,
         method = method, model = model, dropone = TRUE, get.ests = FALSE,
@@ -670,7 +603,6 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
         rn <- rownames(out2)
         wh <- c(grep("^[Qq][0-9]+$", rn), grep("^[Qq][0-9]+:[Qq][0-9]+$", rn))
 
-        ## <<
         outout <- NULL;
         for(ii in pheno.cols) {
             outout <- cbind(outout, fitqtl(cross, pheno.col=ii, qtl, covar = covar,
@@ -752,10 +684,6 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
                     cat(" ---  Moved a bit\n")
                     qtl <- rqtl
 
-                    # <<
-
-
-
                     res.full = NULL;
                     for(ii in pheno.cols) {
                         res.full <- c(res.full, fitqtl(cross, pheno.col = ii, qtl,
@@ -815,14 +743,6 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
             for (i in 1:n.qtl) formula <- qtl::reviseqtlnuminformula(formula,
             n.qtl + o[i], i)
         }
-        #        if (keeplodprofile) {
-        #    if (verbose)
-        #    cat(" ---One last pass through refineqtl\n")
-        #    qtl <- refineqtl(cross, pheno.col = pheno.col, qtl = qtl,
-        #    covar = covar, formula = formula, method = method,
-        #    verbose = verbose.scan, incl.markers = incl.markers,
-        #    keeplodprofile = TRUE)
-        #}
         attr(qtl, "formula") <- qtl::deparseQTLformula(formula)
         attr(qtl, "pLOD") <- attr(curbest, "pLOD")
         curbest <- qtl
