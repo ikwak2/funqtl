@@ -98,7 +98,7 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
     if (!all(pheno.cols %in% 1:nphe(cross)))
     stop("pheno.cols should be in a range of 1 to ", nphe(cross))
 
-    pheno <- cross$pheno[,pheno.cols]
+    pheno <- cross$pheno[,pheno.cols,drop=FALSE]
 
     if (!("cross" %in% class(cross)))
     stop("Input should have class \"cross\".")
@@ -190,7 +190,7 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
     if (all(hasmissing))
     stop("All individuals are missing phenotypes or covariates.")
     if (any(hasmissing)) {
-        pheno <- pheno[!hasmissing]
+        pheno <- pheno[!hasmissing,,drop=FALSE]
         cross <- subset(cross, ind = !hasmissing)
         if (!is.null(covar))
         covar <- covar[!hasmissing, , drop = FALSE]
