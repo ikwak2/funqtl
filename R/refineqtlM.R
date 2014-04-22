@@ -82,8 +82,10 @@ refineqtlM <- function (cross, Y, qtl, chr, pos, qtl.name, formula,
 
         temp <- cross
         temp$pheno[, p] <- Y
-        out <- refineqtlF(cross = temp, pheno.cols = 1:p, method = method, ...)
+        out <- refineqtlF(cross = temp, pheno.cols = 1:p, method = method,
+                          usec = mtd, ...)
         return(out)
+
     } else {
 
         if (!missing(qtl) && (!missing(chr) || !missing(pos) || !missing(qtl.name)))
