@@ -8,6 +8,7 @@
 #' @param cross An object of class \code{"cross"}. See \code{\link[qtl]{read.cross}} for details.
 #' @param pheno.cols Columns in the phenotype matrix to be used as the
 #' phenotype.
+#' @param usec Which method to use (\code{"slod"} or \code{"mlod"})
 #' @param qtl A QTL object, as produced by \code{\link[qtl]{makeqtl}}, containing the positions
 #' of the QTL.  Provide either \code{qtl} or the pair \code{chr} and \code{pos}.
 #' @param chr Vector indicating the chromosome for each QTL; if \code{qtl} is
@@ -54,12 +55,12 @@
 #' thisqtl1.c <- refineqtlF(exd, pheno.cols = 1:10,  qtl = qtl1.c,
 #'                          method = "hk")
 refineqtlF <-
-function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
-    formula, method = c("imp", "hk"),
-    verbose = TRUE, maxit = 10, incl.markers = TRUE, keeplodprofile = TRUE,
-    tol = 1e-04, maxit.fitqtl = 1000) {
+function (cross, pheno.cols, usec = c("slod", "mlod"), qtl, chr, pos,
+          qtl.name, covar = NULL, formula, method = c("imp", "hk"), 
+          verbose = TRUE, maxit = 10, incl.markers = TRUE, keeplodprofile = TRUE,
+          tol = 1e-04, maxit.fitqtl = 1000) {
 
-
+    usec <- match.arg(usec)
     method <- match.arg(method)
     model <- "normal"
     if (!("cross" %in% class(cross)))
@@ -249,9 +250,7 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
                 basefitlod <- c( basefitlod, basefit[[phv]]$result.full[1,4] )
             }
 
-        }
-
-        else {
+        }  else {
             basefit <- NULL
             basefitlod <- NULL
 
@@ -267,8 +266,12 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
         }
 
         if (i == 1) {
-            origlod <- curlod <- thisitlod <- mean(basefitlod)
-            origpos <- curpos
+            if (usec == "slod")  {
+                origlod <- curlod <- thisitlod <- mean(basefitlod)
+            } else {
+                origlod <- curlod <- thisitlod <- max(basefitlod)
+            }
+            origpos <- curpos            
         }
         if (verbose)
             cat("Iteration", i, "\n")
@@ -296,7 +299,8 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
             out <- scanqtlfn(cross = cross, pheno.cols = pheno.cols,
                        chr = chrnam, pos = thispos, covar = covar, formula = formula,
                        method = method, model = model, incl.markers = incl.markers,
-                       verbose = scanqtl.verbose, tol = tol, maxit = maxit.fitqtl)
+                       verbose = scanqtl.verbose, tol = tol, maxit = maxit.fitqtl,
+                       usec = usec)
 
             lastout[[j]] <- out
             newpos[j] <- as.numeric(strsplit(names(out)[out ==
@@ -348,7 +352,19 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
         dropresult <- basefit[[1]]$result.drop
         if (is.null(dropresult)) {
             if (length(lastout) == 1) {
-                dropresult <- rbind(c(NA, NA, basefit[[1]]$result.full[1, 4]))
+
+                drprest <- NULL
+                for( ii in 1:length(pheno.cols) ) {
+                    drprest <- c(drprest, basefit[[ii]]$result.full[1,4] )
+                }
+
+                if( usec == "slod" ) {
+                    drprest <- mean(drprest)
+                } else {
+                    drprest <- max(drprest)
+                }
+
+                dropresult <- rbind(c(NA, NA, drprest))
                 rownames(dropresult) <- names(lastout)
             }
             else stop("There's a problem: need dropresult, but didn't obtain one.")
@@ -364,14 +380,26 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
                 for( ii in 1:length(pheno.cols) ) {
                     drprest <- c(drprest, basefit[[ii]]$result.full[1,4] )
                 }
-
-                drprest <- mean(drprest)
+                
+                if( usec == "slod" ) {
+                    drprest <- mean(drprest)
+                } else {
+                    drprest <- max(drprest)
+                }
+                
+                
             } else {
                 drprest <- NULL
                 for( ii in 1:length(pheno.cols) ) {
                     drprest <- c(drprest, basefit[[ii]]$result.drop[rn == qn[i], 3] )
                 }
-                drprest <- mean(drprest)
+
+                if( usec == "slod" ) {
+                    drprest <- mean(drprest)
+                } else {
+                    drprest <- max(drprest)
+                }
+
             }
             lastout[[i]] <- lastout[[i]] - (max(lastout[[i]]) - drprest)
 

@@ -85,7 +85,7 @@
 stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
     incl.markers = TRUE, refine.locations = TRUE,
     penalties,  additive.only = FALSE,
-    keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000, method=c("hk", "f"), pheno.cols)
+    keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000, method=c("hk", "f", "sl", "ml"), pheno.cols)
 {
     if (missing(pheno.cols)) {
         pheno.cols = 1:nphe(cross)
@@ -102,9 +102,25 @@ stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
 
     if (!("cross" %in% class(cross)))
         stop("Input should have class \"cross\".")
+
+    if (method == "sl" || method =="ml" ) {
+        temp <- cross
+        temp$pheno[, p] <- Y
+        if (method == "sl") {
+            mtd = "slod"
+        } else {
+            mtd = "mlod"
+        }
+        out <- stepwiseqtlF(cross = temp, pheno.cols = 1:p, usec = mtd,
+                            method = "hk", ...)
+        return(out)
+        
+    }
+           
     if (!missing(chr))
         cross <- subset(cross, chr)
-
+    
+    
     if (!missing(qtl)) {
         if (!("qtl" %in% class(qtl)))
             stop("The qtl argument must be an object of class \"qtl\".")

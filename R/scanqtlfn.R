@@ -1,7 +1,7 @@
 scanqtlfn <-
 function (cross, pheno.cols, chr, pos, covar = NULL, formula,
     method = c("imp", "hk"), model = c("normal", "binary"), incl.markers = FALSE,
-    verbose = TRUE, tol = 1e-04, maxit = 1000)
+    verbose = TRUE, tol = 1e-04, maxit = 1000, usec = c("slod", "mlod") )
 {
     if (!any(class(cross) == "cross"))
         stop("Input should have class \"cross\".")
@@ -250,7 +250,12 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
 
             results2 <- c(results2, results[[ii]][[1]][1,4])
         }
-        result <- mean(results2)  #result[[1]][1, 4]
+#        result <- mean(results2)  #result[[1]][1, 4]
+        if ( usec == "slod") {
+            result <- mean(results2)
+        } else {
+            result <- max(results2)
+        }
 
 
 
@@ -354,7 +359,11 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
         if (verbose && ((i - 1)%%n.prnt) == 0)
             cat("    ", i, "/", n.loop, "\n")
 #
-        result[i] <- mean(fitresults)
+        if ( usec == "slod") {
+            result[i] <- mean(fitresults)
+        } else {
+            result[i] <- max(fitresults)
+        }
     }
     dnames <- list(NULL)
     for (i in 1:n.idx.varied) {

@@ -339,7 +339,7 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
             rqtl <- refineqtlF(cross, pheno.cols = pheno.cols, qtl = qtl,
             covar = covar, formula = formula, method = method,
             verbose = verbose.scan, incl.markers = incl.markers,
-            keeplodprofile = FALSE)
+            keeplodprofile = FALSE, usec = usec)
             if (any(rqtl$pos != qtl$pos)) {
                 if (verbose)
                 cat(" ---  Moved a bit\n")
@@ -533,7 +533,7 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
             rqtl <- refineqtlF(cross, pheno.cols = pheno.cols, qtl = qtl,
             covar = covar, formula = formula, method = method,
             verbose = verbose.scan, incl.markers = incl.markers,
-            keeplodprofile = FALSE)
+            keeplodprofile = FALSE, usec = usec)
             if (any(rqtl$pos != qtl$pos)) {
                 if (verbose)
                 cat(" ---  Moved a bit\n")
@@ -678,7 +678,7 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
                 rqtl <- refineqtlF(cross, pheno.cols = pheno.cols,
                 qtl = qtl, covar = covar, formula = formula,
                 method = method, verbose = verbose.scan, incl.markers = incl.markers,
-                keeplodprofile = FALSE)
+                keeplodprofile = FALSE, usec = usec)
                 if (any(rqtl$pos != qtl$pos)) {
                     if (verbose)
                     cat(" ---  Moved a bit\n")
