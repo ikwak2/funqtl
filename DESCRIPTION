@@ -1,7 +1,7 @@
 Package: funqtl
 Type: Package
 Title: QTL mapping for function valued trait
-Version: 0.1-7
+Version: 0.1-8
 Date: 2014-04-28
 Author: Il Youp Kwak with contributions from Karl W Broman.
 Maintainer: IL-YOUP KWAK <ikwak2@stat.wisc.edu>
@@ -9,5 +9,4 @@ Description: This is an add-on functions of "qtl" package to deal with function 
 Depends: R (>= 2.10), qtl (>= 1.31-5), fields
 Suggests: knitr
 License: GPL-2
-Packaged: 2012-10-22 18:56:05 UTC; kbroman
 VignetteBuilder: knitr
