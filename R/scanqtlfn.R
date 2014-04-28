@@ -10,40 +10,17 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
             covar <- as.data.frame(covar, stringsAsFactors = TRUE)
         else stop("covar should be a data.frame")
     }
-#    if (qtl::LikePheVector(pheno.col, nind(cross), nphe(cross))) {
-#        cross$pheno <- cbind(pheno.col, cross$pheno)
-#        pheno.col <- 1
-#    }
-#    if (length(pheno.col) > 1) {
-#        pheno.col <- pheno.col[1]
-#        warning("scanqtl can take just one phenotype; only the first will be used")
-#    }
-#    if (is.character(pheno.col)) {
-#        num <- find.pheno(cross, pheno.col)
-#        if (is.na(num))
-#            stop("Couldn't identify phenotype \"", pheno.col,
-#                "\"")
-#        pheno.col <- num
-#    }
 
     if (missing(pheno.cols))
         pheno.cols = 1:nphe(cross)
 
-    #
     if (!all(pheno.cols %in% 1:nphe(cross)))
         stop("pheno.cols should be in a range of 1 to ", nphe(cross))
 
-    #
     pheno <- as.data.frame(cross$pheno[, pheno.cols,drop=FALSE], stringsAsFactors = TRUE)
 
     if (!is.null(covar) && nrow(covar) != nrow(pheno))
         stop("nrow(covar) != no. individuals in cross.")
-
-##########
-###########
-#    method <- match.arg(method)
-#    model <- match.arg(model)
-
 
     if (!missing(formula) && is.character(formula))
         formula <- as.formula(formula)
@@ -85,7 +62,7 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
     chrtype <- sapply(cross$geno, class)
     if (length(chr) != length(pos))
         stop("Input chr and pos must have the same length")
-#    method <- match.arg(method)
+
     ichr <- match(chr, names(cross$geno))
     if (any(is.na(ichr)))
         stop("There's no chromosome number ", chr[is.na(ichr)],
@@ -145,7 +122,6 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
         if (any(hasmissing)) {
             warning("Dropping ", sum(hasmissing), " individuals with missing phenotypes.\n")
             cross <- subset(cross, ind = !hasmissing)
-#
             pheno <- pheno[!hasmissing,]
             if (!is.null(covar))
                 covar <- covar[!hasmissing, , drop = FALSE]
@@ -162,7 +138,7 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
                 msg <- paste(msg, i, "th input pos.")
                 msg <- paste(msg, "The first two are taken as starting and ending position.")
                 warning(msg)
-            } #i=4
+            }
             idx.varied <- c(idx.varied, i)
             if (method == "imp") {
                 if ("map" %in% names(attributes(cross$geno[[ichr[i]]]$draws)))
@@ -250,7 +226,6 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
 
             results2 <- c(results2, results[[ii]][[1]][1,4])
         }
-#        result <- mean(results2)  #result[[1]][1, 4]
         if ( usec == "slod") {
             result <- mean(results2)
         } else {
@@ -273,7 +248,6 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
     }
     current.pos <- NULL
 
-##
 
     for (i in 1:n.loop) {
         remain <- i
@@ -323,7 +297,7 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
                   if (chrtype[ichr[kk]] == "X" && (type == "bc" ||
                     type == "f2")) {
                     if (method == "imp")
-#
+
                         qtl.obj$geno[, kk, ] <- qtl::reviseXdata(type,
                         "full", sexpgm, draws = qtl.obj$geno[,
                           kk, , drop = FALSE], cross.attr = attributes(cross))
@@ -331,7 +305,7 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
                       temp <- qtl.obj$prob[[kk]]
                       temp <- array(temp, dim = c(nrow(temp),
                         1, ncol(temp)))
-#
+
                       dimnames(temp) <- list(NULL, "loc", 1:ncol(qtl.obj$prob[[kk]]))
                       qtl.obj$prob[[kk]] <- qtl::reviseXdata(type,
                         "full", sexpgm, prob = temp, cross.attr = attributes(cross))[,
@@ -344,7 +318,6 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
         }
 
 
-#
         fit <- NULL;
         fitresults <- NULL;
         for(ii in 1:length(pheno.cols)) {
@@ -358,7 +331,6 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
 
         if (verbose && ((i - 1)%%n.prnt) == 0)
             cat("    ", i, "/", n.loop, "\n")
-#
         if ( usec == "slod") {
             result[i] <- mean(fitresults)
         } else {
