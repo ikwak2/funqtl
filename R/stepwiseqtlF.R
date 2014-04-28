@@ -91,7 +91,6 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
                           additive.only = FALSE, penalties,
                           keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
 {
-
   if (missing(pheno.cols))
     pheno.cols = 1:nphe(cross)
 
@@ -116,9 +115,11 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
       else stop("Chromosome ", wh, " (in QTL object) not in cross object.")
     }
     if (missing(formula)) {
-      if (!is.null(covar))
+      if (!is.null(covar)) {
+        if(!is.data.frame(covar)) covar <- as.data.frame(covar)
         formula <- paste("y ~ ", paste(names(covar),
                                        collapse = "+"), "+")
+      }
       else formula <- "y ~ "
       formula <- paste(formula, paste(paste("Q", 1:length(qtl$chr),
                                             sep = ""), collapse = "+"))
@@ -183,7 +184,7 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
       stop("The qtl object doesn't contain QTL genotype probabilities; re-run makeqtl with what=\"prob\".")
   }
 
-  if (!is.null(covar))
+  if(!is.null(covar))
     phcovar <- cbind(pheno, covar)
   else phcovar <- as.data.frame(pheno, stringsAsFactors = TRUE)
   hasmissing <- apply(phcovar, 1, function(a) any(is.na(a)))
@@ -204,6 +205,7 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
       qtl$n.ind <- sum(!hasmissing)
     }
   }
+
   if (max.qtl < 1)
     stop("Need max.qtl > 0 if we are to scan for qtl")
   if (is.null(covar)) {
@@ -215,8 +217,11 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
   #####  Need modification
 
   else {
-    lod0 <- length(pheno)/2 * log10(sum((pheno - mean(pheno))^2)/sum(lm(pheno ~
-                                                                        as.matrix(covar))$resid^2))
+    rss0 <- colSums(lm(as.matrix(pheno) ~ as.matrix(covar))$resid^2)
+    rss00 <- colSums(lm(as.matrix(pheno) ~ 1)$resid^2)
+    lod0 <- nrow(pheno)/2 * log10(rss00/rss0)
+    if(usec=="slod") lod0 <- mean(lod0, na.rm=TRUE)
+    else lod0 <- max(lod0, na.rm=TRUE)
     if (startatnull)
       firstformula <- as.formula(paste("y~", paste(names(covar),
                                                    collapse = "+"), "+", "Q1"))
@@ -602,27 +607,26 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
                    run.checks = FALSE, tol = tol, maxit = maxit)$result.drop
     rn <- rownames(out2)
     wh <- c(grep("^[Qq][0-9]+$", rn), grep("^[Qq][0-9]+:[Qq][0-9]+$", rn))
+    rn <- rn[wh]
 
-    outout <- NULL;
-    for(ii in pheno.cols) {
+    outout <- out2[wh,3]
+    for(ii in pheno.cols[-2]) {
       outout <- cbind(outout, fitqtl(cross, pheno.col=ii, qtl, covar = covar,
                                      formula = formula, method = method,
                                      model = model, dropone = TRUE, get.ests = FALSE,
                                      run.checks = FALSE, tol = tol,
-                                     maxit = maxit)$result.drop[, 3]
+                                     maxit = maxit)$result.drop[wh, 3]
                       )
     }
 
 
 
     if(usec=="slod") {
-      outout <- apply(outout,1,mean)
+      thelod <- apply(outout,1,mean)
     }
     if(usec=="mlod") {
-      outout <- apply(outout,1,max)
+      thelod <- apply(outout,1,max)
     }
-    out <- outout[wh , drop = FALSE]
-    thelod <- out
     minlod <- min(thelod, na.rm = TRUE)
 
 
