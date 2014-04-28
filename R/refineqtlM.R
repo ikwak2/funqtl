@@ -83,7 +83,12 @@ refineqtlM <- function (cross, Y, qtl, chr, pos, qtl.name, formula,
         temp <- cross
         temp$pheno[, p] <- Y
         out <- refineqtlF(cross = temp, pheno.cols = 1:p, method = method,
-                          usec = mtd, ...)
+                          usec = mtd, method = "hk", qtl = qtl, chr = chr,
+                          pos = pos, qtl.name = qtl.name, covar = covar,
+                          formula = formula, verbose = verbose, maxit = maxit,
+                          incl.markers = incl.markers,
+                          keeplodprofile = keeplodprofile,
+                          tol = tol, maxit.fitqtl = maxit.fitqtl )
         return(out)
 
     } else {
