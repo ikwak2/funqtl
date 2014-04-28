@@ -34,9 +34,9 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
         stop("pheno.cols should be in a range of 1 to ", nphe(cross))
 
     #
-    pheno <- as.data.frame(cross$pheno[, pheno.cols], stringsAsFactors = TRUE)
+    pheno <- as.data.frame(cross$pheno[, pheno.cols,drop=FALSE], stringsAsFactors = TRUE)
 
-    if (!is.null(covar) && nrow(covar) != length(pheno))
+    if (!is.null(covar) && nrow(covar) != nrow(pheno))
         stop("nrow(covar) != no. individuals in cross.")
 
 ##########
