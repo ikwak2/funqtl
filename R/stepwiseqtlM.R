@@ -39,9 +39,6 @@
 #' output.
 #' @param verbose If TRUE, give feedback about progress.  If 'verbose' is an
 #' integer > 1, even more information is printed.
-#' @param tol Tolerance for convergence for the binary trait model.
-#' @param maxit Maximum number of iterations for fitting the binary trait
-#' model.
 #' @export
 #' @return
 #'
@@ -82,10 +79,12 @@
 #' @examples
 #' cat("An example needs to be added.\n")
 
-stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
-    incl.markers = TRUE, refine.locations = TRUE,
-    penalties,  additive.only = FALSE,
-    keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000, method=c("hk", "f", "sl", "ml"), pheno.cols)
+stepwiseqtlM <-
+function (cross, chr, Y, qtl, formula, max.qtl = 10,
+          incl.markers = TRUE, refine.locations = TRUE,
+          penalties,  additive.only = FALSE,
+          keeptrace = FALSE, verbose = TRUE,
+          method=c("hk", "f", "sl", "ml"), pheno.cols)
 {
     if (missing(pheno.cols)) {
         pheno.cols = 1:nphe(cross)
@@ -116,8 +115,7 @@ stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
                             method = "hk", formula = formula, max.qtl = max.qtl,
                             covar = NULL, incl.markers= incl.markers,
                             refine.locations = refine.locations, penalties = penalties,
-                            keeptrace = keeptrace, verbose = verbose, tol = tol,
-                            maxit = maxit)
+                            keeptrace = keeptrace, verbose = verbose)
         return(out)
         
     }
@@ -232,7 +230,7 @@ stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
             qtl <- rqtl
         }
         lod <- as.numeric(getlodM(cross, Y = Y, qtl, formula = formula,
-            tol = tol, method=method, pheno.cols=pheno.cols)) - lod0
+                                  method=method, pheno.cols=pheno.cols)) - lod0
         curplod <- calc.plod(lod, qtl::countqtlterms(formula, ignore.covar = TRUE),
             penalties = penalties)
         attr(qtl, "pLOD") <- curplod
@@ -363,7 +361,7 @@ stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
                   cat(" ---  Moved a bit\n")
                 qtl <- rqtl
                 lod <- as.numeric(getlodM(cross, Y = Y, qtl, formula = formula,
-                  tol = tol, method=method, pheno.cols=pheno.cols)) - lod0
+                                          method=method, pheno.cols=pheno.cols)) - lod0
                 curplod <- calc.plod(lod, qtl::countqtlterms(formula,
                   ignore.covar = TRUE), penalties = penalties)
                 attr(qtl, "pLOD") <- curplod
@@ -459,7 +457,8 @@ stepwiseqtlM <- function (cross, chr, Y, qtl, formula, max.qtl = 10,
                     cat(" ---  Moved a bit\n")
                   qtl <- rqtl
                   lod <- as.numeric( getlodM(cross, Y = Y, qtl = qtl,
-                    formula = formula, tol = tol, method=method, pheno.cols=pheno.cols) ) - lod0
+                                             formula = formula, method=method,
+                                             pheno.cols=pheno.cols) ) - lod0
                   curplod <- calc.plod(lod, qtl::countqtlterms(formula,
                     ignore.covar = TRUE), penalties = penalties)
                   attr(qtl, "pLOD") <- curplod

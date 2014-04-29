@@ -6,14 +6,12 @@
 addqtlF(cross, pheno.cols, ...)
 }
 \arguments{
-  \item{cross}{An object of class \code{"cross"}. See
-  \code{\link[qtl]{read.cross}} for details.}
+\item{cross}{An object of class \code{"cross"}. See \code{\link[qtl]{read.cross}} for details.}
 
-  \item{pheno.cols}{Columns in the phenotype matrix to be
-  used as the phenotype.}
+\item{pheno.cols}{Columns in the phenotype matrix to be used as the
+phenotype.}
 
-  \item{\dots}{Passed to the R/qtl function
-  \code{\link[qtl]{addqtl}}.}
+\item{\dots}{Passed to the R/qtl function \code{\link[qtl]{addqtl}}.}
 }
 \value{
 An object of class \code{"scanone"}, as produced by the R/qtl function \code{\link[qtl]{scanone}}.

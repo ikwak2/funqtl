@@ -1,9 +1,7 @@
 profileLodMatfn2 <- function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
-    formula, method = c("imp", "hk"), model = c("normal", "binary"),
-    verbose = TRUE, tol = 1e-04, maxit.fitqtl = 1000 ) {
-
+    formula, method = c("hk", "imp"), verbose = TRUE)
+{
     method <- match.arg(method)
-    model <- match.arg(model)
 
     if (!("cross" %in% class(cross)))
         stop("The cross argument must be an object of class \"cross\".")
@@ -209,9 +207,9 @@ profileLodMatfn2 <- function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar 
     for(phv in seq(along=pheno.cols)) {
         basefit[[phv]] <- qtl::fitqtlengine(pheno = pheno[,pheno.cols[phv]], qtl = reducedqtl,
                                 covar = covar, formula = formula, method = method,
-                                model = model, dropone = TRUE, get.ests = FALSE,
+                                model = "normal", dropone = TRUE, get.ests = FALSE,
                                 run.checks = FALSE, cross.attr = cross.attr,
-                                sexpgm = sexpgm, tol = tol, maxit = maxit.fitqtl)
+                                sexpgm = sexpgm)
         basefitlod <- c( basefitlod, basefit[[phv]]$result.full[1,4] )
 
     }
@@ -235,8 +233,8 @@ profileLodMatfn2 <- function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar 
         for( tt in seq(along=pheno.cols) ) {
             out <- scanqtl(cross = cross, pheno.col = pheno.cols[tt],
                            chr = chrnam, pos = thispos, covar = covar, formula = formula,
-                           method = method, model = model, incl.markers =TRUE,
-                           verbose = scanqtl.verbose, tol = tol, maxit = maxit.fitqtl)
+                           method = method, model = "normal", incl.markers =TRUE,
+                           verbose = scanqtl.verbose)
 
             dropresult <- basefit[[tt]]$result.drop
 

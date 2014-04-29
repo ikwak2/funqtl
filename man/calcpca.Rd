@@ -6,14 +6,13 @@
 calcpca(cross, n.max = 5, criteria = 0.9, nn = 0)
 }
 \arguments{
-  \item{cross}{An object of class \code{"cross"}. See the
-  \code{\link[qtl]{read.cross}} for details.}
+\item{cross}{An object of class \code{"cross"}. See the \code{\link[qtl]{read.cross}} for details.}
 
-  \item{n.max}{The number of maximum reduced dimension.}
+\item{n.max}{The number of maximum reduced dimension.}
 
-  \item{criteria}{how much of variance explained.}
+\item{criteria}{how much of variance explained.}
 
-  \item{nn}{The number of exact reduced dimension}
+\item{nn}{The number of exact reduced dimension}
 }
 \value{
 It gives a matrix that each column have principal components.

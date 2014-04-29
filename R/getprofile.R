@@ -24,13 +24,8 @@
 #' names in 'covar'.
 #' @param method Indicates whether to use multiple imputation or Haley-Knott
 #' regression.
-#' @param model The phenotype model: the usual model or a model for binary
-#' traits
 #' @param verbose If TRUE, give feedback about progress.  If 'verbose' is an
 #' integer > 1, further messages from 'scanqtl' are also displayed.
-#' @param tol Tolerance for convergence for the binary trait model.
-#' @param maxit.fitqtl Maximum number of iterations for fitting the binary
-#' trait model.
 #' @param tpy type of output. If there are more QTL's in one chromosome. It
 #' plot them separately if \code{tpy = "sep"}, On the other hand, it combine then in
 #' one chromosome taking maximum values of them if \code{tpy = "comb"}.
@@ -61,23 +56,20 @@
 #' plotprofile(lodmat2, main="tpy=\"comb\"")
 getprofile <-
 function(cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
-formula, method = c("imp", "hk"), model = c("normal", "binary"), verbose
-= TRUE, tol = 1e-04, maxit.fitqtl = 1000, tpy = c("comb","sep")) {
-
+         formula, method = c("hk", "imp"), verbose = TRUE, tpy = c("comb","sep"))
+{
     tpy <- match.arg(tpy)
 
     if( tpy == "comb" ) {
         out <- profileLodMatfn2(cross = cross, pheno.cols = pheno.cols, qtl = qtl,
                                 chr = chr, pos = pos, qtl.name = qtl.name,
                                 covar = covar, formula = formula, method = method,
-                                model = model, verbose = verbose, tol = tol,
-                                maxit.fitqtl = maxit.fitqtl)
+                                verbose = verbose)
     } else if (tpy == "sep") {
         out <- profileLodMatfn(cross = cross, pheno.cols = pheno.cols, qtl = qtl,
                                 chr = chr, pos = pos, qtl.name = qtl.name,
                                 covar = covar, formula = formula, method = method,
-                                model = model, verbose = verbose, tol = tol,
-                                maxit.fitqtl = maxit.fitqtl)
+                                verbose = verbose)
     }
     out
 }

@@ -1,5 +1,5 @@
 scanqtlM <- function (cross, Y, chr, pos, formula, incl.markers = FALSE,
-                      verbose = TRUE, tol = 1e-04, maxit = 1000, method=c("hk","f"), pheno.cols)
+                      verbose = TRUE, method=c("hk","f"), pheno.cols)
 {
 
     if (missing(pheno.cols)) {
@@ -132,7 +132,7 @@ scanqtlM <- function (cross, Y, chr, pos, formula, incl.markers = FALSE,
     }  else {
         qtl <- makeqtl(cross, chr = chr, pos = unlist(pos), what = "prob")
 
-        result <- getlodM(cross, Y, formula=formula, qtl = qtl, tol = tol, method = method, pheno.cols=pheno.cols)
+        result <- getlodM(cross, Y, formula=formula, qtl = qtl, method = method, pheno.cols=pheno.cols)
 
 
 
@@ -203,7 +203,7 @@ scanqtlM <- function (cross, Y, chr, pos, formula, incl.markers = FALSE,
         }
 
         qtl.obj <- makeqtl(cross, chr, current.pos, what = "prob")
-        fit <- getlodM(cross, Y, formula=formula, qtl = qtl.obj, tol=tol, method=method, pheno.cols=pheno.cols)
+        fit <- getlodM(cross, Y, formula=formula, qtl = qtl.obj, method=method, pheno.cols=pheno.cols)
 
         if (verbose && ((i - 1)%%n.prnt) == 0)
             cat("    ", i, "/", n.loop, "\n")

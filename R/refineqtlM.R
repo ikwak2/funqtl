@@ -9,13 +9,7 @@
 #' @param cross An object of class \code{"cross"}. See \code{\link[qtl]{read.cross}} for details.
 #' @param Y Matrix of phenotypes
 #' @param qtl A QTL object, as produced by \code{\link[qtl]{makeqtl}}, containing the positions
-#' of the QTL.  Provide either \code{qtl} or the pair \code{chr} and \code{pos}.
-#' @param chr Vector indicating the chromosome for each QTL; if \code{qtl} is
-#' provided, this should not be.
-#' @param pos Vector indicating the positions for each QTL; if \code{qtl} is
-#' provided, this should not be.
-#' @param qtl.name Optional user-specified name for each QTL.  If \code{qtl} is
-#' provided, this should not be.
+#' of the QTL.
 #' @param formula An object of class \code{"formula"} indicating the model to be
 #' fitted.  (It can also be the character string representation of a formula.)
 #' QTLs are indicated as 'Q1', 'Q2', etc.  Covariates are indicated by their
@@ -27,9 +21,6 @@
 #' spaced grid.
 #' @param keeplodprofile If TRUE, keep the LOD profiles from the last iteration
 #' as attributes to the output.
-#' @param tol Tolerance passed to \code{\link[stats]{lm.fit}}
-#' @param maxit.fitqtl Maximum number of iterations for fitting the binary
-#' trait model.
 #' @param method Indicates whether to use \code{"hk"}, \code{"f"}, \code{"sl"}, \code{"ml"} criteria
 #' @param pheno.cols Columns in the phenotype matrix to be used as the phenotype.
 #'
@@ -47,9 +38,9 @@
 #' @export
 #' @examples
 #' cat("An example needs to be added.\n")
-refineqtlM <- function (cross, Y, qtl, chr, pos, qtl.name, formula,
-    verbose = TRUE, maxit = 10, incl.markers = TRUE, keeplodprofile = TRUE,
-    tol = 1e-04, maxit.fitqtl = 1000, method=c("hk","f", "sl", "ml"), pheno.cols)
+refineqtlM <- function (cross, Y, qtl, formula,
+                        verbose = TRUE, maxit = 10, incl.markers = TRUE, keeplodprofile = TRUE,
+                        method=c("hk","f", "sl", "ml"), pheno.cols)
 {
 
     if (missing(pheno.cols)) {
@@ -82,33 +73,15 @@ refineqtlM <- function (cross, Y, qtl, chr, pos, qtl.name, formula,
 
         temp <- cross
         temp$pheno[, p] <- Y
-        out <- refineqtlF(cross = temp, pheno.cols = 1:p, method = method,
-                          usec = mtd, method = "hk", qtl = qtl, chr = chr,
-                          pos = pos, qtl.name = qtl.name, covar = covar,
-                          formula = formula, verbose = verbose, maxit = maxit,
-                          incl.markers = incl.markers,
-                          keeplodprofile = keeplodprofile,
-                          tol = tol, maxit.fitqtl = maxit.fitqtl )
+        out <- refineqtlF(cross = temp, pheno.cols = 1:p, method = "hk",
+                          usec = mtd, qtl=qtl, formula=formula,
+                          maxit=maxit, incl.markers=incl.markers, keeplodprofile=keeplodprofile)
         return(out)
 
     } else {
 
-        if (!missing(qtl) && (!missing(chr) || !missing(pos) || !missing(qtl.name)))
-            warning("qtl argument is provided, and so chr, pos and qtl.name are ignored.")
-        if (missing(qtl) && (missing(chr) || missing(pos)))
-            stop("Provide either qtl or both chr and pos.")
-        if (!missing(qtl)) {
-            chr <- qtl$chr
-            pos <- qtl$pos
-        }  else {
-            if (missing(qtl.name)) {
-                qtl <- makeqtl(cross, chr = chr, pos = pos, what = "prob")
-            }
-            else {
-                qtl <- makeqtl(cross, chr = chr, pos = pos,
-                               qtl.name = qtl.name, what = "prob")
-            }
-        }
+        chr <- qtl$chr
+        pos <- qtl$pos
         
         if (!all(chr %in% names(cross$geno)))
             stop("Chr ", paste(unique(chr[!(chr %in% cross$geno)]),
@@ -217,7 +190,7 @@ refineqtlM <- function (cross, Y, qtl, chr, pos, qtl.name, formula,
                 out <- scanqtlM(cross = cross, Y,
                                 chr = chrnam, pos = thispos, formula = formula,
                                 incl.markers = incl.markers,
-                                verbose = scanqtl.verbose, tol = tol, maxit = maxit.fitqtl)
+                                verbose = scanqtl.verbose)
                 lastout[[j]] <- out
                 newpos[j] <- as.numeric(strsplit(names(out)[out ==
                                                             max(out)], "@")[[1]][2])
