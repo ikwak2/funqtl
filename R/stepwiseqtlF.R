@@ -215,7 +215,7 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
 
   # null log likelihood and initial formula
   if (is.null(covar)) {
-    lod0 <- 0
+    lod0 <- rep(0, length(pheno.cols))
     if (startatnull)
       firstformula <- y ~ Q1
     else firstformula <- formula

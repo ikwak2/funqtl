@@ -12,7 +12,7 @@ fitqtlF <-
 function(cross, pheno.cols, qtl, formula, covar=NULL, method=c("hk", "imp"), lod0)
 {
   if(missing(lod0)) {
-    if(is.null(covar)) lod0 <- 0
+    if(is.null(covar)) lod0 <- rep(0, length(pheno.cols))
     else {
       pheno <- cross$pheno[,pheno.cols,drop=FALSE]
       rss0 <- colSums(lm(as.matrix(pheno) ~ as.matrix(covar))$resid^2, na.rm=TRUE)

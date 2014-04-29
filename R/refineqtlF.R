@@ -145,7 +145,7 @@ function (cross, pheno.cols, usec = c("slod", "mlod"), qtl, covar = NULL,
   }
 
   # null LOD
-  lod0 <- 0
+  lod0 <- rep(0, length(pheno.cols))
   if(!is.null(covar)) {
     pheno <- cross$pheno[,pheno.cols,drop=FALSE]
     rss0 <- colSums(lm(as.matrix(pheno) ~ as.matrix(covar))$resid^2, na.rm=TRUE)
