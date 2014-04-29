@@ -212,32 +212,17 @@ function (cross, pheno.cols, usec = c("slod", "mlod"), qtl, covar = NULL,
 
   # begin iterative refinement
   for (i in 1:maxit) {
-    if (keeplodprofile) {
+    basefit <- NULL
+    basefitlod <- NULL
 
-      basefit <- NULL
-      basefitlod <- NULL
-
-      for(phv in 1:length(pheno.cols)) {
-        basefit[[phv]] <- qtl::fitqtlengine(pheno = pheno[,phv], qtl = reducedqtl,
-                                            covar = covar, formula = formula, method = method,
-                                            model = "normal", dropone = TRUE, get.ests = FALSE,
-                                            run.checks = FALSE, cross.attr = cross.attr,
-                                            sexpgm = sexpgm)
-        basefitlod <- c( basefitlod, basefit[[phv]]$result.full[1,4] )
-      }
-
-    }  else {
-      basefit <- NULL
-      basefitlod <- NULL
-
-      for(phv in 1:length(pheno.cols)) {
-
-        basefit[[phv]] <- qtl::fitqtlengine(pheno = pheno[,phv], qtl = reducedqtl,
-                                            covar = covar, formula = formula, method = method,
-                                            model = "normal", dropone = FALSE, get.ests = FALSE,
-                                            run.checks = FALSE, cross.attr = cross.attr, sexpgm = sexpgm)
-        basefitlod <- c( basefitlod, basefit[[phv]]$result.full[1,4] )
-      }
+    for(phv in 1:length(pheno.cols)) {
+      # if keeplodprofile=TRUE, run dropone
+      basefit[[phv]] <- qtl::fitqtlengine(pheno = pheno[,phv], qtl = reducedqtl,
+                                          covar = covar, formula = formula, method = method,
+                                          model = "normal", dropone = keeplodprofile, get.ests = FALSE,
+                                          run.checks = FALSE, cross.attr = cross.attr,
+                                          sexpgm = sexpgm)
+      basefitlod <- c( basefitlod, basefit[[phv]]$result.full[1,4] )
     }
 
     if (i == 1) {
@@ -248,8 +233,8 @@ function (cross, pheno.cols, usec = c("slod", "mlod"), qtl, covar = NULL,
       }
       origpos <- curpos
     }
-    if (verbose)
-      cat("Iteration", i, "\n")
+
+    if (verbose)  cat("Iteration", i, "\n")
     o <- sample(lc)
     if (!is.null(oldo))
       while (o[1] != oldo[lc]) o <- sample(lc)
