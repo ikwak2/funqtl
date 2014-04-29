@@ -144,6 +144,15 @@ function (cross, pheno.cols, usec = c("slod", "mlod"), qtl, covar = NULL,
     qtl$n.ind <- sum(!hasmissing)
   }
 
+  # null LOD
+  lod0 <- 0
+  if(!is.null(covar)) {
+    pheno <- cross$pheno[,pheno.cols,drop=FALSE]
+    rss0 <- colSums(lm(as.matrix(pheno) ~ as.matrix(covar))$resid^2, na.rm=TRUE)
+    rss00 <- colSums(lm(as.matrix(pheno) ~ 1)$resid^2, na.rm=TRUE)
+    lod0 <- nrow(pheno)/2 * log10(rss00/rss0)
+  }
+
   # check or create formula
   if (missing(formula)) {
     formula <- paste("y ~", paste(qtl$altname, collapse = "+"))
@@ -212,8 +221,8 @@ function (cross, pheno.cols, usec = c("slod", "mlod"), qtl, covar = NULL,
 
   # begin iterative refinement
   for (i in 1:maxit) {
-    basefit <- NULL
-    basefitlod <- NULL
+    basefit <- vector("list", length(pheno.cols))
+    basefitlod <- rep(NA, length(pheno.cols))
 
     for(phv in 1:length(pheno.cols)) {
       # if keeplodprofile=TRUE, run dropone
@@ -222,23 +231,26 @@ function (cross, pheno.cols, usec = c("slod", "mlod"), qtl, covar = NULL,
                                           model = "normal", dropone = keeplodprofile, get.ests = FALSE,
                                           run.checks = FALSE, cross.attr = cross.attr,
                                           sexpgm = sexpgm)
-      basefitlod <- c( basefitlod, basefit[[phv]]$result.full[1,4] )
+      basefitlod[phv] <- basefit[[phv]]$result.full[1,4]
     }
 
     if (i == 1) {
       if (usec == "slod")  {
-        origlod <- curlod <- thisitlod <- mean(basefitlod)
+        origlod <- curlod <- thisitlod <- mean(basefitlod-lod0)
       } else {
-        origlod <- curlod <- thisitlod <- max(basefitlod)
+        origlod <- curlod <- thisitlod <- max(basefitlod-lod0)
       }
       origpos <- curpos
     }
 
     if (verbose)  cat("Iteration", i, "\n")
+
+    # random order
     o <- sample(lc)
     if (!is.null(oldo))
       while (o[1] != oldo[lc]) o <- sample(lc)
     oldo <- o
+
     newpos <- curpos
     for (j in o) {
       otherchr <- chrnam[-j]
@@ -262,8 +274,7 @@ function (cross, pheno.cols, usec = c("slod", "mlod"), qtl, covar = NULL,
                        verbose = scanqtl.verbose, usec = usec)
 
       lastout[[j]] <- out
-      newpos[j] <- as.numeric(strsplit(names(out)[out ==
-                                                  max(out)], "@")[[1]][2])
+      newpos[j] <- as.numeric(strsplit(names(out)[out == max(out)], "@")[[1]][2])
       if (verbose) {
         cat(" Q", j, " pos: ", curpos[j], " -> ", newpos[j],
             "\n", sep = "")
