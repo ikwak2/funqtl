@@ -214,17 +214,17 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
       firstformula <- y ~ Q1
     else firstformula <- formula
   }
-  #####  Need modification
-
   else {
-    rss0 <- colSums(lm(as.matrix(pheno) ~ as.matrix(covar))$resid^2)
-    rss00 <- colSums(lm(as.matrix(pheno) ~ 1)$resid^2)
+    rss0 <- colSums(lm(as.matrix(pheno) ~ as.matrix(covar))$resid^2, na.rm=TRUE)
+    rss00 <- colSums(lm(as.matrix(pheno) ~ 1)$resid^2, na.rm=TRUE)
     lod0 <- nrow(pheno)/2 * log10(rss00/rss0)
     if(usec=="slod") lod0 <- mean(lod0, na.rm=TRUE)
     else lod0 <- max(lod0, na.rm=TRUE)
+
     if (startatnull)
-      firstformula <- as.formula(paste("y~", paste(names(covar),
-                                                   collapse = "+"), "+", "Q1"))
+      firstformula <- as.formula(paste("y~",
+                                       paste(names(covar), collapse = "+"),
+                                       "+", "Q1"))
     else firstformula <- formula
   }
   cross.type <- class(cross)[1]
@@ -363,10 +363,10 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
                                      maxit = maxit)$result.full[1, 4] )
     }
     if(usec=="slod") {
-      lod <- mean(res.full) - lod0
+      lod <- mean(res.full - lod0)
     }
     if(usec=="mlod") {
-      lod <- max(res.full) - lod0
+      lod <- max(res.full - lod0)
     }
 
     curplod <- calc.plod(lod, qtl::countqtlterms(formula, ignore.covar = TRUE),
@@ -380,8 +380,8 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
     curbest <- qtl
     curbestplod <- curplod
     if (verbose)
-      cat("** new best ** (pLOD increased by ", round(curplod,
-                                                      4), ")\n", sep = "")
+      cat("** new best ** (pLOD increased by ",
+          round(curplod, 4), ")\n", sep = "")
   }
   if (keeptrace) {
     temp <- list(chr = qtl$chr, pos = qtl$pos)
@@ -452,8 +452,7 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
 
         if (length(wh) > 1)
           wh <- sample(wh, 1)
-        thisqtl <- addtoqtl(cross, qtl, as.character(out[wh,
-                                                         1]), out[wh, 2], paste("Q", n.qtl + 1, sep = ""))
+        thisqtl <- addtoqtl(cross, qtl, as.character(out[wh, 1]), out[wh, 2], paste("Q", n.qtl + 1, sep = ""))
         thislod <- thislod + lod
         thisplod <- calc.plod(thislod, qtl::countqtlterms(thisformula,
                                                           ignore.covar = TRUE), penalties = penalties)
@@ -556,10 +555,10 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
                                          maxit = maxit)$result.full[1, 4] )
         }
         if(usec=="slod") {
-          lod <- mean(res.full) - lod0
+          lod <- mean(res.full - lod0)
         }
         if(usec=="mlod") {
-          lod <- max(res.full) - lod0
+          lod <- max(res.full - lod0)
         }
 
 
@@ -699,10 +698,10 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
                                            maxit = maxit)$result.full[1, 4] )
           }
           if(usec=="slod") {
-            lod <- mean(res.full) - lod0
+            lod <- mean(res.full - lod0)
           }
           if(usec=="mlod") {
-            lod <- max(res.full) - lod0
+            lod <- max(res.full - lod0)
           }
 
           curplod <- calc.plod(lod, qtl::countqtlterms(formula,
