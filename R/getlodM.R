@@ -1,5 +1,7 @@
-getlodM <- function(cross, Y, formula, qtl, tol=1e-7, method = c("hk","f"), pheno.cols) {
-
+getlodM <-
+function(cross, Y, formula, qtl, method = c("hk","f"), pheno.cols)
+{
+    tol <- 1e-7 # tolerance in lmfit
     method <- match.arg(method)
 
     if (missing(pheno.cols)) {

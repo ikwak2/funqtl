@@ -7,22 +7,19 @@ data.}
 scantwoF(cross, pheno.cols, usec = c("slod", "mlod"), n.perm, ...)
 }
 \arguments{
-  \item{cross}{An object of class \code{"cross"}. See
-  \code{\link[qtl]{read.cross}} for details.}
+\item{cross}{An object of class \code{"cross"}. See \code{\link[qtl]{read.cross}} for details.}
 
-  \item{pheno.cols}{Columns in the phenotype matrix to be
-  used as the phenotype.}
+\item{pheno.cols}{Columns in the phenotype matrix to be used as the
+phenotype.}
 
-  \item{usec}{Which method to use (\code{"slod"} or
-  \code{"mlod"}) in the two-QTL scan.}
+\item{usec}{Which method to use (\code{"slod"} or \code{"mlod"}) in the two-QTL scan.}
 
-  \item{n.perm}{If specified, a permutation test is
-  performed rather than an analysis of the observed data.
-  This argument defines the number of permutation
-  replicates.}
+\item{n.perm}{If specified, a permutation test is performed rather than an
+analysis of the observed data.  This argument defines the number of
+permutation replicates.}
 
-  \item{\dots}{More parameters controled in 'scantwo'. See
-  'scantwo' for details.}
+\item{\dots}{More parameters controled in 'scantwo'. See 'scantwo' for
+details.}
 }
 \value{
 If \code{n.perm} is missing, the function returns a list with class

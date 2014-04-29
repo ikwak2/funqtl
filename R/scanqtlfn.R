@@ -1,7 +1,7 @@
 scanqtlfn <-
 function (cross, pheno.cols, chr, pos, covar = NULL, formula,
-    method = c("imp", "hk"), model = c("normal", "binary"), incl.markers = FALSE,
-    verbose = TRUE, tol = 1e-04, maxit = 1000, usec = c("slod", "mlod") )
+    method = c("imp", "hk"), incl.markers = FALSE,
+    verbose = TRUE, usec = c("slod", "mlod") )
 {
     if (!any(class(cross) == "cross"))
         stop("Input should have class \"cross\".")
@@ -219,10 +219,9 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
         results2 <- NULL
         for (ii in 1:length(pheno.cols)) {
             results[[ii]] <- qtl::fitqtlengine(pheno = pheno[,ii], qtl = qtl, covar = covar,
-            formula = formula, method = method, model = model,
+            formula = formula, method = method, model = "normal",
             dropone = FALSE, get.ests = FALSE, run.checks = FALSE,
-            cross.attr = cross.attr, sexpgm = sexpgm, tol = tol,
-            maxit = maxit)
+            cross.attr = cross.attr, sexpgm = sexpgm)
 
             results2 <- c(results2, results[[ii]][[1]][1,4])
         }
@@ -322,10 +321,9 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
         fitresults <- NULL;
         for(ii in 1:length(pheno.cols)) {
             fit[[ii]] <- qtl::fitqtlengine(pheno = pheno[,ii], qtl = qtl.obj, covar = covar,
-                 formula = formula, method = method, model = model,
+                 formula = formula, method = method, model = "normal",
                  dropone = FALSE, get.ests = FALSE, run.checks = FALSE,
-                 cross.attr = cross.attr, sexpgm = sexpgm, tol = tol,
-                 maxit = maxit)
+                 cross.attr = cross.attr, sexpgm = sexpgm)
             fitresults <- c(fitresults, fit[[ii]][[1]][1,4])
         }
 

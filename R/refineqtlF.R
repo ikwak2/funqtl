@@ -10,13 +10,7 @@
 #' phenotype.
 #' @param usec Which method to use (\code{"slod"} or \code{"mlod"})
 #' @param qtl A QTL object, as produced by \code{\link[qtl]{makeqtl}}, containing the positions
-#' of the QTL.  Provide either \code{qtl} or the pair \code{chr} and \code{pos}.
-#' @param chr Vector indicating the chromosome for each QTL; if \code{qtl} is
-#' provided, this should not be.
-#' @param pos Vector indicating the positions for each QTL; if \code{qtl} is
-#' provided, this should not be.
-#' @param qtl.name Optional user-specified name for each QTL.  If \code{qtl} is
-#' provided, this should not be.
+#' of the QTL.
 #' @param covar A matrix or data.frame of covariates.  These must be strictly
 #' numeric.
 #' @param formula An object of class \code{"formula"} indicating the model to be
@@ -33,9 +27,6 @@
 #' spaced grid.
 #' @param keeplodprofile If TRUE, keep the LOD profiles from the last iteration
 #' as attributes to the output.
-#' @param tol Tolerance for convergence for the binary trait model.
-#' @param maxit.fitqtl Maximum number of iterations for fitting the binary
-#' trait model.
 #' @return An object of class \code{"qtl"}, with QTL placed in their new positions.
 #'
 #' @export
@@ -55,14 +46,12 @@
 #' thisqtl1.c <- refineqtlF(exd, pheno.cols = 1:10,  qtl = qtl1.c,
 #'                          method = "hk")
 refineqtlF <-
-function (cross, pheno.cols, usec = c("slod", "mlod"), qtl, chr, pos,
-          qtl.name, covar = NULL, formula, method = c("imp", "hk"), 
-          verbose = TRUE, maxit = 10, incl.markers = TRUE, keeplodprofile = TRUE,
-          tol = 1e-04, maxit.fitqtl = 1000) {
-
+function (cross, pheno.cols, usec = c("slod", "mlod"), qtl, covar = NULL,
+          formula, method = c("hk", "imp"), 
+          verbose = TRUE, maxit = 10, incl.markers = TRUE, keeplodprofile = TRUE)
+{
     usec <- match.arg(usec)
     method <- match.arg(method)
-    model <- "normal"
     if (!("cross" %in% class(cross)))
         stop("The cross argument must be an object of class \"cross\".")
     if (!missing(formula) && is.character(formula))
@@ -72,29 +61,8 @@ function (cross, pheno.cols, usec = c("slod", "mlod"), qtl, chr, pos,
             covar <- as.data.frame(covar, stringsAsFactors = TRUE)
         else stop("covar should be a data.frame")
     }
-    if (!missing(qtl) && (!missing(chr) || !missing(pos) || !missing(qtl.name)))
-        warning("qtl argument is provided, and so chr, pos and qtl.name are ignored.")
-    if (missing(qtl) && (missing(chr) || missing(pos)))
-        stop("Provide either qtl or both chr and pos.")
-    if (!missing(qtl)) {
-        chr <- qtl$chr
-        pos <- qtl$pos
-    }
-    else {
-        if (missing(qtl.name)) {
-            if (method == "imp")
-                qtl <- makeqtl(cross, chr = chr, pos = pos, what = "draws")
-            else qtl <- makeqtl(cross, chr = chr, pos = pos,
-                what = "prob")
-        }
-        else {
-            if (method == "imp")
-                qtl <- makeqtl(cross, chr = chr, pos = pos, qtl.name = qtl.name,
-                  what = "draws")
-            else qtl <- makeqtl(cross, chr = chr, pos = pos,
-                qtl.name = qtl.name, what = "prob")
-        }
-    }
+    chr <- qtl$chr
+    pos <- qtl$pos
     if (method == "imp") {
         if (!("geno" %in% names(qtl))) {
             if ("prob" %in% names(qtl)) {
@@ -243,10 +211,10 @@ function (cross, pheno.cols, usec = c("slod", "mlod"), qtl, chr, pos,
 
             for(phv in 1:length(pheno.cols)) {
                 basefit[[phv]] <- qtl::fitqtlengine(pheno = pheno[,phv], qtl = reducedqtl,
-                                   covar = covar, formula = formula, method = method,
-                                   model = model, dropone = TRUE, get.ests = FALSE,
-                                   run.checks = FALSE, cross.attr = cross.attr,
-                                   sexpgm = sexpgm, tol = tol, maxit = maxit.fitqtl)
+                                                    covar = covar, formula = formula, method = method,
+                                                    model = "normal", dropone = TRUE, get.ests = FALSE,
+                                                    run.checks = FALSE, cross.attr = cross.attr,
+                                                    sexpgm = sexpgm)
                 basefitlod <- c( basefitlod, basefit[[phv]]$result.full[1,4] )
             }
 
@@ -257,10 +225,9 @@ function (cross, pheno.cols, usec = c("slod", "mlod"), qtl, chr, pos,
             for(phv in 1:length(pheno.cols)) {
 
                 basefit[[phv]] <- qtl::fitqtlengine(pheno = pheno[,phv], qtl = reducedqtl,
-                          covar = covar, formula = formula, method = method,
-                          model = model, dropone = FALSE, get.ests = FALSE,
-                          run.checks = FALSE, cross.attr = cross.attr, sexpgm = sexpgm,
-                          tol = tol, maxit = maxit.fitqtl)
+                                                    covar = covar, formula = formula, method = method,
+                                                    model = "normal", dropone = FALSE, get.ests = FALSE,
+                                                    run.checks = FALSE, cross.attr = cross.attr, sexpgm = sexpgm)
                 basefitlod <- c( basefitlod, basefit[[phv]]$result.full[1,4] )
             }
         }
@@ -297,10 +264,9 @@ function (cross, pheno.cols, usec = c("slod", "mlod"), qtl, chr, pos,
             else thispos[[j]] <- c(-Inf, Inf)
 
             out <- scanqtlfn(cross = cross, pheno.cols = pheno.cols,
-                       chr = chrnam, pos = thispos, covar = covar, formula = formula,
-                       method = method, model = model, incl.markers = incl.markers,
-                       verbose = scanqtl.verbose, tol = tol, maxit = maxit.fitqtl,
-                       usec = usec)
+                             chr = chrnam, pos = thispos, covar = covar, formula = formula,
+                             method = method, incl.markers = incl.markers,
+                             verbose = scanqtl.verbose, usec = usec)
 
             lastout[[j]] <- out
             newpos[j] <- as.numeric(strsplit(names(out)[out ==

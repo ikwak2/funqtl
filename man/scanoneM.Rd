@@ -7,25 +7,21 @@ scanoneM(cross, Y, tol = 0.0000001, n.perm = 0, method = c("hk", "f",
   "sl", "ml"), pheno.cols)
 }
 \arguments{
-  \item{cross}{An object of class \code{"cross"}. See
-  \code{\link[qtl]{read.cross}} for details.}
+\item{cross}{An object of class \code{"cross"}. See \code{\link[qtl]{read.cross}} for details.}
 
-  \item{Y}{Dimension-reduced data set.}
+\item{Y}{Dimension-reduced data set.}
 
-  \item{tol}{Tolerance; passed to
-  \code{\link[stats]{lm.fit}}}
+\item{tol}{Tolerance; passed to \code{\link[stats]{lm.fit}}}
 
-  \item{n.perm}{If specified, a permutation test is
-  performed rather than an analysis of the observed data.
-  This argument defines the number of permutation
-  replicates.}
+\item{n.perm}{If specified, a permutation test is performed rather than an
+analysis of the observed data.  This argument defines the number of
+permutation replicates.}
 
-  \item{method}{The \code{"hk"} option use multi-trait QTL
-  mapping proposed by Haley and Knott. The \code{"f"}
-  option use an FLOD score.}
+\item{method}{The \code{"hk"} option use multi-trait QTL mapping proposed by Haley
+and Knott. The \code{"f"} option use an FLOD score.}
 
-  \item{pheno.cols}{Columns in the phenotype matrix to be
-  used as the phenotype.}
+\item{pheno.cols}{Columns in the phenotype matrix to be used as the
+phenotype.}
 }
 \value{
 If \code{n.perm} is missing, the function returns a data.frame whose

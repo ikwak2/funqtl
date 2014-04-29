@@ -1,6 +1,6 @@
 addqtlM <- function (cross, Y, chr, qtl, formula,
-                     incl.markers = TRUE, verbose = FALSE, tol = 1e-04,
-                     maxit = 1000, method = c("hk","f"), pheno.cols) {
+                     incl.markers = TRUE, verbose = FALSE,
+                     method = c("hk","f"), pheno.cols) {
 
     if (missing(pheno.cols)) {
         pheno.cols = 1:nphe(cross)
@@ -107,16 +107,7 @@ addqtlM <- function (cross, Y, chr, qtl, formula,
 
     sexpgm <- getsex(cross)
     cross.attr <- attributes(cross)
-    lod0 <- as.numeric(getlodM(cross, Y, qtl = qtl, formula = formula, tol= tol, method=method, pheno.cols=pheno.cols))
-
-
-
-#lod0 <- qtl::fitqtlengine(pheno = pheno[,1], qtl = qtl, covar = NULL,
-#        formula = formula, method = "hk", model = "normal", dropone = FALSE,
-#        get.ests = FALSE, run.checks = FALSE, cross.attr = cross.attr,
-#        sexpgm = sexpgm, tol = tol, maxit = maxit)$result.full[1, 4]
-
-
+    lod0 <- as.numeric(getlodM(cross, Y, qtl = qtl, formula = formula, method=method, pheno.cols=pheno.cols))
 
     results <- NULL
     for (i in chr) {
@@ -125,9 +116,9 @@ addqtlM <- function (cross, Y, chr, qtl, formula,
         thechr <- c(qtlchr, i)
         thepos <- c(as.list(qtlpos), list(c(-Inf, Inf)))
         sqout <- scanqtlM(cross, Y, chr = thechr,
-            pos = thepos, formula = newformula,
-            incl.markers = incl.markers,
-            verbose = verbose.scanqtl, tol = tol, maxit = maxit, method=method, pheno.cols=pheno.cols)
+                          pos = thepos, formula = newformula,
+                          incl.markers = incl.markers,
+                          verbose = verbose.scanqtl, method=method, pheno.cols=pheno.cols)
 
         if ("map" %in% names(attributes(cross$geno[[i]]$prob)))
             map <- attr(cross$geno[[i]]$prob, "map")

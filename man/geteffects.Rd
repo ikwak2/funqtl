@@ -6,10 +6,9 @@
 geteffects(cross, pheno.cols)
 }
 \arguments{
-  \item{cross}{An object of class 'cross'. See 'read.cross'
-  for details.}
+\item{cross}{An object of class 'cross'. See 'read.cross' for details.}
 
-  \item{pheno.cols}{phenotype columns to be used}
+\item{pheno.cols}{phenotype columns to be used}
 }
 \value{
 A matrix of coefficients. (i,j)th item is a coefficient of jth

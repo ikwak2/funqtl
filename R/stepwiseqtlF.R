@@ -40,9 +40,6 @@
 #' output.
 #' @param verbose If TRUE, give feedback about progress.  If \code{verbose} is an
 #' integer > 1, even more information is printed.
-#' @param tol Tolerance for convergence for the binary trait model.
-#' @param maxit Maximum number of iterations for fitting the binary trait
-#' model.
 #' @return
 #'
 #' The output is a representation of the best model, as measured by the
@@ -89,7 +86,7 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
                           covar = NULL, method = c("imp", "hk"),
                           incl.markers = TRUE, refine.locations = TRUE,
                           additive.only = FALSE, penalties,
-                          keeptrace = FALSE, verbose = TRUE, tol = 1e-04, maxit = 1000)
+                          keeptrace = FALSE, verbose = TRUE)
 {
   if (missing(pheno.cols))
     pheno.cols = 1:nphe(cross)
@@ -140,7 +137,6 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
     qtl$name <- qtl$altname
 
   method <- match.arg(method)
-  model <- "normal"
   usec <- match.arg(usec)
 
   if (method == "imp") {
@@ -358,9 +354,8 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
 
     for(ii in pheno.cols) {
       res.full <- c(res.full, fitqtl(cross, pheno.col = ii, qtl, covar = covar, formula = formula,
-                                     method = method, model = model, dropone = FALSE,
-                                     get.ests = FALSE, run.checks = FALSE, tol = tol,
-                                     maxit = maxit)$result.full[1, 4] )
+                                     method = method, model = "normal", dropone = FALSE,
+                                     get.ests = FALSE, run.checks = FALSE)$result.full[1, 4] )
     }
     if(usec=="slod") {
       lod <- mean(res.full - lod0)
@@ -548,11 +543,9 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
         for(ii in pheno.cols) {
           res.full <- c(res.full, fitqtl(cross, pheno.col = ii, qtl,
                                          covar = covar, formula = formula,
-                                         method = method, model = model,
+                                         method = method, model = "normal",
                                          dropone = FALSE,
-                                         get.ests = FALSE, run.checks = FALSE,
-                                         tol = tol,
-                                         maxit = maxit)$result.full[1, 4] )
+                                         get.ests = FALSE, run.checks = FALSE)$result.full[1, 4] )
         }
         if(usec=="slod") {
           lod <- mean(res.full - lod0)
@@ -602,8 +595,8 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
 
     qtl$name <- qtl$altname
     out2 <- fitqtl(cross, pheno.col=pheno.cols[1], qtl, covar = covar, formula = formula,
-                   method = method, model = model, dropone = TRUE, get.ests = FALSE,
-                   run.checks = FALSE, tol = tol, maxit = maxit)$result.drop
+                   method = method, model = "normal", dropone = TRUE, get.ests = FALSE,
+                   run.checks = FALSE)$result.drop
     rn <- rownames(out2)
     wh <- c(grep("^[Qq][0-9]+$", rn), grep("^[Qq][0-9]+:[Qq][0-9]+$", rn))
     rn <- rn[wh]
@@ -612,9 +605,8 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
     for(ii in pheno.cols[-2]) {
       outout <- cbind(outout, fitqtl(cross, pheno.col=ii, qtl, covar = covar,
                                      formula = formula, method = method,
-                                     model = model, dropone = TRUE, get.ests = FALSE,
-                                     run.checks = FALSE, tol = tol,
-                                     maxit = maxit)$result.drop[wh, 3]
+                                     model = "normal", dropone = TRUE, get.ests = FALSE,
+                                     run.checks = FALSE)$result.drop[wh, 3]
                       )
     }
 
@@ -691,11 +683,9 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
           for(ii in pheno.cols) {
             res.full <- c(res.full, fitqtl(cross, pheno.col = ii, qtl,
                                            covar = covar, formula = formula,
-                                           method = method, model = model,
+                                           method = method, model = "normal",
                                            dropone = FALSE,
-                                           get.ests = FALSE, run.checks = FALSE,
-                                           tol = tol,
-                                           maxit = maxit)$result.full[1, 4] )
+                                           get.ests = FALSE, run.checks = FALSE)$result.full[1, 4] )
           }
           if(usec=="slod") {
             lod <- mean(res.full - lod0)

@@ -6,19 +6,17 @@
 scanoneF(cross, pheno.cols, n.perm, ...)
 }
 \arguments{
-  \item{cross}{An object of class \code{"cross"}. See
-  \code{\link[qtl]{read.cross}} for details.}
+\item{cross}{An object of class \code{"cross"}. See \code{\link[qtl]{read.cross}} for details.}
 
-  \item{pheno.cols}{Columns in the phenotype matrix to be
-  used as the phenotype.}
+\item{pheno.cols}{Columns in the phenotype matrix to be used as the
+phenotype.}
 
-  \item{n.perm}{If specified, a permutation test is
-  performed rather than an analysis of the observed data.
-  This argument defines the number of permutation
-  replicates.}
+\item{n.perm}{If specified, a permutation test is performed rather than an
+analysis of the observed data.  This argument defines the number of
+permutation replicates.}
 
-  \item{\dots}{More parameters controled in 'scanone'. See
-  'scanone' for details.}
+\item{\dots}{More parameters controled in 'scanone'. See 'scanone' for
+details.}
 }
 \value{
 If \code{n.perm} is missing, the function returns a data.frame whose
