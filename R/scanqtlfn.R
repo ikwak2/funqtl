@@ -1,7 +1,7 @@
 scanqtlfn <-
 function (cross, pheno.cols, chr, pos, covar = NULL, formula,
-    method = c("imp", "hk"), incl.markers = FALSE,
-    verbose = TRUE, usec = c("slod", "mlod") )
+          method = c("hk", "imp"), incl.markers = FALSE,
+          verbose = TRUE, usec = c("slod", "mlod") )
 {
     if (!any(class(cross) == "cross"))
         stop("Input should have class \"cross\".")
