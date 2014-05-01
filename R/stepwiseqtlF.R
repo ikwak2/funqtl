@@ -85,7 +85,7 @@
 stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), formula, max.qtl = 10,
                           covar = NULL, method = c("hk", "imp"),
                           incl.markers = TRUE, refine.locations = TRUE,
-                          additive.only = FALSE, penalties,
+                          additive.only = TRUE, penalties,
                           keeptrace = FALSE, verbose = TRUE)
 {
   method <- match.arg(method)
@@ -99,6 +99,12 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
 
   pheno <- cross$pheno[,pheno.cols,drop=FALSE]
 
+  if(!additive.only) {
+      additive.only <- TRUE
+      warning("The package only support additive model.\n")
+  }
+
+  
   if(!("cross" %in% class(cross)))
     stop("Input should have class \"cross\".")
 
