@@ -93,7 +93,9 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
 
   if(missing(pheno.cols))
     pheno.cols = 1:nphe(cross)
-
+  
+  
+  
   if(!all(pheno.cols %in% 1:nphe(cross)))
     stop("pheno.cols should be in a range of 1 to ", nphe(cross))
 
@@ -215,6 +217,9 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
       qtl$n.ind <- sum(!hasmissing)
     }
   }
+
+  if( any(diag(var(pheno)) == 0 ) )
+       stop( "There is a phenotype with no variability.")  
 
   if (max.qtl < 1)
     stop("Need max.qtl > 0 if we are to scan for qtl")
