@@ -35,6 +35,11 @@ calcpca <- function(cross, n.max=5, criteria=.9, nn = 0) {
             }
         }
     }
+
+    if (j == n.max & ss < criteria) {
+        stop("You should incarese n.max to meet your criteria.")
+    }
+
     pc <- udv$u %*% diag(udv$d)
     pc[,1:nn]
 }
