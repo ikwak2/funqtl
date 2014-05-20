@@ -20,11 +20,18 @@
 #' Y <- calcpca(exd, criteria=0.9)
 #' out1 <- scanoneM(exd, Y, method = "hk")
 calcpca <- function(cross, pheno.cols, n.max=5, criteria=.9, nn = 0) {
-
+    
     if (missing(pheno.cols))
         pheno.cols = 1:nphe(cross)
-
+    
     Y = cross$pheno[, pheno.cols]
+    
+    hasmissing <- apply(Y, 1, function(a) any(is.na(a)))
+    if (all(hasmissing))
+        stop("All individuals are missing phenotypes or covariates.")
+    if (any(hasmissing)) 
+        Y <- Y[!hasmissing,]
+
     udv <- svd(Y)
     vec <- udv$d^2
     vec <- vec / sum(vec)
