@@ -63,7 +63,7 @@ plotlod <- function(output, effects, y, ylab="Time", gap=25,
     chr <- vector("list", length(uchr))
     names(chr) <- uchr
     off.end <- 0.5 # spacing off the ends of the chromosomes
-    for(i in seq(along=uchr)) {
+    for(i in uchr) {
         temppos <- output[output[,1]==i,2]
         temppos <- temppos - min(temppos)
         temppos <- rowMeans(cbind(c(temppos[1]-off.end, temppos),
