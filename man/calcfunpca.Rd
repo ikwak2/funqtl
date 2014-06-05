@@ -2,7 +2,7 @@
 \alias{calcfunpca}
 \title{Do dimensional reduction using functional pca.}
 \usage{
-calcfunpca(cross, pheno.cols, n.max = 4, criteria = 0.9, nn = 0)
+calcfunpca(cross, pheno.cols, n.max = 4, criteria = 0.9, nbasis, nn = 0)
 }
 \arguments{
   \item{cross}{An object of class \code{"cross"}. See the
@@ -14,6 +14,8 @@ calcfunpca(cross, pheno.cols, n.max = 4, criteria = 0.9, nn = 0)
   \item{n.max}{The number of maximum reduced dimension.}
 
   \item{criteria}{how much of variance explained.}
+
+  \item{nbasis}{The number of basis to use.}
 
   \item{nn}{The number of exact reduced dimension}
 }

@@ -6,6 +6,7 @@
 #' phenotype.
 #' @param n.max The number of maximum reduced dimension.
 #' @param criteria how much of variance explained.
+#' @param nbasis The number of basis to use.
 #' @param nn The number of exact reduced dimension
 #' @return It gives a matrix that each column have principal components.
 #' @author Il-Youp Kwak, <email: ikwak2@@stat.wisc.edu>
@@ -18,7 +19,7 @@
 #' Y <- calcfunpca(exd, criteria=0.9)
 #' out1 <- scanoneM(exd, Y, method = "hk")
 
-calcfunpca <- function(cross, pheno.cols, n.max=4, criteria=.9, nn = 0) {
+calcfunpca <- function(cross, pheno.cols, n.max=4, criteria=.9, nbasis, nn = 0) {
 
     if(missing(pheno.cols))
         pheno.cols = 1:nphe(cross)
@@ -30,7 +31,10 @@ calcfunpca <- function(cross, pheno.cols, n.max=4, criteria=.9, nn = 0) {
         Y <- Y[!hasmissing, ]
 
     m = nrow(Y)
-    splinebasis.y <- create.bspline.basis(c(0,m), m, 4)
+
+    if(missing(nbasis) )
+       nbasis = m
+    splinebasis.y <- create.bspline.basis(c(0,nbasis), nbasis, 4)
 
     time <- 0:(m-1) + 0.5
     mat <- eval.basis(time, splinebasis.y)
