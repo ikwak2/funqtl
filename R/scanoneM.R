@@ -143,7 +143,14 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
 
             lods = NULL;
             for( rep in 1:n.perm) {
-                cat("Permutation", rep,"\n")
+
+	        cast = 1
+	    	if (n.perm >= 100)
+		   cast = n.perm %/% 100
+
+		if (n.perm %% cast == 0 ) 
+                   cat("Permutation", rep,"\n")
+
                 o <- sample(n.ind)
                 if(is.vector(Y)) { nY <- Y[o] } else { nY <- Y[o,] }
 
