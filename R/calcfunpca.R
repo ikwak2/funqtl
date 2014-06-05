@@ -34,7 +34,7 @@ calcfunpca <- function(cross, pheno.cols, n.max=4, criteria=.9, nbasis, nn = 0) 
 
     if(missing(nbasis) )
        nbasis = m
-    splinebasis.y <- create.bspline.basis(c(0,nbasis), nbasis, 4)
+    splinebasis.y <- create.bspline.basis(c(0,m), nbasis, 4)
 
     time <- 0:(m-1) + 0.5
     mat <- eval.basis(time, splinebasis.y)
