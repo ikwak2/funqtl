@@ -90,7 +90,7 @@ function(cross, pheno.cols, n.perm, ...) {
 
         permout <- cbind(Slods,Mlods)
         colnames(permout) <- c("slod","mlod")
-        class(permout) <- c("scanoneperm","matrkx")
+        class(permout) <- c("scanoneperm","matrix")
 
 
         return( permout )
