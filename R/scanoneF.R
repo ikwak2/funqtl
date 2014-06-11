@@ -73,7 +73,7 @@ function(cross, pheno.cols, n.perm, ...) {
 	    if (n.perm >= 100)
 	        cast = n.perm %/% 100
 
-            if (n.perm %% cast == 0 ) 
+            if (rep %% cast == 0 ) 
                 cat("Permutation", rep,"\n")
 
 
