@@ -4,6 +4,8 @@
 #'
 #'
 #' @param cross An object of class \code{"cross"}. See the \code{\link[qtl]{read.cross}} for details.
+#' @param pheno.cols Columns in the phenotype matrix to be used as the
+#' phenotype.
 #' @param n.max The number of maximum reduced dimension.
 #' @param criteria how much of variance explained.
 #' @param nn The number of exact reduced dimension
@@ -17,9 +19,19 @@
 #' exd <- calc.genoprob(exd, step=2)
 #' Y <- calcpca(exd, criteria=0.9)
 #' out1 <- scanoneM(exd, Y, method = "hk")
-calcpca <- function(cross, n.max=5, criteria=.9, nn = 0) {
+calcpca <- function(cross, pheno.cols, n.max=5, criteria=.9, nn = 0) {
+    
+    if (missing(pheno.cols))
+        pheno.cols = 1:nphe(cross)
+    
+    Y = cross$pheno[, pheno.cols]
+    
+    hasmissing <- apply(Y, 1, function(a) any(is.na(a)))
+    if (all(hasmissing))
+        stop("All individuals are missing phenotypes or covariates.")
+    if (any(hasmissing)) 
+        Y <- Y[!hasmissing,]
 
-    Y = cross$pheno
     udv <- svd(Y)
     vec <- udv$d^2
     vec <- vec / sum(vec)
@@ -35,6 +47,11 @@ calcpca <- function(cross, n.max=5, criteria=.9, nn = 0) {
             }
         }
     }
+
+    if (j == n.max & ss < criteria) {
+        stop("You should incarese n.max to meet your criteria.")
+    }
+
     pc <- udv$u %*% diag(udv$d)
     pc[,1:nn]
 }

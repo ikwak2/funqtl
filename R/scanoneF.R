@@ -68,6 +68,15 @@ function(cross, pheno.cols, n.perm, ...) {
         Slods <- NULL;
         Mlods <- NULL;
         for(rep in 1:n.perm)   {
+
+	    cast = 1
+	    if (n.perm >= 100)
+	        cast = n.perm %/% 100
+
+            if (n.perm %% cast == 0 ) 
+                cat("Permutation", rep,"\n")
+
+
             temp$pheno <- pheno[sample(n),]
 
             out <- scanone(temp, pheno.col = pheno.cols, ...)
