@@ -75,8 +75,8 @@ scantwoF <- function(cross, pheno.cols, usec=c("slod","mlod"), n.perm, ...) {
         for(rep in 1:n.perm)   {
             temp$pheno <- pheno[sample(n),]
 
-            out2 <- scantwo(temp, pheno.col = pheno.cols,  ...)
-            out1 <- scanone(temp, pheno.col = pheno.cols,  ...)
+            out2 <- scantwo(temp, ...)
+            out1 <- scanone(temp, ...)
 
             # out3 for slod
             out3 <- out2
