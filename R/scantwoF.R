@@ -3,7 +3,7 @@
 #'
 #' Extension of the R/qtl function \code{\link[qtl]{scantwo}}. Two-dimensional genome
 #' scan with a two-QTL model for function valuded trait data.
-#'
+#' 
 #'
 #' @param cross An object of class \code{"cross"}. See \code{\link[qtl]{read.cross}} for details.
 #' @param pheno.cols Columns in the phenotype matrix to be used as the
@@ -61,7 +61,7 @@ scantwoF <- function(cross, pheno.cols, usec=c("slod","mlod"), n.perm, ...) {
 
     if (n.perm > 0 ) {
         temp <- cross
-        pheno <- cross$pheno[, pheno.cols]
+        pheno <- as.data.frame(cross$pheno[, pheno.cols])
 
         Slod <- NULL;
         Mlod <- NULL;
