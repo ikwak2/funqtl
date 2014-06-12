@@ -11,6 +11,30 @@
 fitqtlF <-
 function(cross, pheno.cols, qtl, formula, covar=NULL, method=c("hk", "imp"), lod0)
 {
+  method <- match.arg(method)
+
+  # drop individuals with missing data
+  pheno <- cross$pheno[,pheno.cols, drop=FALSE]
+  if(!is.null(covar))
+    phcovar <- cbind(pheno, covar)
+  else phcovar <- as.data.frame(pheno, stringsAsFactors = TRUE)
+  hasmissing <- apply(phcovar, 1, function(a) any(is.na(a)))
+  if (all(hasmissing))
+    stop("All individuals are missing phenotypes or covariates.")
+  if (any(hasmissing)) {
+    pheno <- pheno[!hasmissing,,drop=FALSE]
+    cross <- subset(cross, ind = !hasmissing)
+    if (!is.null(covar))
+      covar <- covar[!hasmissing, , drop = FALSE]
+    if (method == "imp")
+      qtl$geno <- qtl$geno[!hasmissing, , , drop = FALSE]
+    else {
+      for (i in seq(along = qtl$prob)) qtl$prob[[i]] <- qtl$prob[[i]][!hasmissing,
+                      , drop = FALSE]
+    }
+    qtl$n.ind <- sum(!hasmissing)
+  }
+
   if(missing(lod0)) {
     if(is.null(covar)) lod0 <- rep(0, length(pheno.cols))
     else {
@@ -25,7 +49,7 @@ function(cross, pheno.cols, qtl, formula, covar=NULL, method=c("hk", "imp"), lod
   
   lod <- rep(NA, length(pheno.cols))
   for(i in seq(along=pheno.cols))
-    lod[i] <- fitqtl(cross=cross, pheno.col=i, qtl=qtl, covar=covar, formula=formula,
+    lod[i] <- fitqtl(cross=cross, pheno.col=pheno.cols[i], qtl=qtl, covar=covar, formula=formula,
                      method=method, model="normal", dropone=FALSE, get.ests=FALSE,
                      run.checks=FALSE)$result.full[1,4]
   
