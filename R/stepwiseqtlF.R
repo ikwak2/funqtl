@@ -232,8 +232,8 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
     else firstformula <- formula
   }
   else {
-    rss0 <- colSums(lm(as.matrix(pheno) ~ as.matrix(covar))$resid^2, na.rm=TRUE)
-    rss00 <- colSums(lm(as.matrix(pheno) ~ 1)$resid^2, na.rm=TRUE)
+    rss0 <- colSums(as.matrix(lm(as.matrix(pheno) ~ as.matrix(covar))$resid^2, na.rm=TRUE))
+    rss00 <- colSums(as.matrix(lm(as.matrix(pheno) ~ 1)$resid^2, na.rm=TRUE))
     lod0 <- nrow(pheno)/2 * log10(rss00/rss0)
 
     if (startatnull)

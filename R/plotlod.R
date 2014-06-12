@@ -62,19 +62,19 @@ plotlod <- function(output, effects, y, ylab="Time", gap=25,
     chr <- vector("list", length(uchr))
     names(chr) <- uchr
     off.end <- 0.5 # spacing off the ends of the chromosomes
-    for(i in seq(along=uchr)) {
-        temppos <- output[output[,1]==uchr[i],2]
+    for(i in uchr) {
+        temppos <- output[output[,1]==i,2]
         temppos <- temppos - min(temppos)
         temppos <- rowMeans(cbind(c(temppos[1]-off.end, temppos),
                                   c(temppos, max(temppos)+off.end)))
         if(is.null(pos)) {
             pos <- temppos
-            lod <- templod[output[,1]==uchr[i],]
+            lod <- templod[output[,1]==i,]
         }
         else {
             temppos <- max(pos)+gap + temppos
             pos <- c(pos, temppos)
-            lod <- rbind(lod, rep(0, ncol(lod)), templod[output[,1]==uchr[i],])
+            lod <- rbind(lod, rep(0, ncol(lod)), templod[output[,1]==i,])
         }
         chr[[i]] <- c(min(temppos), max(temppos))
         chr[[i]] <- c(chr[[i]], mean(chr[[i]]))

@@ -13,6 +13,7 @@
 #' @seealso \code{\link{scanoneM}}
 #' @keywords utilities
 #' @export
+#' @importFrom fda create.bspline.basis fd pca.fd eval.fd
 #' @examples
 #' data(exd)
 #' exd <- calc.genoprob(exd, step=2)
