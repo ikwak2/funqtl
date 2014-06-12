@@ -54,7 +54,7 @@
 #' which is similar to a QTL object (as produced by \code{\link[qtl]{makeqtl}}) but containing
 #' just a vector of chromosome IDs and positions for the QTL.  Each will also
 #' have attributes \code{"formula"} (containing the model formula) and \code{"pLOD"}
-#' (containing the penalized LOD score.  
+#' (containing the penalized LOD score.
 #'
 #' @author Il-Youp Kwak, <email: ikwak2@@stat.wisc.edu>
 #' @seealso \code{\link{refineqtlF}}, \code{\link{addqtlF}}
@@ -104,7 +104,7 @@ function (cross, chr, Y, qtl, formula, max.qtl = 10,
 
     if (method == "sl" || method =="ml" ) {
         temp <- cross
-        temp$pheno[, p] <- Y
+        temp$pheno[, 1:p] <- Y
         if (method == "sl") {
             mtd = "slod"
         } else {
@@ -117,13 +117,13 @@ function (cross, chr, Y, qtl, formula, max.qtl = 10,
                             refine.locations = refine.locations, penalties = penalties,
                             keeptrace = keeptrace, verbose = verbose)
         return(out)
-        
+
     }
-           
+
     if (!missing(chr))
         cross <- subset(cross, chr)
-    
-    
+
+
     if (!missing(qtl)) {
         if (!("qtl" %in% class(qtl)))
             stop("The qtl argument must be an object of class \"qtl\".")
