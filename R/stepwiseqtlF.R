@@ -100,8 +100,6 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
     stop("pheno.cols should be in a range of 1 to ", nphe(cross))
 
   pheno <- cross$pheno[,pheno.cols,drop=FALSE]
-  cross$pheno <- pheno
-  pheno.cols <- 1:ncol(pheno)
 
   if(!additive.only) {
       additive.only <- TRUE
@@ -595,7 +593,7 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
     termnames <- termnames[row2save]
 
     lodbyphe <- out2[row2save,3]
-    for(ii in pheno.cols[-2]) {
+    for(ii in pheno.cols[-1]) {
       tmp <- fitqtl(cross, pheno.col=ii, qtl, covar = covar,
                      formula = formula, method = method,
                      model = "normal", dropone = TRUE, get.ests = FALSE,
