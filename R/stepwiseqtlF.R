@@ -100,6 +100,8 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
     stop("pheno.cols should be in a range of 1 to ", nphe(cross))
 
   pheno <- cross$pheno[,pheno.cols,drop=FALSE]
+  cross$pheno <- pheno
+  pheno.cols <- 1:ncol(pheno)
 
   if(!additive.only) {
       additive.only <- TRUE
