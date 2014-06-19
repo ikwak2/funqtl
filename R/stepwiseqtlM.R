@@ -201,7 +201,7 @@ function (cross, chr, Y, qtl, formula, max.qtl = 10,
         cat(" -Initial scan\n")
     if (startatnull) {
         {
-            out <- scanoneM(cross, Y)
+            out <- scanoneM(cross, Y, method = method)
             lod <- max(out[, 3], na.rm = TRUE)
             curplod <- calc.plod(lod, c(1, 0, 0), penalties = penalties)
             wh <- which(!is.na(out[, 3]) & out[, 3] == lod)
