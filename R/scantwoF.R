@@ -3,7 +3,7 @@
 #'
 #' Extension of the R/qtl function \code{\link[qtl]{scantwo}}. Two-dimensional genome
 #' scan with a two-QTL model for function valuded trait data.
-#' 
+#'
 #'
 #' @param cross An object of class \code{"cross"}. See \code{\link[qtl]{read.cross}} for details.
 #' @param pheno.cols Columns in the phenotype matrix to be used as the
@@ -51,32 +51,31 @@ scantwoF <- function(cross, pheno.cols, usec=c("slod","mlod"), n.perm, ...) {
     usec <- match.arg(usec)
 
     if (missing(pheno.cols))
-    pheno.cols = 1:nphe(cross)
+        pheno.cols = 1:nphe(cross)
 
     if (!all(pheno.cols %in% 1:nphe(cross)))
-    stop("pheno.cols should be in a range of 1 to ", nphe(cross))
+        stop("pheno.cols should be in a range of 1 to ", nphe(cross))
 
     if (missing(n.perm))
     n.perm <- 0
 
     if (n.perm > 0 ) {
         temp <- cross
-        pheno <- as.data.frame(cross$pheno[, pheno.cols])
 
-        Slod <- NULL;
-        Mlod <- NULL;
-        SlodsH <- NULL;
-        SlodsL <- NULL;
-        MlodsH <- NULL;
-        MlodsL <- NULL;
-        Slods <- NULL;
-        Mlods <- NULL;
+        Slod <- NULL
+        Mlod <- NULL
+        SlodsH <- NULL
+        SlodsL <- NULL
+        MlodsH <- NULL
+        MlodsL <- NULL
+        Slods <- NULL
+        Mlods <- NULL
 
         for(rep in 1:n.perm)   {
-            temp$pheno <- pheno[sample(n),]
+            temp$pheno <- temp$pheno[sample(n),]
 
-            out2 <- scantwo(temp, ...)
-            out1 <- scanone(temp, ...)
+            out2 <- scantwo(temp, pheno.col=pheno.cols, ...)
+            out1 <- scanone(temp, pheno.col=pheno.cols, ...)
 
             # out3 for slod
             out3 <- out2
