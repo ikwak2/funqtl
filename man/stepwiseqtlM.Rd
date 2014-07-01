@@ -4,7 +4,7 @@
 \title{Stepwise selection for multiple QTL in function valued trait data}
 \usage{
 stepwiseqtlM(cross, chr, Y, qtl, formula, max.qtl = 10, incl.markers = TRUE,
-  refine.locations = TRUE, penalties, additive.only = FALSE,
+  refine.locations = TRUE, penalties, additive.only = TRUE,
   keeptrace = FALSE, verbose = TRUE, method = c("hk", "f", "sl", "ml"),
   pheno.cols)
 }
