@@ -72,7 +72,7 @@ refineqtlM <- function (cross, Y, qtl, formula,
         }
 
         temp <- cross
-        temp$pheno[, p] <- Y
+        temp$pheno[, 1:p] <- Y
         out <- refineqtlF(cross = temp, pheno.cols = 1:p, method = "hk",
                           usec = mtd, qtl=qtl, formula=formula,
                           maxit=maxit, incl.markers=incl.markers, keeplodprofile=keeplodprofile)
