@@ -110,12 +110,11 @@ function (cross, chr, Y, qtl, formula, max.qtl = 10,
         } else {
             mtd = "mlod"
         }
-        out <- stepwiseqtlF(cross = temp, chr = chr, qtl = qtl,
+        out <- stepwiseqtlF(cross = temp, 
                             pheno.cols = 1:p, usec = mtd,
-                            method = "hk", formula = formula, max.qtl = max.qtl,
-                            covar = NULL, incl.markers= incl.markers,
-                            refine.locations = refine.locations, penalties = penalties,
-                            keeptrace = keeptrace, verbose = verbose)
+                            method = "hk", 
+                            penalties = penalties)
+
         return(out)
 
     }
