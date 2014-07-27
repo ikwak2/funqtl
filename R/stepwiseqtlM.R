@@ -112,9 +112,10 @@ function (cross, chr, Y, qtl, formula, max.qtl = 10,
         }
         out <- stepwiseqtlF(cross = temp, 
                             pheno.cols = 1:p, usec = mtd,
-                            method = "hk", 
-                            penalties = penalties)
-
+                            method = "hk", max.qtl = max.qtl,
+                            incl.markers= incl.markers,
+                            refine.locations = refine.locations, penalties = penalties,
+                            keeptrace = keeptrace, verbose = verbose)
         return(out)
 
     }
