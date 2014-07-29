@@ -196,8 +196,32 @@ plot(time, slodeff[,3], lwd=2, ylim = c(-5,9), type="l",
 
 ## HKLOD, FLOD, SL and ML scores
 
-```{r hklodetc}
-Y <- calcfunpca(simspal, criteria=0.99, n.max = 8, nbasis = 30)
+```{r cv}
+set.seed(20)
+cvout <- cvfold(simspal, basisset = 5:50, fold = 10)
+
+```
+
+We need to decide how many basis functions to be used by doing cross
+validation. We can do this using `cvfold` function. `basisset` option
+describe the number of basis sets to be tested. `fold` indicate how
+many folders to be used in cross validation. In this code, we randomly
+devided our data set by 10. We used 9 folder to evaluate the
+functional. And calculated sum of squared errors for the left one
+folder.
+
+
+
+```{r cvfig, fig.height=10, fig.width = 12}
+plot(cvout, xlab = "The number of basis", main = "sum of squared
+errors", type = "l")
+
+```
+We decided to use 26 basis functions from the Figure above.
+
+
+```{r hklodttc2}
+Y <- calcfunpca(simspal, criteria=0.99, n.max = 8, nbasis = 26)
 
 outhk <- scanoneM(simspal, Y = Y, method="hk")
 outf <- scanoneM(simspal, Y = Y, method="f")
