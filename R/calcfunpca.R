@@ -17,7 +17,9 @@
 #' @examples
 #' data(exd)
 #' exd <- calc.genoprob(exd, step=2)
-#' Y <- calcfunpca(exd, criteria=0.9)
+#' cvout <- cvfold(exd, basisset = 4:7, fold = 10)
+#' cvout # basis number 5 have the smallest sse. So we take nbasis = 5.
+#' Y <- calcfunpca(exd, criteria=0.9, nbasis = 5)
 #' out1 <- scanoneM(exd, Y, method = "hk")
 
 calcfunpca <- function(cross, pheno.cols, n.max=4, criteria=.9, nbasis, nn = 0) {

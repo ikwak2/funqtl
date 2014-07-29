@@ -31,8 +31,10 @@
 #' simspal <- calc.genoprob(simspal)
 #'
 #' # dimensional reduction of Y
-#' Y <- calcpca(simspal, criteria=.999)
-#' 
+#' cvout <- cvfold(simspal, basisset = 5:50, fold = 20)
+#' plot(cvout) ## take nbasis = 15
+#' Y <- calcfunpca(simspal, criteria=.999, nbasis = 15)
+#'
 #' # do multitrait mapping
 #' out.hk <- scanoneM(simspal, Y=Y, method="hk")
 #' out.f  <- scanoneM(simspal, Y=Y, method="f")
@@ -44,7 +46,7 @@
 #' summary(out.f)
 #' summary(out.sl)
 #' summary(out.ml)
-#' 
+#'
 #' # Plot the results
 #' par(mfrow=c(3,1))
 #' plot(out.hk)
@@ -52,7 +54,7 @@
 #' plot(out.sl, out.ml)
 
 scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"), pheno.cols ) {
-    
+
     if (!("prob" %in% names(cross$geno[[1]]))) {
         warning("First running calc.genoprob.")
         cross <- calc.genoprob(cross)
@@ -111,7 +113,7 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
                     E <- lm.fit(X, Y, tol=tol)$residuals
                     Sigma <- crossprod(E)
 
-                    if( method == "hk") {                        
+                    if( method == "hk") {
                         L1 <- determinant(Sigma)$modulus
                         LOD <- c(LOD, n.ind/2*(L0 - L1)/log(10) )
                     } else {
@@ -148,7 +150,7 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
 	    	if (n.perm >= 100)
 		   cast = n.perm %/% 100
 
-		if (rep %% cast == 0 ) 
+		if (rep %% cast == 0 )
                    cat("Permutation", rep,"\n")
 
                 o <- sample(n.ind)
