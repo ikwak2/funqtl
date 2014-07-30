@@ -34,7 +34,7 @@ cvfold <- function (cross, pheno.cols, basisset, fold = 10, random = TRUE )
 
     m = nrow(Y)
 
-    if(random = TRUE)
+    if(random == TRUE)
     {
         o <- sample(m)
     } else {
