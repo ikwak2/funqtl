@@ -47,8 +47,8 @@ for five of the RIL.
 ```{r plot_map_and_pheno}
 par(mfrow=c(1,2))
 plotMap(simspal, main="")
-plot(1:241, simspal$pheno[160,], type="l", xlab="Time", ylim=c(-120,0),
-     ylab="Root Tip Angle (degrees)")
+plot(1:241, simspal$pheno[160,], type="l", xlab="Time",
+	  ylim=c(-120,0), ylab="Root Tip Angle (degrees)")
 ind <- c(19, 20, 132, 72)
 color <- c("blue", "red", "green", "orange")
 for(i in seq(along=ind))
@@ -84,7 +84,8 @@ The function `plotlod` plots a heat map of signed LOD scores: the LOD
 scores, taking the signs of the estimated effects.
 
 ```{r plotload, fig.height=10, fig.width = 12}
-plotlod(out, eff, phe, gap=15, main="The LOD image of the simspal data set",
+plotlod(out, eff, phe, gap=15,
+	    main="The LOD image of the simspal data set",
         ylab="Time")
 ```
 
@@ -115,8 +116,10 @@ plot(out1, lodcolumn=2, ylim=c(0,7), main="The MLOD curve for simspal data", ban
 abline(h=3.46, col="red", lty=3)
 
 # permutation threshold
-# permout <- scanoneF(simspal, pheno.cols=1:241, method = "hk", n.perm=1000)
-# summary(permout) # display 5, 10 % threshold of permutation result
+# permout <- scanoneF(simspal, pheno.cols=1:241,
+#                     method = "hk", n.perm=1000)
+# display 5, 10 % threshold of permutation result
+# summary(permout)
 ```
 
 The results are in Figure above. Horizontal lines indicate the 5% genome-wide significance thresholds, derived by a permutation test. We didn't run the code above since it takes a long time (about one hour maybe) .
@@ -125,8 +128,10 @@ The results are in Figure above. Horizontal lines indicate the 5% genome-wide si
 
 ```{r stepwiseqtlscan}
 
-#qtlslod <- stepwiseqtlF(simspal, pheno.cols = 1:241, max.qtl = 6,
-#                       usec = "slod", method = "hk", penalties = c(2.02, 2.62, 1.74) )
+#qtlslod <- stepwiseqtlF(simspal, pheno.cols = 1:241,
+#                   max.qtl = 6, usec = "slod",
+#                   method = "hk",
+#                   penalties = c(2.02, 2.62, 1.74) )
 simspal <- calc.genoprob(simspal, step=0)
 qtlslod <- makeqtl(simspal, chr = c(1, 4),
                pos = c(36.6, 27.8), what = "prob")
@@ -138,8 +143,9 @@ qtlslod <- makeqtl(simspal, chr = c(1, 4),
 ``` {r profilelodimage, fig.height = 10, fig.width = 14}
 lodmat1.c <- getprofile(simspal, qtl =  qtlslod, pheno.cols = phe,
                              formula = y~Q1 + Q2 , method = "hk",
-							  verbose = F, tpy="comb")
-plotprofile(lodmat1.c, mval = 8, col=heat.colors(100)[100:1], main="The Profile LOD image of data")
+							 verbose = F, tpy="comb")
+plotprofile(lodmat1.c, mval = 8, col=heat.colors(100)[100:1],
+	        main="The Profile LOD image of data")
 ```
 You can get profilelod image by using `getprofile` function and `plotprofile` function. You need to have an option `step = 0` in `calc.genoprob` function.
 
@@ -197,23 +203,22 @@ plot(time, slodeff[,3], lwd=2, ylim = c(-5,9), type="l",
 ## HKLOD, FLOD, SL and ML scores
 
 ```{r cv}
-set.seed(20)
-cvout <- cvfold(simspal, basisset = 5:50, fold = 10)
+cvout <- cvfold(simspal, basisset = 15:60, fold = 10, random = F)
 
 ```
 
 We need to decide how many basis functions to be used by doing cross
 validation. We can do this using `cvfold` function. `basisset` option
 describe the number of basis sets to be tested. `fold` indicate how
-many folders to be used in cross validation. In this code, we randomly
-devided our data set by 10. We used 9 folder to evaluate the
+many folders to be used in cross validation. In this code, we divide
+our time points with equily spaced 10 sets. We used 9 folder to evaluate the
 functional. And calculated sum of squared errors for the left one
 folder.
 
 
 
 ```{r cvfig, fig.height=10, fig.width = 12}
-plot(cvout, xlab = "The number of basis", main = "sum of squared
+plot(15:60, cvout, xlab = "The number of basis", main = "sum of squared
 errors", type = "l")
 
 ```
@@ -249,10 +254,10 @@ abline(h=3.05, col="red", lty=3)
 # permoutf <- scanoneF(simspal, Y=Y, method = "f", n.perm=1000)
 # permoutsl <- scanoneF(simspal, Y=Y, method = "sl", n.perm=1000)
 # permoutml <- scanoneF(simspal, Y=Y, method = "ml", n.perm=1000)
-# summary(permouthk) # display 5, 10 % threshold of permutation result
-# summary(permoutf) # display 5, 10 % threshold of permutation result
-# summary(permoutsl) # display 5, 10 % threshold of permutation result
-# summary(permoutml) # display 5, 10 % threshold of permutation result
+# summary(permouthk) # display 5, 10 % threshold
+# summary(permoutf) # display 5, 10 % threshold
+# summary(permoutsl) # display 5, 10 % threshold
+# summary(permoutml) # display 5, 10 % threshold
 ```
 
 The results are in Figure above. Horizontal lines indicate the 5%
@@ -265,16 +270,16 @@ didn't run the code (for permutation test) above since it takes a long time (abo
 
 
 #qtlhklod <- stepwiseqtlM(simspal, Y = Y, max.qtl = 6,
-#                       method = "hk", penalties = c(4.32, 6, 6) )
+#                   method = "hk", penalties = c(4.32, 6, 6) )
 
 #qtlflod <- stepwiseqtlM(simspal, Y = Y, max.qtl = 6,
-#                       method = "f", penalties = c(2.16, 6, 6) )
+#                   method = "f", penalties = c(2.16, 6, 6) )
 
 #qtlsllod <- stepwiseqtlM(simspal, Y = Y, max.qtl = 6,
-#                       method = "sl", penalties = c(1.05, 6, 6) )
+#                   method = "sl", penalties = c(1.05, 6, 6) )
 
 #qtlmllod <- stepwiseqtlM(simspal, Y = Y, max.qtl = 6,
-#                       method = "ml", penalties = c(3.05, 6, 6) )
+#                   method = "ml", penalties = c(3.05, 6, 6) )
 
 simspal <- calc.genoprob(simspal, step=0)
 qtlhklod <- makeqtl(simspal, chr = c(1, 4),
@@ -309,7 +314,8 @@ slodeff <- vector("list", nphe(simspal))
 
 for(i in 1:nphe(simspal)) {
     slodeff[[i]] <- summary(fitqtl(simspal, phe=i, qtl=qtlhklod,
-                            method="hk", get.ests=TRUE, dropone=FALSE))$ests[,1]*c(1,2,2)
+                            method="hk", get.ests=TRUE,
+							dropone=FALSE))$ests[,1]*c(1,2,2)
 }
 
 nam <- names(slodeff[[1]])
