@@ -42,8 +42,9 @@ cvfold <- function (cross, pheno.cols, basisset, fold = 10, random = TRUE )
         AA <- matrix(1:(floor(m/fold)*fold), nrow = fold)
 
         o <- NULL
-        for (i in fold)
-            o <- c(o, AA[i,])
+        for (i in 1:fold)
+            o <- c(o, AA[i, ])
+        o <- c(o, (1:m)[-(1:(floor(m/fold)*fold))] )
     }
 
     setnum <- floor(m/fold)
