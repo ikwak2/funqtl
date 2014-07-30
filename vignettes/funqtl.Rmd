@@ -110,9 +110,11 @@ or the maximum LOD, respectively, at each genomic location.
 
 ```{r slodmlodcurve, fig.height=10, fig.width = 12}
 par(mfrow=c(2,1))
-plot(out1, ylim=c(0,3.5), main="The SLOD curve for simspal data", bandcol="gray90")
+plot(out1, ylim=c(0,3.5), main="The SLOD curve for simspal data",
+	 bandcol="gray90")
 abline(h=2.02, col="red", lty=3)
-plot(out1, lodcolumn=2, ylim=c(0,7), main="The MLOD curve for simspal data", bandcol="gray90")
+plot(out1, lodcolumn=2, ylim=c(0,7),
+     main="The MLOD curve for simspal data", bandcol="gray90")
 abline(h=3.46, col="red", lty=3)
 
 # permutation threshold
@@ -150,7 +152,9 @@ plotprofile(lodmat1.c, mval = 8, col=heat.colors(100)[100:1],
 You can get profilelod image by using `getprofile` function and `plotprofile` function. You need to have an option `step = 0` in `calc.genoprob` function.
 
 ``` {r profile, fig.height = 10, fig.width = 14}
-refqtlslod <- refineqtlF(simspal, pheno.cols = 1:241, usec = "slod", qtl= qtlslod, method = "hk", keeplodprofile = T)
+refqtlslod <- refineqtlF(simspal, pheno.cols = 1:241,
+                         usec = "slod", qtl= qtlslod,
+						 method = "hk", keeplodprofile = T)
 
 plotLodProfile(refqtlslod)
 ```
@@ -165,7 +169,8 @@ slodeff <- vector("list", nphe(simspal))
 
 for(i in 1:nphe(simspal)) {
     slodeff[[i]] <- summary(fitqtl(simspal, phe=i, qtl=qtlslod,
-                            method="hk", get.ests=TRUE, dropone=FALSE))$ests[,1]*c(1,2,2)
+                            method="hk", get.ests=TRUE,
+							dropone=FALSE))$ests[,1]*c(1,2,2)
 }
 
 nam <- names(slodeff[[1]])
@@ -218,15 +223,15 @@ folder.
 
 
 ```{r cvfig, fig.height=10, fig.width = 12}
-plot(15:60, cvout, xlab = "The number of basis", main = "sum of squared
-errors", type = "l")
+plot(15:60, cvout, xlab = "The number of basis",
+     main = "sum of squared errors", type = "l")
 
 ```
-We decided to use 26 basis functions from the Figure above.
+We decided to use 41 basis functions from the Figure above.
 
 
 ```{r hklodttc2}
-Y <- calcfunpca(simspal, criteria=0.99, n.max = 8, nbasis = 26)
+Y <- calcfunpca(simspal, criteria=0.99, n.max = 8, nbasis = 41)
 
 outhk <- scanoneM(simspal, Y = Y, method="hk")
 outf <- scanoneM(simspal, Y = Y, method="f")
@@ -240,13 +245,17 @@ or the maximum LOD, respectively, at each genomic location.
 
 ```{r slodmlodcurve2, fig.height=10, fig.width = 12}
 par(mfrow=c(4,1))
-plot(outhk, ylim=c(0,8), main="The HKLOD curve for simspal data", bandcol="gray90")
+plot(outhk, ylim=c(0,8), main="The HKLOD curve for simspal data",
+     bandcol="gray90")
 abline(h=4.32, col="red", lty=3)
-plot(outf, ylim=c(0,3.5), main="The FLOD curve for simspal data", bandcol="gray90")
+plot(outf, ylim=c(0,3.5), main="The FLOD curve for simspal data",
+     bandcol="gray90")
 abline(h=2.16, col="red", lty=3)
-plot(outsl, ylim=c(0,2), main="The SL curve for simspal data", bandcol="gray90")
+plot(outsl, ylim=c(0,2), main="The SL curve for simspal data",
+     bandcol="gray90")
 abline(h=1.05, col="red", lty=3)
-plot(outml, ylim=c(0,4), main="The ML curve for simspal data", bandcol="gray90")
+plot(outml, ylim=c(0,4), main="The ML curve for simspal data",
+     bandcol="gray90")
 abline(h=3.05, col="red", lty=3)
 
 # permutation threshold
@@ -292,8 +301,10 @@ qtlsllod <- makeqtl(simspal, chr = c(1, 4),
 selection. It takes about 2~3 minute, so I run `makeqtl` function to get the result of `stepwiseqtlM` function. You will get the same result if you run `stepwiseqtlM` function.
 
 ``` {r profilecode, fig.height = 8, fig.width = 14}
- refqtlhklod <- refineqtlM(simspal, Y=Y, method = "hk", qtl= qtlhklod, keeplodprofile = T)
- refqtlsllod <- refineqtlM(simspal, Y=Y, method = "sl", qtl= qtlhklod, keeplodprofile = T)
+ refqtlhklod <- refineqtlM(simspal, Y=Y, method = "hk",
+                           qtl= qtlhklod, keeplodprofile = T)
+ refqtlsllod <- refineqtlM(simspal, Y=Y, method = "sl",
+                           qtl= qtlhklod, keeplodprofile = T)
 
 par(mfrow=c(1,2))
 plotLodProfile(refqtlhklod)
