@@ -14,6 +14,8 @@ cvfold(cross, pheno.cols, basisset, fold = 10)
   \item{basisset}{The set of basis numbers to evaluate.}
 
   \item{fold}{The number of folder in cross validation.}
+
+  \item{random}{randomly divide folder on times if TRUE and select folders equily spaced time points if FALSE.}
 }
 \value{
 It gives a vector of sum of squared erros for each basis

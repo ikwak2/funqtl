@@ -6,6 +6,7 @@
 #' phenotype.
 #' @param basisset The set of basis numbers to evaluate.
 #' @param fold The number of folder in cross validation.
+#' @param random randomly divide folder on times if TRUE and select folders equily spaced time points if FALSE.
 #' @return It gives a vector of sum of squared erros for each basis set.
 #' @author Il-Youp Kwak, <email: ikwak2@@stat.wisc.edu>
 #' @seealso \code{\link{calcfunpca}}
@@ -21,7 +22,7 @@
 #' out1 <- scanoneM(exd, Y, method = "hk")
 
 
-cvfold <- function (cross, pheno.cols, basisset, fold = 10 )
+cvfold <- function (cross, pheno.cols, basisset, fold = 10, random = TRUE )
 {
     if (missing(pheno.cols))
         pheno.cols = 1:nphe(cross)
@@ -33,8 +34,20 @@ cvfold <- function (cross, pheno.cols, basisset, fold = 10 )
 
     m = nrow(Y)
 
-    o <- sample(m)
-    setnum <- round(m/fold)
+    if(random = TRUE)
+    {
+        o <- sample(m)
+    } else {
+
+        AA <- matrix(1:(floor(m/fold)*fold), nrow = fold)
+
+        o <- NULL
+        for (i in fold)
+            o <- c(o, AA[i,])
+    }
+
+    setnum <- floor(m/fold)
+
     tt <- 0:(m - 1) + 0.5
 
     tsterr = NULL;
