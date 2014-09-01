@@ -72,7 +72,7 @@ cvfold <- function (cross, pheno.cols, basisset, fold = 10, random = TRUE )
 
             sumerr = sumerr + sum(eval.fd(testtime, yfd) - testset)^2
         }
-        tsterr <- c(tsterr, sumerr )
+        tsterr <- c(tsterr, sumerr/fold )
     }
     names(tsterr) <- basisset
     tsterr
