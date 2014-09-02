@@ -27,6 +27,9 @@ calcfunpca <- function(cross, pheno.cols, n.max=4, criteria=.9, nbasis, nn = 0) 
     if(missing(pheno.cols))
         pheno.cols = 1:nphe(cross)
 
+    if(n.max > nbasis) 
+        n.max = nbasis
+
     Y = t( cross$pheno[,pheno.cols] )
 
     hasmissing <- apply(Y, 1, function(a) any(is.na(a)) )
@@ -60,8 +63,9 @@ calcfunpca <- function(cross, pheno.cols, n.max=4, criteria=.9, nbasis, nn = 0) 
         if( j == n.max & ss < criteria ) {
             stop("You should increase n.max to meet your criteria.")
         }
+	if (j == n.max)
+	   nn = n.max
     }
-
 
     y.pcalist3 = pca.fd(yfd, nn)
     eigfc3 <- y.pcalist3$harmonics
