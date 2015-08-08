@@ -3,10 +3,11 @@ Type: Package
 Title: QTL Mapping for Function-Valued Traits
 Version: 0.1-15
 Date: 2015-08-07
-Author: Il Youp Kwak with contributions from Karl W Broman.
-Maintainer: IL-YOUP KWAK <ikwak2@stat.wisc.edu>
+Author: Il-Youp Kwak with contributions from Karl W Broman
+Maintainer: Il-Youp Kwak <ikwak@umn.edu>
 Description: This is an add-on functions of "qtl" package to deal with function valued trait on QTL mapping. We can do QTL analysis with function valued trait with this add-on on "qtl" package(made by Karl W Broman).
 Depends: R (>= 2.10), qtl (>= 1.31-5), fields, fda
 Suggests: knitr
 License: GPL-2
+URL: https://github.com/ikwak2/funqtl
 VignetteBuilder: knitr
