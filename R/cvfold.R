@@ -12,7 +12,7 @@
 #' @seealso \code{\link{calcfunpca}}
 #' @keywords utilities
 #' @export
-#' @importFrom fda create.bspline.basis fd pca.fd eval.fd
+#' @importFrom fda create.bspline.basis fd pca.fd eval.fd eval.basis
 #' @examples
 #' data(exd)
 #' exd <- calc.genoprob(exd, step=2)
