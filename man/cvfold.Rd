@@ -2,7 +2,7 @@
 \alias{cvfold}
 \title{Do cross validation to decide the number of basis function to use in smoothing.}
 \usage{
-cvfold(cross, pheno.cols, basisset, fold = 10)
+cvfold(cross, pheno.cols, basisset, fold = 10, random = TRUE)
 }
 \arguments{
   \item{cross}{An object of class \code{"cross"}. See the
@@ -40,4 +40,3 @@ Il-Youp Kwak, <email: ikwak2@stat.wisc.edu>
 \code{\link{calcfunpca}}
 }
 \keyword{utilities}
-
