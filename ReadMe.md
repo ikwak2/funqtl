@@ -1,7 +1,7 @@
 R package, funqtl
 -----------------
 
-IL-YOUP KWAK <ikwak2@stat.wisc.edu>, with contributions from Karl W Broman.
+Il-Youp Kwak <ikwak@umn.edu>, with contributions from Karl W Broman.
 
 QTL mapping for function valued trait
 
@@ -11,7 +11,7 @@ with function valued trait on QTL mapping.
 
 #### Installation
 
-To install the package from github, 
+To install the package from github,
 
     install.packages("devtools")
     library(devtools)

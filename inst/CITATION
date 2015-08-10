@@ -1,0 +1,19 @@
+citHeader("To cite funqtl in publications use:")
+
+citEntry(entry="article",
+         title = "A simple regression-based method to map quantitative trait loci underlying function-valued phenotypes",
+         author = personList(person("Il-Youp", "Kwak"),
+                             person(c("Candace", "R."), "Moore"),
+                             person(c("Edgar", "P."), "Spalding"),
+                             person(c("Karl", "W."), "Broman")),
+         journal = "Genetics",
+         year = 2014,
+         volume = 197,
+         pages = "1409-1416",
+         key = "kwak2014",
+
+         textVersion =
+         paste("Kwak et al. (2014) A simple regression-based method to map",
+               "quantitative trait loci underlying function-valued phenotypes.",
+               "Genetics 197: 1409-1416")
+         )
