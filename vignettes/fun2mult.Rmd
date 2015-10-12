@@ -1,0 +1,313 @@
+---
+title: "Mapping quantitative trait loci underlying function-valued
+traits using functional principal component analysis and
+multi-trait mapping"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{QTL mapping using functional PCA for
+  function-valued traits. }
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+
+```{r knitr_options, echo=FALSE, results=FALSE}
+library(knitr)
+opts_chunk$set(fig.width = 10)
+```
+
+This vignette illustrates the use of the funqtl package for QTL
+mapping with function-valued traits using functional principal
+component analysis and multi-trait mapping.
+
+
+## Data
+
+We will consider the analysis of a simulated data set, `simspal`.
+There are `r nind(simspal)` recombinant inbred lines typed at a total
+of `r totmar(simspal)` markers on `r nchr(simspal)` chromosomes.
+
+We first load the funqtl package (which will also load R/qtl and other
+packages) and the data.
+
+```{r loading, eval=FALSE}
+library(funqtl)
+data(simspal)
+```
+
+Here's a quick summary of the data.
+
+```{r summary_simspal}
+summary(simspal)
+```
+
+The following plots the genetic marker map and the function-valued trait
+for five of the RIL.
+
+```{r plot_map_and_pheno}
+par(mfrow=c(1,2))
+plotMap(simspal, main="")
+plot(1:241, simspal$pheno[160,], type="l", xlab="Time",
+	  ylim=c(-120,0), ylab="Root Tip Angle (degrees)")
+ind <- c(19, 20, 132, 72)
+color <- c("blue", "red", "green", "orange")
+for(i in seq(along=ind))
+  lines(1:241, simspal$pheno[ind[i],], col=color[i])
+```
+
+There are `r nind(simspal)` individuals. The angle of the root tim is
+measured for `r nphe(simspal)` time points, which are measured every 2
+minutes for eight hours.
+
+
+```{r plotlod}
+
+out <- scanone(simspal, pheno.col=1:241, method="hk")
+eff <- geteffects(simspal, pheno.cols=1:241)
+nam <- phenames(simspal)
+y <- as.numeric(substr(nam, 2, nchar(nam)))/60
+plotlod(out, eff, y,  gap=15, horizontal = T)
+
+```
+
+This Figure shows the image of signed lod scores for each time points. The
+x-axis represent time points and y-axis represent chromosome, lod
+score represented as tone of the color. Red indicate positive effects
+and blue color indicate negative effects.
+
+Here, we've got lod score for all 241 time points. Our idea is to
+reduce the dimension of 241 to fewer number.
+
+1.  Get estimation of smooth function for each 162 individual to
+   control measurment error.
+    *  We need to decide how many base functions (b-spline) to be used
+     estimating the smooth function.
+    *  This step can be done using `cvfold()` function.
+1.  Do functional PCA to these 162 individuals. Here we reduce the
+   infinite dimensional function-valued data to small number of
+   principal components.
+1.  Do qtl mapping with these principal components. Combine the
+   information using our proposed test statistics. (HKLOD, SL and ML)
+
+```{r cvfold}
+set.seed(1)
+cvout <- cvfold(simspal, basisset = 15:60, fold = 10, random = F)
+```
+
+The 1st step is to decide how many basis functions to use estimating
+our function-valued trait. If we use too much basis it will fit the
+measurement error as well which is not meaningful. If we use too few
+basis the estimation may not enough to represent the truth.
+
+We've developed `cvfold` function to decide the number of basis
+functions. `basisset` option
+describe the number of basis sets to be tested. `fold` indicate how
+many folders to be used in cross validation. In this code, we divide
+our time points with equily spaced 10 sets. We used 9 folder to evaluate the
+functional. And calculated sum of squared errors for the left one
+folder.
+
+The Figure shows the sum of error losses (y- axis) for each
+number of basis from 15 to 60.
+
+```{r cvfig, fig.height=8, fig.width = 10}
+plot(15:60, cvout, xlab = "The number of basis",
+     main = "sum of squared errors", type = "l")
+
+```
+
+```{r count}
+which(cvout == min(cvout))
+
+```
+
+The minimum error loss calculated when we used 41 basis. So we decided
+to use 41 B-spline basis functions.
+
+
+## HKLOD, SL and ML scores
+
+
+```{r hklodttc2}
+Y <- calcfunpca(simspal, criteria=0.99, nbasis = 41)
+
+dim(Y)
+Y[1:10,]
+```
+
+Now, we can used `calcfunpca` function to get small number of
+principal components.
+
+41 B-spline basis functions are used. the number of 4 PCs are selected
+they explain more than 99 percent of data variation.
+
+
+
+```{r scanoneM}
+
+outhk <- scanoneM(simspal, Y = Y, method="hk")
+outsl <- scanoneM(simspal, Y = Y, method="sl")
+outml <- scanoneM(simspal, Y = Y, method="ml")
+
+```
+
+We proposed HKLOD, SL and ML scores, this statistic can be obtained
+using `scanoneM` function.
+
+```{r slodmlodcurve2, fig.height=10, fig.width = 10}
+par(mfrow=c(3,1))
+plot(outhk, ylim=c(0,8), main="The HKLOD curve for simspal data",
+     bandcol="gray90")
+abline(h=4.32, col="red", lty=3)
+plot(outsl, ylim=c(0,2), main="The SL curve for simspal data",
+     bandcol="gray90")
+abline(h=1.05, col="red", lty=3)
+plot(outml, ylim=c(0,4), main="The ML curve for simspal data",
+     bandcol="gray90")
+abline(h=3.05, col="red", lty=3)
+
+# permutation threshold
+# permouthk <- scanoneF(simspal, Y=Y, method = "hk", n.perm=1000)
+# permoutf <- scanoneF(simspal, Y=Y, method = "f", n.perm=1000)
+# permoutsl <- scanoneF(simspal, Y=Y, method = "sl", n.perm=1000)
+# permoutml <- scanoneF(simspal, Y=Y, method = "ml", n.perm=1000)
+# summary(permouthk) # display 5, 10 % threshold
+# summary(permoutf) # display 5, 10 % threshold
+# summary(permoutsl) # display 5, 10 % threshold
+# summary(permoutml) # display 5, 10 % threshold
+```
+
+The results are in Figure above. Horizontal lines indicate the 5%
+genome-wide significance thresholds, derived by a permutation test. We
+didn't run the code (for permutation test) above since it takes a long time (about one hour maybe) .
+
+## Getting multiple QTL
+
+```{r stepwiseqtlM}
+qtlhk <- stepwiseqtlM(simspal, Y = Y, max.qtl=6 , method = "hk", penalties = c(4.44, 10, 18), additive.only = T )
+
+qtlml <- stepwiseqtlM(simspal, Y = Y, max.qtl=8 , method = "ml", penalties = c(2.05, 8, 8), additive.only = T )
+
+qtlsl <- stepwiseqtlM(simspal, Y = Y, max.qtl=8 , method = "sl", penalties = c(1.07, 8, 8), additive.only = T )
+
+qtlhk
+qtlsl
+qtlml
+```
+
+`stepwiseqtlM` function returns qtl object by using stepwise QTL
+selection.
+
+``` {r profilecode, fig.height = 8, fig.width = 10}
+par(mfrow=c(3,1))
+
+    rqtlhk <- refineqtlM(cross = simspal, Y = Y, qtl = qtlhk, method = "hk" )
+    rqtlsl <- refineqtlM(cross = simspal, Y = Y, qtl = qtlsl, method = "sl" )
+    rqtlml <- refineqtlM(cross = simspal, Y = Y, qtl = qtlml, method = "ml" )
+
+plotLodProfile(rqtlhk, ylab = "Profile LOD score", main = "HKLOD Profile")
+plotLodProfile(rqtlsl, ylab = "Profile LOD score", main = "SL Profile")
+plotLodProfile(rqtlml, ylab = "Profile LOD score", main = "ML Profile")
+```
+
+You can also make profile curves by using `refineqtlM` and
+`plotLodProfile` function. Here are HKLOD, SL and ML profile curves. All
+the method found 2-QTL model.
+
+## Effect plot
+
+```{r effectplot2}
+
+## getting Principal componetes.
+Z <- calcfunpca(simspal, n.max=8, criteria = .99, nbasis = 30)
+
+### This can be manualy done as follows ( this step needed to get eigen functions)
+
+Y = t(simspal$pheno)
+m = 241 # time dimension
+
+## creating 30 b-spline basis using 4 knots
+splinebasis.y <- create.bspline.basis(c(0, m), 30, 4)
+time <- 0:(m - 1) + 0.5
+
+## do smoothing
+mat <- eval.basis(time, splinebasis.y)
+coef.y <- solve(crossprod(mat), crossprod(mat, Y))
+
+## get smoothed Y phenotype. now Y is n number of functionals
+yfd = fd(coef.y, splinebasis.y, list("time", "indv", "value"))
+
+## Do functional PCA
+y.pcalist3 = pca.fd(yfd, 20)
+
+## The proportion variance explained from eigen functions
+y.pcalist3$varprop
+
+## first 4 eigen values explain more than 99 percent of data variation.
+sum(y.pcalist3$varprop[1:4])
+sum(y.pcalist3$varprop[1:3])
+
+
+y.pcalist3 = pca.fd(yfd, 4)
+eigfc3 <- y.pcalist3$harmonics
+mat3 <- eval.fd(time, eigfc3)
+nY3 <- t(solve(crossprod(mat3), crossprod(mat3, Y)))
+
+temp <- simspal
+temp$pheno[,1] <- Z[,1]
+temp$pheno[,2] <- Z[,2]
+temp$pheno[,3] <- Z[,3]
+temp$pheno[,4] <- Z[,4]
+
+hksleff <- vector("list", 4)
+for(i in 1:4) {
+  hksleff[[i]] <- summary(fitqtl(temp, phe=i, qtl=rqtlhk, method="hk", get.ests=TRUE, dropone=FALSE))$ests[,1]*c(1,2,2)
+}
+
+nam <- names(hksleff[[1]])
+hksleff <- matrix(unlist(hksleff), byrow=TRUE, ncol=length(nam))
+colnames(hksleff) <- nam
+
+```
+By using these 4 eigen functions, we can recover effect functions.
+`hksleff` have the coefficients for baseline, Q1 and Q2 effect
+functions. We can draw baseline, Q1 and Q2 effect function as follows.
+
+```{r effplot3, fig.height=5, fig.width = 10}
+par(mfrow=c(1,3))
+par(las=1)
+
+baselinehk <- hksleff[1,1] * eigfc3[1]
+for(j in 2:4)
+    baselinehk = baselinehk + hksleff[j,1] * eigfc3[j]
+
+time <- (0:240)/30
+x = (0:240)
+
+plot(baselinehk, xlim = c(0,250), ylim=c(-110,0), xaxt = "n", ylab="", col="red")
+axis(1, at = x[c(1,61,121,181,241)] , labels = time[c(1,61,121,181,241)])
+mtext("Time (hours)", side=1, line = 2.8, cex = .7)
+mtext("Tip angle (degrees)", side=2, line = 2.8, las=3, cex = .7)
+
+q1hk <- hksleff[1,2] * eigfc3[1]
+for(j in 2:4)
+    q1hk = q1hk + hksleff[j,2] * eigfc3[j]
+
+plot(q1hk, xlim = c(0,250), ylim=c(-5,9), xaxt = "n", col="red", ylab="")
+axis(1, at = x[c(1,61,121,181,241)] , labels = time[c(1,61,121,181,241)])
+mtext("Time (hours)", side=1, line = 2.8, cex = .7)
+mtext("QTL effect", side=2, line = 2.8, las=3, cex = .7)
+abline(h = 0, lty=2)
+
+q2hk <- hksleff[1,3] * eigfc3[1]
+for(j in 2:4)
+    q2hk = q2hk + hksleff[j,3] * eigfc3[j]
+
+plot(q2hk, xlim = c(0,250), ylim=c(-5,9), xaxt = "n", col="red", ylab="")
+axis(1, at = x[c(1,61,121,181,241)] , labels = time[c(1,61,121,181,241)])
+mtext("Time (hours)", side=1, line = 2.8, cex = .7)
+mtext("QTL effect", side=2, line = 2.8, las=3, cex = .7)
+abline(h = 0, lty=2)
+```
+
