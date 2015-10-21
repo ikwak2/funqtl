@@ -1,15 +1,9 @@
----
-title: "Mapping quantitative trait loci underlying function-valued
-traits using functional principal component analysis and
-multi-trait mapping"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{QTL mapping using functional PCA for
-  function-valued traits. }
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
----
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{QTL mapping using functional PCA for function-valued traits}
+-->
+
+# QTL mapping using functional PCA for function-valued traits
 
 
 ```{r knitr_options, echo=FALSE, results=FALSE}
@@ -23,6 +17,11 @@ component analysis and multi-trait mapping.
 
 
 ## Data
+
+```{r load_without_showing, echo=FALSE, results=FALSE}
+library(funqtl)
+data(simspal)
+```
 
 We will consider the analysis of a simulated data set, `simspal`.
 There are `r nind(simspal)` recombinant inbred lines typed at a total
