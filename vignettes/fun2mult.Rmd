@@ -129,7 +129,9 @@ to use 41 B-spline basis functions.
 
 
 ```{r hklodttc2}
-Y <- calcfunpca(simspal, criteria=0.99, nbasis = 41)
+cfpc <- calcfunpca(simspal, criteria=0.99, nbasis = 41)
+Y <- cfpc$Y
+eigfc <- cfpc$eigf
 
 dim(Y)
 Y[1:10,]
@@ -140,6 +142,21 @@ principal components.
 
 41 B-spline basis functions are used. the number of 4 PCs are selected
 they explain more than 99 percent of data variation.
+
+To convert those PCs back to original data information, we can use 'eigfc' object.
+
+```{r backtoD}
+# PC for 1st individual
+Y[1,]
+
+# plot the 1st individual ( raw data)
+plot(1:241,simspal$pheno[1,], xlim=c(0,241), ylim=c(-90,0), ylab="angle", xlab="x")
+par(new=T)
+# plot the recovered data using PC
+plot( -903.74*cpca$eigf[1] + 222 *cpca$eigf[2] -107*cpca$eigf[3] -120 * cpca$eigf[4], xlim=c(0,241), ylim=c(-90,0), col = "red", ylab="", xlab="")
+
+```
+The example shows how we can recover the 1st individual using PCs.
 
 
 

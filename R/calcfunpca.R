@@ -8,7 +8,7 @@
 #' @param criteria how much of variance explained.
 #' @param nbasis The number of basis to use.
 #' @param nn The number of exact reduced dimension
-#' @return It gives a matrix that each column have principal components.
+#' @return It gives a list, Y is a matrix that each column have principal components. eigf is a eigen function object from functional PCA using fda package.
 #' @author Il-Youp Kwak, <email: ikwak2@@stat.wisc.edu>
 #' @seealso \code{\link{scanoneM}}
 #' @keywords utilities
@@ -19,7 +19,7 @@
 #' exd <- calc.genoprob(exd, step=2)
 #' cvout <- cvfold(exd, basisset = 4:7, fold = 10)
 #' cvout # basis number 5 have the smallest sse. So we take nbasis = 5.
-#' Y <- calcfunpca(exd, criteria=0.9, nbasis = 5)
+#' Y <- calcfunpca(exd, criteria=0.9, nbasis = 5)$Y
 #' out1 <- scanoneM(exd, Y, method = "hk")
 
 calcfunpca <- function(cross, pheno.cols, n.max=4, criteria=.9, nbasis, nn = 0) {
@@ -71,4 +71,5 @@ calcfunpca <- function(cross, pheno.cols, n.max=4, criteria=.9, nbasis, nn = 0) 
     eigfc3 <- y.pcalist3$harmonics
     mat3 <- eval.fd(time, eigfc3)
     nY3 <- t(solve(crossprod(mat3), crossprod(mat3, Y) ) )
+    list(Y=nY3, eigf = eigfc3)
 }

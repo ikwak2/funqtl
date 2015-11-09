@@ -33,7 +33,7 @@
 #' # dimensional reduction of Y
 #' cvout <- cvfold(simspal, basisset = 5:50, fold = 20)
 #' plot(cvout) ## take nbasis = 15
-#' Y <- calcfunpca(simspal, criteria=.999, nbasis = 15)
+#' Y <- calcfunpca(simspal, criteria=.999, nbasis = 15)$Y
 #'
 #' # do multitrait mapping
 #' out.hk <- scanoneM(simspal, Y=Y, method="hk")
