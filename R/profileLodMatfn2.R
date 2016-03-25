@@ -253,9 +253,9 @@ profileLodMatfn2 <- function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar 
             if(tt == 1) {
                 pos <- as.numeric(matrix(unlist(strsplit(names(out), "@")),
                                          byrow=TRUE,ncol=2)[,2])
-                chr <- as.numeric(rep(qtl$chr[tovary][j], length(pos)))
+                chrr <- as.numeric(rep(qtl$chr[tovary][j], length(pos)))
 
-                lastout[[j]] <- cbind(chr, pos,
+                lastout[[j]] <- cbind(chrr, pos,
                         out - (basefit[[tt]][[1]][1,4] - dropresult[rn==qn[j],3])  )
             } else {
                 lastout[[j]] <- cbind(lastout[[j]],
