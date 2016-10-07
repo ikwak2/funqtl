@@ -225,7 +225,7 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
 
             if(is.null(dropresult)) {
                 if(length(lastout)==1) {
-                    dropresult <- rbind(c(NA,NA, basefit$result.full[1,4]))
+                    dropresult <- rbind(c(NA,NA, basefit[[tt]]$result.full[1,4]))
                     rownames(dropresult) <- names(lastout)
                 }
                 else
