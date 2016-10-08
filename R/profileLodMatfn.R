@@ -7,16 +7,16 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
 
     if (!("cross" %in% class(cross)))
         stop("The cross argument must be an object of class \"cross\".")
+
+    ## allow formula to be a character string
     if (!missing(formula) && is.character(formula))
         formula <- as.formula(formula)
+    
     if (!is.null(covar) && !is.data.frame(covar)) {
         if (is.matrix(covar) && is.numeric(covar))
             covar <- as.data.frame(covar, stringsAsFactors = TRUE)
         else stop("covar should be a data.frame")
     }
-
-
-
 
     if (!missing(qtl) && (!missing(chr) || !missing(pos) || !missing(qtl.name)))
         warning("qtl argument is provided, and so chr, pos and qtl.name are ignored.")
@@ -25,8 +25,7 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
     if (!missing(qtl)) {
         chr <- qtl$chr
         pos <- qtl$pos
-    }
-    else {
+    }  else { # chr and pos provided
         if (missing(qtl.name)) {
             if (method == "imp")
                 qtl <- makeqtl(cross, chr = chr, pos = pos, what = "draws")
@@ -77,7 +76,10 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
         warning("No. imputations in qtl object doesn't match that in the input cross; re-creating qtl object.")
         qtl <- makeqtl(cross, qtl$chr, qtl$pos, qtl$name, what = "draws")
     }
+
+    ## save map in the object
     map <- attr(qtl, "map")
+    ## minimum distance between pseudomarkers
     if (is.null(map))
         stop("Input qtl object should contain the genetic map.")
     mind <- min(sapply(map, function(a) {
@@ -87,9 +89,7 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
     if (mind <= 0)
         mind <- 1e-06
 
-
-
-
+    ## check phenotypes and covariates; drop ind'ls with missing values    
     if (missing(pheno.cols))
         pheno.cols = 1:nphe(cross)
 
@@ -121,6 +121,8 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
             , drop = FALSE])
         qtl$n.ind <- sum(!hasmissing)
     }
+    
+    ## if missing formula, include the additive QTL plus all covariates
     if (missing(formula)) {
         formula <- paste("y ~", paste(qtl$altname, collapse = "+"))
         if (!is.null(covar))
@@ -128,6 +130,8 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
                 collapse = "+"))
         formula <- as.formula(formula)
     }
+
+    ## drop covariates that are not in the formula
     if (!is.null(covar)) {
         theterms <- rownames(attr(terms(formula), "factors"))
         m <- match(colnames(covar), theterms)
@@ -139,14 +143,14 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
     formula <- qtl::checkformula(formula, qtl$altname, colnames(covar))
 
 
-  # identify which QTL are in the model formula
+    ## identify which QTL are in the model formula
     tovary <- sort(qtl::parseformula(formula, qtl$altname, colnames(covar))$idx.qtl)
     if(length(tovary) != qtl$n.qtl)
         reducedqtl <- qtl::dropfromqtl(qtl, index=(1:qtl$n.qtl)[-tovary])
     else reducedqtl <- qtl
 
-  # if a QTL is missing from the formula, we need to revise the formula, moving
-  # everything over, for use in scanqtl
+    ## if a QTL is missing from the formula, we need to revise the formula, moving
+    ## everything over, for use in scanqtl
     if(any(1:length(tovary) != tovary)) {
         tempform <- strsplit(qtl::deparseQTLformula(formula), " *~ *")[[1]][2]
         terms <- strsplit(tempform, " *\\+ *")[[1]]
@@ -256,7 +260,7 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
     }
 
 
-    # make the profiles scanone objects
+    ## make the profiles scanone objects
     for(i in seq(along=lastout)) {
       class(lastout[[i]]) <- c("scanmult", "data.frame")
       thechr <- qtl$chr[i]
