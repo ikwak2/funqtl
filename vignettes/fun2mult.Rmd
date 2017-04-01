@@ -153,7 +153,7 @@ Y[1,]
 plot(1:241,simspal$pheno[1,], xlim=c(0,241), ylim=c(-90,0), ylab="angle", xlab="x")
 par(new=T)
 # plot the recovered data using PC
-plot( -903.74*cpca$eigf[1] + 222 *cpca$eigf[2] -107*cpca$eigf[3] -120 * cpca$eigf[4], xlim=c(0,241), ylim=c(-90,0), col = "red", ylab="", xlab="")
+plot( -903.74*cfpc$eigf[1] + 222 *cfpc$eigf[2] -107*cfpc$eigf[3] -120 * cfpc$eigf[4], xlim=c(0,241), ylim=c(-90,0), col = "red", ylab="", xlab="")
 
 ```
 The example shows how we can recover the 1st individual using PCs.
