@@ -63,7 +63,7 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
     if (missing(pheno.cols)) {
         pheno.cols = 1:nphe(cross)
     }
-
+    
     method <- match.arg(method)
     n.ind <- nind(cross)
     n.phe <- nphe(cross)
@@ -77,6 +77,9 @@ scanoneM <- function(cross, Y, tol=1e-7, n.perm=0, method=c("hk","f", "sl", "ml"
         if(is.vector(Y)) { p = 1} else {p = ncol(Y)}
     }
 
+    if( method = "hk" && dim(cross$geno[[i]]$prob) > 2 )
+        stop("hk is not recommanded.")
+    
     if(n.perm == 0) {
 
         if (method == "sl" || method == "ml") {
