@@ -271,10 +271,10 @@ mat3 <- eval.fd(time, eigfc3)
 nY3 <- t(solve(crossprod(mat3), crossprod(mat3, Y)))
 
 temp <- simspal
-temp$pheno[,1] <- Z[,1]
-temp$pheno[,2] <- Z[,2]
-temp$pheno[,3] <- Z[,3]
-temp$pheno[,4] <- Z[,4]
+temp$pheno[,1] <- Z$Y[,1]
+temp$pheno[,2] <- Z$Y[,2]
+temp$pheno[,3] <- Z$Y[,3]
+temp$pheno[,4] <- Z$Y[,4]
 
 hksleff <- vector("list", 4)
 for(i in 1:4) {
