@@ -1,3 +1,5 @@
+#' @importFrom stats as.formula
+
 profileLodMatfn2 <- function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
     formula, method = c("hk", "imp"), verbose = TRUE)
 {

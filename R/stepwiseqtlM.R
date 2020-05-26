@@ -40,6 +40,7 @@
 #' @param verbose If TRUE, give feedback about progress.  If 'verbose' is an
 #' integer > 1, even more information is printed.
 #' @export
+#' @importFrom stats as.formula terms
 #' @return
 #'
 #' The output is a representation of the best model, as measured by the
@@ -110,7 +111,7 @@ function (cross, chr, Y, qtl, formula, max.qtl = 10,
         } else {
             mtd = "mlod"
         }
-        out <- stepwiseqtlF(cross = temp, 
+        out <- stepwiseqtlF(cross = temp,
                             pheno.cols = 1:p, usec = mtd,
                             method = "hk", max.qtl = max.qtl,
                             incl.markers= incl.markers,
@@ -499,5 +500,3 @@ function (cross, chr, Y, qtl, formula, max.qtl = 10,
         "formula"), TRUE)
     curbest
 }
-
-

@@ -8,6 +8,8 @@
 # @param covar covariate matrix (data.frame)
 # @param method whether to use haley-knott regression or imputation to fit the model
 # @param lod0 null log10 likelihood for each phenotype (optional): a vector of length ncol(pheno)
+#
+#' @importFrom stats lm
 fitqtlF <-
 function(cross, pheno.cols, qtl, formula, covar=NULL, method=c("hk", "imp"), lod0)
 {
@@ -46,12 +48,12 @@ function(cross, pheno.cols, qtl, formula, covar=NULL, method=c("hk", "imp"), lod
   }
 
   stopifnot(length(lod0) == length(pheno.cols))
-  
+
   lod <- rep(NA, length(pheno.cols))
   for(i in seq(along=pheno.cols))
     lod[i] <- fitqtl(cross=cross, pheno.col=pheno.cols[i], qtl=qtl, covar=covar, formula=formula,
                      method=method, model="normal", dropone=FALSE, get.ests=FALSE,
                      run.checks=FALSE)$result.full[1,4]
-  
-  lod - lod0                   
+
+  lod - lod0
 }

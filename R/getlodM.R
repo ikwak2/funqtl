@@ -1,3 +1,5 @@
+#' @importFrom stats as.formula lm.fit
+
 getlodM <-
 function(cross, Y, formula, qtl, method = c("hk","f"), pheno.cols)
 {
@@ -107,6 +109,3 @@ function(cross, Y, formula, qtl, method = c("hk","f"), pheno.cols)
         LOD <- n.ind/2*log(L0/L1, 10)
     }
 }
-
-
-

@@ -20,6 +20,8 @@
 #' @keywords hplot
 #' @import qtl fields
 #' @export
+#' @importFrom grDevices rgb
+#' @importFrom graphics title par rect text
 #' @examples
 #' data(simspal)
 #' simspal <- calc.genoprob(simspal)
@@ -115,4 +117,3 @@ plotlod <- function(output, effects, y, ylab="Time", gap=25,
         }
     }
 }
-

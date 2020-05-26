@@ -1,3 +1,5 @@
+#' @importFrom stats as.formula terms lm
+
 scanqtlfn <-
 function (cross, pheno.cols, chr, pos, covar = NULL, formula,
           method = c("hk", "imp"), incl.markers = FALSE,

@@ -1,3 +1,5 @@
+#' @importFrom stats as.formula terms
+
 addqtlM <- function (cross, Y, chr, qtl, formula,
                      incl.markers = TRUE, verbose = FALSE,
                      method = c("hk","f"), pheno.cols) {
@@ -5,9 +7,9 @@ addqtlM <- function (cross, Y, chr, qtl, formula,
     if (missing(pheno.cols)) {
         pheno.cols = 1:nphe(cross)
     }
-    
+
     method <- match.arg(method)
-    
+
     if(missing(Y)) {
         p <- nphe(cross)
         Y <- as.matrix(cross$pheno[,pheno.cols])
@@ -155,9 +157,3 @@ addqtlM <- function (cross, Y, chr, qtl, formula,
     attr(results, "formula") <- qtl::deparseQTLformula(newformula)
     results
 }
-
-
-
-
-
-

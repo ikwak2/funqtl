@@ -1,3 +1,5 @@
+#' @importFrom graphics par rect text arrows
+
 plotlodmatlist2 <- function(lodmatlist, times, ylab="QTL position", xlab="Time", mval=0, ...) {
 
 

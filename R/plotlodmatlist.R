@@ -1,3 +1,5 @@
+#' @importFrom graphics par rect text
+
 plotlodmatlist <- function(lodmatlist, times, ylab="QTL position", xlab="Time", mval=0, ...) {
 
 
@@ -54,4 +56,3 @@ plotlodmatlist <- function(lodmatlist, times, ylab="QTL position", xlab="Time", 
     }
 
 }
-

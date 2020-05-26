@@ -30,6 +30,7 @@
 #' @return An object of class \code{"qtl"}, with QTL placed in their new positions.
 #'
 #' @export
+#' @importFrom stats as.formula lm
 #' @author Il-Youp Kwak, <email: ikwak2@@stat.wisc.edu>
 #' @seealso \code{\link[qtl]{refineqtl}}, \code{\link{refineqtlM}}
 #' @references Zeng, Z.-B., Kao, C.-H., and Basten, C. J. (1999) Estimating the
