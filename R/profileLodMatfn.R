@@ -11,7 +11,7 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
     ## allow formula to be a character string
     if (!missing(formula) && is.character(formula))
         formula <- as.formula(formula)
-    
+
     if (!is.null(covar) && !is.data.frame(covar)) {
         if (is.matrix(covar) && is.numeric(covar))
             covar <- as.data.frame(covar, stringsAsFactors = TRUE)
@@ -89,7 +89,7 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
     if (mind <= 0)
         mind <- 1e-06
 
-    ## check phenotypes and covariates; drop ind'ls with missing values    
+    ## check phenotypes and covariates; drop ind'ls with missing values
     if (missing(pheno.cols))
         pheno.cols = 1:nphe(cross)
 
@@ -121,7 +121,7 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
             , drop = FALSE])
         qtl$n.ind <- sum(!hasmissing)
     }
-    
+
     ## if missing formula, include the additive QTL plus all covariates
     if (missing(formula)) {
         formula <- paste("y ~", paste(qtl$altname, collapse = "+"))
@@ -189,7 +189,6 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
     sexpgm <- getsex(cross)
     cross.attr <- attributes(cross)
 
-
     basefit <- NULL
     basefitlod <- NULL
 
@@ -197,7 +196,7 @@ function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
         basefit[[phv]] <- qtl::fitqtlengine(pheno = pheno[,pheno.cols[phv]], qtl = reducedqtl,
                                 covar = covar, formula = formula, method = method,
                                 model = "normal", dropone = TRUE, get.ests = FALSE,
-                                run.checks = FALSE, cross.attr = cross.attr,
+                                run.checks = FALSE, cross.attr = cross.attr, crosstype=crosstype(cross),
                                 sexpgm = sexpgm)
         basefitlod <- c( basefitlod, basefit[[phv]]$result.full[1,4] )
 

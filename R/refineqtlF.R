@@ -229,7 +229,7 @@ function (cross, pheno.cols, usec = c("slod", "mlod"), qtl, covar = NULL,
       basefit[[phv]] <- qtl::fitqtlengine(pheno = pheno[,phv], qtl = reducedqtl,
                                           covar = covar, formula = formula, method = method,
                                           model = "normal", dropone = keeplodprofile, get.ests = FALSE,
-                                          run.checks = FALSE, cross.attr = cross.attr,
+                                          run.checks = FALSE, cross.attr = cross.attr, crosstype=crosstype(cross),
                                           sexpgm = sexpgm)
       basefitlod[phv] <- basefit[[phv]]$result.full[1,4]
     }

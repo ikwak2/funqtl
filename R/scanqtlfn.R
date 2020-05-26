@@ -236,7 +236,7 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
       fit <- qtl::fitqtlengine(pheno = pheno[,ii], qtl = qtl, covar = covar,
                                formula = formula, method = method, model = "normal",
                                dropone = FALSE, get.ests = FALSE, run.checks = FALSE,
-                               cross.attr = cross.attr, sexpgm = sexpgm)
+                               cross.attr = cross.attr, crosstype=crosstype(cross), sexpgm = sexpgm)
 
       fitresults[ii] <- fit[[1]][1,4]
     }
@@ -330,7 +330,7 @@ function (cross, pheno.cols, chr, pos, covar = NULL, formula,
       fit <- qtl::fitqtlengine(pheno = pheno[,ii], qtl = qtl.obj, covar = covar,
                                formula = formula, method = method, model = "normal",
                                dropone = FALSE, get.ests = FALSE, run.checks = FALSE,
-                               cross.attr = cross.attr, sexpgm = sexpgm)
+                               cross.attr = cross.attr, crosstype=crosstype(cross), sexpgm = sexpgm)
       fitresults[ii] <- fit[[1]][1,4]
     }
 
