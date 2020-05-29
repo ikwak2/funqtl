@@ -1,3 +1,5 @@
+#' @importFrom stats as.formula terms pchisq pf
+
 addintM <- function (cross, Y, qtl, formula, qtl.only = FALSE, verbose = TRUE,
     pvalues = TRUE, simple = FALSE, tol = 1e-04, maxit = 1000, method=c("hk","f"), pheno.cols)
 {
@@ -117,7 +119,3 @@ addintM <- function (cross, Y, qtl, formula, qtl.only = FALSE, verbose = TRUE,
     attr(results, "simple") <- simple
     results
 }
-
-
-
-

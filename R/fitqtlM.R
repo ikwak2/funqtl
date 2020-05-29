@@ -1,3 +1,5 @@
+#' @importFrom stats as.formula lm.fit
+
 fitqtlM <- function(cross, Y, formula, qtl, tol=1e-7, method=c("hk","f"), pheno.cols) {
 
     if (missing(pheno.cols)) {
@@ -172,5 +174,3 @@ fitqtlM <- function(cross, Y, formula, qtl, tol=1e-7, method=c("hk","f"), pheno.
     return(list( result.full = result.full, result.drop = result.drop, lod = result.full[1,4]) )
 
 }
-
-

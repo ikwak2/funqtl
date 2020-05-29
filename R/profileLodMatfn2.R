@@ -1,3 +1,5 @@
+#' @importFrom stats as.formula
+
 profileLodMatfn2 <- function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar = NULL,
     formula, method = c("hk", "imp"), verbose = TRUE)
 {
@@ -87,7 +89,7 @@ profileLodMatfn2 <- function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar 
     if (mind <= 0)
         mind <- 1e-06
 
-    ## check phenotypes and covariates; drop ind'ls with missing values    
+    ## check phenotypes and covariates; drop ind'ls with missing values
     if (missing(pheno.cols))
         pheno.cols = 1:nphe(cross)
 
@@ -214,7 +216,7 @@ profileLodMatfn2 <- function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar 
         basefit[[phv]] <- qtl::fitqtlengine(pheno = pheno[,pheno.cols[phv]], qtl = reducedqtl,
                                 covar = covar, formula = formula, method = method,
                                 model = "normal", dropone = TRUE, get.ests = FALSE,
-                                run.checks = FALSE, cross.attr = cross.attr,
+                                run.checks = FALSE, cross.attr = cross.attr, crosstype=crosstype(cross),
                                 sexpgm = sexpgm)
         basefitlod <- c( basefitlod, basefit[[phv]]$result.full[1,4] )
 
@@ -329,5 +331,3 @@ profileLodMatfn2 <- function (cross, pheno.cols, qtl, chr, pos, qtl.name, covar 
     outout
 
 }
-
-

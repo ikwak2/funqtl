@@ -1,3 +1,5 @@
+#' @importFrom stats as.formula
+
 scanqtlM <- function (cross, Y, chr, pos, formula, incl.markers = FALSE,
                       verbose = TRUE, method=c("hk","f"), pheno.cols)
 {
@@ -222,6 +224,3 @@ scanqtlM <- function (cross, Y, chr, pos, formula, incl.markers = FALSE,
     attr(result, "formula") <- qtl::deparseQTLformula(formula)
     result
 }
-
-
-

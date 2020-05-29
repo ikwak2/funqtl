@@ -58,6 +58,7 @@
 #' @author Il-Youp Kwak, <email: ikwak2@@stat.wisc.edu>
 #' @seealso \code{\link{refineqtlF}}, \code{\link{addqtlF}}
 #' @export
+#' @importFrom stats as.formula terms lm var
 #' @references Manichaikul, A., Moon, J. Y., Sen, S, Yandell, B. S. and Broman,
 #' K. W. (2009) A model selection approach for the identification of
 #' quantitative trait loci in experimental crosses, allowing epistasis.
@@ -93,9 +94,9 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
 
   if(missing(pheno.cols))
     pheno.cols = 1:nphe(cross)
-  
-  
-  
+
+
+
   if(!all(pheno.cols %in% 1:nphe(cross)))
     stop("pheno.cols should be in a range of 1 to ", nphe(cross))
 
@@ -106,7 +107,7 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
       warning("The package only support additive model.\n")
   }
 
-  
+
   if(!("cross" %in% class(cross)))
     stop("Input should have class \"cross\".")
 
@@ -219,7 +220,7 @@ stepwiseqtlF <- function (cross, chr, pheno.cols, qtl, usec=c("slod","mlod"), fo
   }
 
   if( any(diag(var(pheno)) == 0 ) )
-       stop( "There is a phenotype with no variability.")  
+       stop( "There is a phenotype with no variability.")
 
   if (max.qtl < 1)
     stop("Need max.qtl > 0 if we are to scan for qtl")

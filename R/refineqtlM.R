@@ -36,6 +36,7 @@
 #' @author Il-Youp Kwak, <email: ikwak2@@stat.wisc.edu>
 #' @seealso \code{\link[qtl]{refineqtl}}, \code{\link{refineqtlM}}
 #' @export
+#' @importFrom stats as.formula lm
 #' @examples
 #' cat("An example needs to be added.\n")
 refineqtlM <- function (cross, Y, qtl, formula,
@@ -82,39 +83,39 @@ refineqtlM <- function (cross, Y, qtl, formula,
 
         chr <- qtl$chr
         pos <- qtl$pos
-        
+
         if (!all(chr %in% names(cross$geno)))
             stop("Chr ", paste(unique(chr[!(chr %in% cross$geno)]),
                                sep = " "), " not found in cross.")
-        
+
         if (verbose > 1)
             scanqtl.verbose <- TRUE
         else scanqtl.verbose <- FALSE
-        
+
         cross <- subset(cross, chr = as.character(unique(chr)))
-        
+
         if (qtl$n.ind != nind(cross)) {
             warning("No. individuals in qtl object doesn't match that in the input cross; re-creating qtl object.")
             qtl <- makeqtl(cross, qtl$chr, qtl$pos, qtl$name, what = "prob")
         }
         map <- attr(qtl, "map")
-        
+
         if (is.null(map))
             stop("Input qtl object should contain the genetic map.")
-        
+
         mind <- min(sapply(map, function(a) {
             if (is.matrix(a)) a <- a[1, ]
             min(diff(a))
         }))/2
         if (mind <= 0)
             mind <- 1e-06
-        
+
         if (missing(formula)) {
             formula <- paste("y ~", paste(qtl$altname, collapse = "+"))
             formula <- as.formula(formula)
         }
         formula <- qtl::checkformula(formula, qtl$altname,NULL)
-        
+
         tovary <- sort(qtl::parseformula(formula, qtl$altname, NULL)$idx.qtl)
         if (length(tovary) != qtl$n.qtl)
             reducedqtl <- qtl::dropfromqtl(qtl, index = (1:qtl$n.qtl)[-tovary])
@@ -158,9 +159,9 @@ refineqtlM <- function (cross, Y, qtl, formula,
         sexpgm <- getsex(cross)
         cross.attr <- attributes(cross)
         for (i in 1:maxit) {
-            
+
             basefit <- fitqtlM(cross=cross, Y=Y, formula=formula, qtl = qtl, method=method, pheno.cols=pheno.cols)
-            
+
             if (i == 1) {
                 origlod <- curlod <- thisitlod <- basefit$result.full[1,4]
                 origpos <- curpos
@@ -227,13 +228,13 @@ refineqtlM <- function (cross, Y, qtl, formula,
         if (length(g) == length(qtl$name))
             thenames <- NULL
         else thenames <- qtl$name
-        
+
         for (j in seq(along = tovary)) qtl <- replaceqtl(cross, qtl,
                           tovary[j], chrnam[j], newpos[j])
         if (!is.null(thenames))
             qtl$name <- thenames
-        
-        
+
+
         if (keeplodprofile) {
             dropresult <- basefit$result.drop
             if (is.null(dropresult)) {
@@ -243,7 +244,7 @@ refineqtlM <- function (cross, Y, qtl, formula,
                 }
                 else stop("There's a problem: need dropresult, but didn't obtain one.")
             }
-            
+
             rn <- names(dropresult)
             qn <- names(lastout)
             for (i in seq(along = lastout)) {
@@ -273,15 +274,11 @@ refineqtlM <- function (cross, Y, qtl, formula,
             }
             attr(qtl, "lodprofile") <- lastout
         }
-        
-        
-        
+
+
+
         if ("pLOD" %in% names(attributes(qtl)) && curlod > origlod)
             attr(qtl, "pLOD") <- attr(qtl, "pLOD") + curlod - origlod
         return(qtl)
     }
 }
-
-
-
-

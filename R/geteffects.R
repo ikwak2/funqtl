@@ -11,6 +11,7 @@
 #' @seealso \code{\link{plotlod}}
 #' @keywords models
 #' @export
+#' @importFrom stats lm
 #' @examples
 #' data(simspal)
 #' simspal <- calc.genoprob(simspal)
