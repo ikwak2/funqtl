@@ -1,7 +1,7 @@
 #' Estimate QTL effects
 #'
 #' Estimate QTL effect at each genomic position for each of multiple phenotypes.
-#'
+#' However, this function uses a very simple method to predict the effect, and it is recommended to use the fitqtl function referring to a [vignette](https://ikwak2.github.io/tutorials/funqtl.html) to actually predict the effect.
 #'
 #' @param cross An object of class 'cross'. See 'read.cross' for details.
 #' @param pheno.cols phenotype columns to be used
@@ -22,7 +22,10 @@
 geteffects <- function(cross,pheno.cols) {
     if(missing(pheno.cols))
         pheno.cols=1:nphe(cross)
+    if( len(attr(cross$geno[[1]]$prob, "dimnames")[[3]]) != 2 )
+        stop("This function works for backcross or recombinant inbred lines.")
 
+    
     phe <- as.matrix(cross$pheno[,pheno.cols])
     eff <- NULL
     for(i in 1:nchr(cross)) {

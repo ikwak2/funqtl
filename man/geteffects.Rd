@@ -17,7 +17,7 @@ position as a qtl of ith observation.
 }
 \description{
 Estimate QTL effect at each genomic position for each of multiple phenotypes.
-}
+However, this function uses a very simple method to predict the effect, and it is recommended to use the fitqtl function referring to the funqtl package vignette to actually predict the effect.
 \examples{
 data(simspal)
 simspal <- calc.genoprob(simspal)
