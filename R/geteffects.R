@@ -22,7 +22,7 @@
 geteffects <- function(cross,pheno.cols) {
     if(missing(pheno.cols))
         pheno.cols=1:nphe(cross)
-    if( len(attr(cross$geno[[1]]$prob, "dimnames")[[3]]) != 2 )
+    if( length(attr(cross$geno[[1]]$prob, "dimnames")[[3]]) != 2 )
         stop("This function works for backcross or recombinant inbred lines.")
 
     
